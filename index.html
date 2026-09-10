@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cifras y Letras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fondo:#0A0B10;
+    --panel:#121319;
+    --panel-borde:#23252F;
+    --teal:#2FBFA1;
+    --teal-rgb:47,191,161;
+    --teal-tenue:#1D8A73;
+    --texto:#EDEDF0;
+    --texto-tenue:#8B8D98;
+    --activo-bg:#1B2622;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--fondo);
+    color:var(--texto);
+    font-family:'Work Sans', sans-serif;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    overflow:hidden;
+  }
+
+  header.topbar{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:0 24px;
+    height:72px;
+    background:var(--panel);
+    border-bottom:1px solid var(--panel-borde);
+    box-shadow:0 6px 20px rgba(0,0,0,0.35);
+    z-index:10;
+  }
+
+  .marca{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-shrink:0;
+  }
+  .marca .icono-marca{
+    width:34px;height:34px;
+    border-radius:8px;
+    background:linear-gradient(160deg, var(--teal), var(--teal-tenue));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Bebas Neue', sans-serif;
+    font-size:1.1rem;
+    color:#04211B;
+    flex-shrink:0;
+  }
+  .marca .texto-marca{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:1.3rem;
+    letter-spacing:0.04em;
+    color:var(--texto);
+    white-space:nowrap;
+  }
+
+  nav.pestanas{
+    display:flex;
+    gap:6px;
+    margin-left:auto;
+    overflow-x:auto;
+  }
+  .pestana{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
+    letter-spacing:0.01em;
+    color:var(--texto-tenue);
+    background:transparent;
+    border:1px solid transparent;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .pestana:hover{color:var(--texto); background:rgba(var(--teal-rgb),0.08);}
+  .pestana.activa{
+    color:var(--teal);
+    background:var(--activo-bg);
+    border-color:var(--teal-tenue);
+  }
+
+  main.contenido{
+    flex:1 1 auto;
+    position:relative;
+    min-height:0;
+  }
+  .panel-vista{
+    position:absolute;
+    inset:0;
+    display:none;
+  }
+  .panel-vista.activo{display:block;}
+  .panel-vista iframe{
+    width:100%;
+    height:100%;
+    border:none;
+    display:block;
+    background:var(--fondo);
+  }
+
+  .proximamente{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:14px;
+    padding:0 24px;
+  }
+  .proximamente .marca-grande{
+    width:64px;height:64px;
+    border-radius:16px;
+    background:linear-gradient(160deg, var(--teal), var(--teal-tenue));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Bebas Neue', sans-serif;
+    font-size:1.8rem;
+    color:#04211B;
+    margin-bottom:6px;
+  }
+  .proximamente h2{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:2.2rem;
+    letter-spacing:0.04em;
+    margin:0;
+    color:var(--texto);
+  }
+  .proximamente p{
+    margin:0;
+    max-width:420px;
+    color:var(--texto-tenue);
+    font-size:1rem;
+    line-height:1.5;
+  }
+
+  @media (max-width:640px){
+    header.topbar{gap:12px; padding:0 14px; height:64px;}
+    .marca .texto-marca{display:none;}
+    .pestana{padding:9px 12px; font-size:0.84rem;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="marca">
+    <div class="icono-marca">CyL</div>
+    <span class="texto-marca">Cifras y Letras</span>
+  </div>
+  <nav class="pestanas" role="tablist" aria-label="Secciones">
+    <button class="pestana activa" data-vista="cifras" role="tab" aria-selected="true">Cifras</button>
+    <button class="pestana" data-vista="letras" role="tab" aria-selected="false">Letras</button>
+    <button class="pestana" data-vista="simulacion" role="tab" aria-selected="false">Simulación</button>
+  </nav>
+</header>
+
+<main class="contenido">
+  <div class="panel-vista activo" id="vista-cifras">
+    <iframe data-src="cifras.html" title="Sección Cifras"></iframe>
+  </div>
+  <div class="panel-vista" id="vista-letras">
+    <iframe data-src="letras.html" title="Sección Letras"></iframe>
+  </div>
+  <div class="panel-vista" id="vista-simulacion">
+    <iframe data-src="simulacion.html" title="Sección Simulación"></iframe>
+  </div>
+</main>
+
+<script>
+  const botones = document.querySelectorAll('.pestana');
+  const paneles = {
+    cifras: document.getElementById('vista-cifras'),
+    letras: document.getElementById('vista-letras'),
+    simulacion: document.getElementById('vista-simulacion'),
+  };
+
+  function cargarIframeSiHaceFalta(panel){
+    const iframe = panel.querySelector('iframe[data-src]');
+    if (iframe){
+      iframe.src = iframe.getAttribute('data-src');
+      iframe.removeAttribute('data-src');
+    }
+  }
+
+  cargarIframeSiHaceFaltaConTema(paneles.cifras);
+
+  botones.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const destino = btn.dataset.vista;
+
+      botones.forEach(b => {
+        b.classList.toggle('activa', b === btn);
+        b.setAttribute('aria-selected', String(b === btn));
+      });
+
+      Object.entries(paneles).forEach(([nombre, panel]) => {
+        panel.classList.toggle('activo', nombre === destino);
+      });
+
+      cargarIframeSiHaceFaltaConTema(paneles[destino]);
+    });
+  });
+
+  /* =========================================================
+     SINCRONIZACIÓN DE TEMA ENTRE LAS TRES SECCIONES
+     Cada iframe (Cifras, Letras, Simulación) guarda el tema elegido
+     en localStorage bajo la clave 'cifrasYLetrasTema' y, además,
+     avisa a esta página (su padre) mediante postMessage en cuanto
+     el usuario cambia de tema. Esta página reenvía ese aviso al
+     resto de iframes ya cargados, para que el cambio se refleje
+     al instante sin esperar a que se abran esas pestañas.
+     ========================================================= */
+  const CLAVE_TEMA_COMPARTIDA = 'cifrasYLetrasTema';
+
+  function iframesCargados(){
+    return Object.values(paneles)
+      .map(panel => panel.querySelector('iframe'))
+      .filter(iframe => iframe && iframe.src);
+  }
+
+  window.addEventListener('message', (e) => {
+    if (!e.data || e.data.tipo !== 'cifrasYLetrasTema' || !e.data.tema) return;
+    try { localStorage.setItem(CLAVE_TEMA_COMPARTIDA, e.data.tema); } catch(err){}
+    iframesCargados().forEach(iframe => {
+      if (iframe.contentWindow !== e.source){
+        iframe.contentWindow.postMessage({ tipo:'cifrasYLetrasTema', tema: e.data.tema }, '*');
+      }
+    });
+  });
+
+  // Refuerzo: cuando se carga por primera vez un iframe (al abrir su pestaña),
+  // le enviamos el tema actual por si acaso su lectura de localStorage no coincidiera.
+  function cargarIframeSiHaceFaltaConTema(panel){
+    const iframe = panel.querySelector('iframe[data-src]');
+    if (iframe){
+      iframe.addEventListener('load', () => {
+        let temaActual = 'clasico';
+        try { temaActual = localStorage.getItem(CLAVE_TEMA_COMPARTIDA) || 'clasico'; } catch(err){}
+        iframe.contentWindow.postMessage({ tipo:'cifrasYLetrasTema', tema: temaActual }, '*');
+      }, { once:true });
+    }
+    cargarIframeSiHaceFalta(panel);
+  }
+</script>
+
+</body>
+</html>

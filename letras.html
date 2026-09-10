@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Palabra Más Grande</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600..900&family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600;700&family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* --- núcleo cromático (tema clásico, por defecto) --- */
+    --azul-noche:#040814;
+    --azul-panel:#0A1B3D;
+    --azul-panel-alt:#0F2A57;
+    --azul-borde:#1E4B8F;
+    --azul-neon:#2E9BFF;
+    --azul-neon-claro:#7FC4FF;
+    --rojo-vivo:#FF3B3B;
+    --rojo-intenso:#D6172B;
+    --blanco:#F7FAFF;
+    --blanco-tenue:#AFC2E0;
+    --verde-led:#57D68D;
+    --rojo-marcador:#FF3B3B;
+
+    --azul-neon-rgb:46,155,255;
+    --rojo-vivo-rgb:255,59,59;
+    --rojo-marcador-rgb:255,59,59;
+    --blanco-rgb:247,250,255;
+    --negro-rgb:0,0,0;
+    --verde-rgb:87,214,141;
+
+    --superficie-1:#0C1F3C;
+    --led-bg:#04101F;
+    --drawer-grad-1:#0D2242;
+    --drawer-grad-2:#081326;
+    --linea-tenue:#3A6FB0;
+
+    --radius:14px;
+    --shadow: 0 20px 45px rgba(0,0,0,0.55);
+    --serif: 'Fraunces', serif;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  /* ---------- TEMA DÍA: colores claros, alto contraste diurno ---------- */
+  body.tema-dia{
+    --azul-noche:#F4F8FF;
+    --azul-panel:#FFFFFF;
+    --azul-panel-alt:#F0F5FF;
+    --azul-borde:#C7D9F2;
+    --azul-neon:#1C6FE0;
+    --azul-neon-claro:#4C93F2;
+    --rojo-vivo:#E63946;
+    --rojo-intenso:#C81E2E;
+    --blanco:#12233F;
+    --blanco-tenue:#4C6079;
+    --verde-led:#1C9A55;
+    --rojo-marcador:#E63946;
+    --azul-neon-rgb:28,111,224;
+    --rojo-vivo-rgb:230,57,70;
+    --rojo-marcador-rgb:230,57,70;
+    --blanco-rgb:18,35,63;
+    --negro-rgb:0,0,0;
+    --verde-rgb:28,154,85;
+    --superficie-1:#EAF1FC;
+    --led-bg:#0B1B33;
+    --drawer-grad-1:#FFFFFF;
+    --drawer-grad-2:#F0F5FF;
+    --linea-tenue:#9FB8DC;
+    --shadow: 0 14px 34px rgba(28,60,110,0.16);
+  }
+
+  /* ---------- TEMA NOCHE: colores apagados para jugar de noche ---------- */
+  body.tema-noche{
+    --azul-noche:#02040a;
+    --azul-panel:#060C1C;
+    --azul-panel-alt:#0A1226;
+    --azul-borde:#152238;
+    --azul-neon:#1C4E82;
+    --azul-neon-claro:#3A6FA6;
+    --rojo-vivo:#A32A2A;
+    --rojo-intenso:#7A1E1E;
+    --blanco:#C9D2E0;
+    --blanco-tenue:#66748C;
+    --verde-led:#2E8F5C;
+    --rojo-marcador:#A32A2A;
+    --azul-neon-rgb:28,78,130;
+    --rojo-vivo-rgb:163,42,42;
+    --rojo-marcador-rgb:163,42,42;
+    --blanco-rgb:201,210,224;
+    --negro-rgb:0,0,0;
+    --verde-rgb:46,143,92;
+    --superficie-1:#070E1E;
+    --led-bg:#010609;
+    --drawer-grad-1:#070E22;
+    --drawer-grad-2:#04070F;
+    --linea-tenue:#1F3252;
+    --shadow: 0 20px 45px rgba(0,0,0,0.7);
+  }
+
+  /* ---------- TEMA ELEGANCIA: azul marino y dorado (diseño original) ---------- */
+  body.tema-elegancia{
+    --azul-noche:#081326;
+    --azul-panel:#0F2648;
+    --azul-panel-alt:#142F58;
+    --azul-borde:#1C3A66;
+    --azul-neon:#D9A441;
+    --azul-neon-claro:#F4CB74;
+    --rojo-vivo:#D9A441;
+    --rojo-intenso:#B9862F;
+    --blanco:#F1E9D8;
+    --blanco-tenue:#B9C3D6;
+    --verde-led:#57D68D;
+    --rojo-marcador:#E0654F;
+    --azul-neon-rgb:217,164,65;
+    --rojo-vivo-rgb:217,164,65;
+    --rojo-marcador-rgb:224,101,79;
+    --blanco-rgb:241,233,216;
+    --negro-rgb:0,0,0;
+    --verde-rgb:87,214,141;
+    --superficie-1:#0C1F3C;
+    --led-bg:#04101F;
+    --drawer-grad-1:#0D2242;
+    --drawer-grad-2:#081326;
+    --linea-tenue:#3A6FB0;
+    --shadow: 0 20px 45px rgba(0,0,0,0.5);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 10%, rgba(var(--rojo-vivo-rgb),0.10), transparent 40%),
+      radial-gradient(circle at 85% 0%, rgba(var(--azul-neon-rgb),0.12), transparent 45%),
+      var(--azul-noche);
+    color:var(--blanco);
+    font-family:var(--sans);
+    min-height:100vh;
+    padding:0 0 60px 0;
+    transition: background-color .25s ease, color .25s ease;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    background: linear-gradient(180deg, var(--azul-panel-alt) 0%, var(--azul-panel) 100%);
+    color:var(--blanco);
+    padding:26px 24px 30px;
+    box-shadow: var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  .topbar::after{
+    content:"";
+    position:absolute; inset:0;
+    background: repeating-linear-gradient(135deg, rgba(200,152,63,0.06) 0 2px, transparent 2px 26px);
+    pointer-events:none;
+  }
+  .topbar-inner{
+    max-width:920px; margin:0 auto; position:relative; z-index:1;
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  }
+  .brand-mark{
+    width:54px;height:54px;border-radius:10px;
+    background: linear-gradient(160deg, var(--azul-neon-claro), var(--azul-neon));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono); font-weight:800; font-size:24px; color:var(--azul-panel);
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2), 0 6px 14px rgba(0,0,0,0.3);
+    flex-shrink:0;
+  }
+  .titles h1{
+    font-family:var(--serif); font-weight:800; font-size:clamp(26px,4vw,38px);
+    margin:0; letter-spacing:0.3px;
+  }
+  .titles p{
+    margin:4px 0 0; color:var(--azul-neon-claro); font-size:14px; letter-spacing:1.5px;
+    text-transform:uppercase; font-weight:600;
+  }
+
+  /* ---------- Layout ---------- */
+  .wrap{max-width:920px; margin:0 auto; padding:0 20px;}
+  .card{
+    background: var(--azul-panel);
+    border:1px solid var(--azul-borde);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 18px var(--azul-borde);
+    padding:28px;
+    margin-top:26px;
+  }
+  .card h2{
+    font-family:var(--serif); font-size:22px; margin:0 0 6px; color:var(--blanco);
+  }
+  .card .sub{color:var(--blanco-tenue); font-size:14.5px; margin:0 0 20px; line-height:1.5;}
+
+  /* ---------- Stepper ---------- */
+  .stepper-row{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .stepper{
+    display:flex; align-items:center; gap:0; border-radius:10px; overflow:hidden;
+    border:2px solid var(--azul-panel-alt); background:var(--azul-noche);
+  }
+  .stepper button{
+    width:44px; height:48px; border:none; background:var(--azul-panel-alt); color:var(--azul-neon-claro);
+    font-size:20px; font-weight:700; cursor:pointer; transition:background .15s;
+  }
+  .stepper button:hover{background:var(--azul-panel);}
+  .stepper button:disabled{opacity:0.35; cursor:not-allowed;}
+  .stepper .value{
+    width:66px; text-align:center; font-family:var(--mono); font-weight:800; font-size:22px;
+    color:var(--azul-neon-claro);
+  }
+  .stepper-label{font-size:13px; color:var(--blanco-tenue);}
+  .btn{
+    font-family:var(--sans); font-weight:700; font-size:15px; letter-spacing:0.3px;
+    border:none; border-radius:10px; padding:13px 26px; cursor:pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{
+    background: linear-gradient(160deg, var(--rojo-vivo), var(--rojo-intenso));
+    color:#fff; box-shadow: 0 6px 16px rgba(197,58,45,0.35);
+  }
+  .btn-primary:hover{box-shadow: 0 8px 20px rgba(197,58,45,0.45);}
+  .btn-primary:disabled{background:var(--linea-tenue); box-shadow:none; cursor:not-allowed;}
+  .btn-secondary{
+    background: transparent; color:var(--azul-neon-claro); border:2px solid var(--azul-neon-claro);
+  }
+  .btn-secondary:hover{background:rgba(18,37,66,0.06);}
+  .btn-secondary:disabled{opacity:0.4; cursor:not-allowed; border-color:var(--linea-tenue);}
+
+  /* ---------- Tiles ---------- */
+  .tiles{
+    display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; min-height:78px;
+  }
+  .tile{
+    width:56px; height:66px; perspective:600px;
+  }
+  .tile-inner{
+    width:100%; height:100%; position:relative; transform-style:preserve-3d;
+    transition: transform .55s cubic-bezier(.2,.8,.2,1);
+  }
+  .tile.flipped .tile-inner{ transform: rotateY(180deg); }
+  .tile-face{
+    position:absolute; inset:0; border-radius:8px; backface-visibility:hidden;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:800; font-size:26px;
+  }
+  .tile-front{
+    background: linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
+    color:transparent;
+  }
+  .tile-back{
+    background: linear-gradient(160deg, var(--azul-neon-claro), var(--azul-neon));
+    color:var(--azul-panel);
+    transform: rotateY(180deg);
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.12), 0 6px 12px rgba(0,0,0,0.18);
+    border:1px solid rgba(0,0,0,0.08);
+  }
+  .tile.vowel .tile-back{ color:var(--rojo-intenso); }
+
+  /* ---------- Word input ---------- */
+  .word-row{
+    display:flex; gap:12px; margin-top:24px; flex-wrap:wrap; align-items:stretch;
+  }
+  .word-row input[type="text"]{
+    flex:1; min-width:200px;
+    font-family:var(--mono); font-weight:700; font-size:20px; letter-spacing:2px;
+    text-transform:uppercase; padding:12px 16px; border-radius:10px;
+    border:2px solid var(--azul-panel-alt); background:var(--superficie-1); color:var(--blanco);
+  }
+  .word-row input[type="text"]:focus{outline:3px solid var(--azul-neon-claro); outline-offset:1px;}
+  .word-row input[type="text"]:disabled{background:var(--drawer-grad-2); color:var(--linea-tenue);}
+
+  .feedback{
+    margin-top:16px; padding:14px 16px; border-radius:10px; font-size:15px;
+    display:none; line-height:1.5;
+  }
+  .feedback.show{display:block;}
+  .feedback.ok{ background:rgba(var(--verde-rgb),0.15); border:1.5px solid var(--verde-led); color:var(--verde-led);}
+  .feedback.err{ background:rgba(var(--rojo-marcador-rgb),0.14); border:1.5px solid var(--rojo-marcador); color:var(--rojo-marcador);}
+  .feedback strong{display:block; margin-bottom:2px; font-family:var(--serif); font-size:16px;}
+
+  /* ---------- Results ---------- */
+  .reveal-box{margin-top:18px;}
+  .reveal-title{
+    font-family:var(--serif); font-size:19px; color:var(--blanco); margin:0 0 10px;
+  }
+  .word-chip-list{display:flex; flex-wrap:wrap; gap:10px;}
+  .word-chip{
+    background:var(--azul-panel-alt); color:var(--azul-neon-claro); font-family:var(--mono); font-weight:700;
+    padding:9px 14px; border-radius:8px; font-size:15px; letter-spacing:1px;
+  }
+  .word-chip.champion{ background: linear-gradient(160deg, var(--rojo-vivo), var(--rojo-intenso)); color:#fff; }
+
+  .status-line{
+    display:flex; align-items:center; gap:10px; margin-top:16px; font-size:14px; color:var(--blanco-tenue);
+  }
+  .dot{width:9px; height:9px; border-radius:50%; background:var(--linea-tenue); flex-shrink:0;}
+  .dot.ready{background:var(--verde-led);}
+  .dot.loading{background:var(--azul-neon); animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.3;}}
+
+  footer{
+    max-width:920px; margin:34px auto 0; padding:0 20px; text-align:center;
+    color:var(--linea-tenue); font-size:12.5px;
+  }
+
+  /* ---------- Section headers ---------- */
+  .section-header{
+    max-width:920px; margin:44px auto 0; padding:0 20px;
+    display:flex; align-items:baseline; gap:14px;
+  }
+  .section-header:first-of-type{margin-top:30px;}
+  .section-tag{
+    font-family:var(--mono); font-weight:800; font-size:13px; color:var(--blanco);
+    background:var(--azul-panel-alt); padding:5px 11px; border-radius:6px; letter-spacing:1px; flex-shrink:0;
+  }
+  .section-header h2{
+    font-family:var(--serif); font-weight:800; font-size:clamp(20px,3vw,27px);
+    margin:0; color:var(--blanco);
+  }
+  .section-header p{
+    max-width:920px; margin:6px 20px 0; padding:0 0 0 0; color:var(--blanco-tenue); font-size:14.5px;
+  }
+  .section-desc{
+    max-width:920px; margin:6px auto 0; padding:0 20px 0 90px; color:var(--blanco-tenue); font-size:14.5px; line-height:1.5;
+  }
+
+  /* ---------- NAV: barra horizontal a todo lo ancho (igual que en Cifras) ---------- */
+  nav.panel-control{
+    position:sticky; top:0; z-index:15; width:100%;
+    background:linear-gradient(180deg, var(--drawer-grad-1), var(--drawer-grad-2));
+    border-top:1px solid var(--azul-borde);
+    border-bottom:2px solid var(--azul-neon);
+    box-shadow:0 0 26px rgba(var(--azul-neon-rgb),0.3), 0 14px 30px rgba(0,0,0,0.45);
+    margin:30px 0 34px;
+  }
+  .nav-interior{
+    display:flex; max-width:920px; margin:0 auto; padding:0 20px;
+  }
+  .btn-modo{
+    flex:1;
+    font-family:var(--serif); font-weight:800;
+    font-size:1.1rem; letter-spacing:0.02em;
+    padding:20px 12px;
+    border:none; border-right:1px solid rgba(255,255,255,0.07);
+    background:transparent; color:var(--blanco-tenue);
+    cursor:pointer; transition:all .2s ease;
+  }
+  .btn-modo:last-child{border-right:none;}
+  .btn-modo:hover{background:rgba(var(--azul-neon-rgb),0.12); color:var(--blanco);}
+  .btn-modo.activo{
+    background:linear-gradient(160deg, var(--rojo-vivo), var(--rojo-intenso));
+    color:#fff;
+    box-shadow:inset 0 -5px 0 rgba(255,255,255,0.18), 0 0 20px rgba(var(--rojo-vivo-rgb),0.4);
+  }
+  @media (max-width:560px){
+    .btn-modo{font-size:0.92rem; padding:16px 8px;}
+  }
+
+  /* ---------- Paneles de pestaña ---------- */
+  .panel-tab{display:none; animation:aparecerTab .35s ease;}
+  .panel-tab.activo{display:block;}
+  @keyframes aparecerTab{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ---------- Resolutor ---------- */
+  .letra-boxes{
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:22px;
+  }
+  .letra-boxes input{
+    width:48px; height:56px; text-align:center;
+    font-family:var(--mono); font-weight:800; font-size:22px; text-transform:uppercase;
+    border-radius:8px; border:2px solid var(--azul-panel-alt); background:var(--superficie-1); color:var(--blanco);
+  }
+  .letra-boxes input:focus{outline:3px solid var(--azul-neon-claro); outline-offset:1px;}
+  .resolutor-actions{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;}
+  .resultado-lista{margin-top:20px; display:flex; flex-direction:column; gap:8px;}
+  .resultado-fila{
+    display:flex; align-items:center; gap:12px;
+    background:var(--azul-noche); border:1px solid var(--azul-borde); border-radius:9px;
+    padding:10px 14px;
+  }
+  .resultado-fila .rank{
+    font-family:var(--mono); font-weight:800; color:var(--azul-neon); width:22px; flex-shrink:0;
+  }
+  .resultado-fila .palabra{
+    font-family:var(--mono); font-weight:700; letter-spacing:1px; color:var(--blanco); flex:1;
+  }
+  .resultado-fila .longitud{
+    font-size:12.5px; color:var(--linea-tenue); font-family:var(--sans); font-weight:600;
+  }
+
+  /* ---------- Grupos de longitud (resolutor) ---------- */
+  .length-group{
+    background:var(--azul-noche); border:1px solid var(--azul-borde); border-radius:10px;
+    padding:14px 16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .length-tag{
+    font-family:var(--mono); font-weight:800; font-size:13px; color:#fff;
+    background:var(--azul-panel-alt); padding:6px 10px; border-radius:7px; flex-shrink:0; min-width:64px; text-align:center;
+  }
+  .length-group .word-chip-list{gap:8px;}
+  .length-note{font-size:13px; color:var(--linea-tenue); font-style:italic;}
+
+  /* ---------- Temporizador ---------- */
+  .timer-widget{
+    position:relative;
+    font-family:var(--sans);
+  }
+  .top-right-controls{
+    position:fixed; top:18px; right:18px; z-index:200;
+    display:flex; flex-direction:row-reverse; align-items:flex-start; gap:10px;
+  }
+  .timer-btn{
+    display:flex; align-items:center; gap:8px;
+    background: linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
+    color:var(--azul-neon-claro); border:2px solid var(--azul-neon);
+    border-radius:12px; padding:9px 16px; cursor:pointer;
+    font-family:var(--mono); font-weight:800; font-size:16px;
+    box-shadow: 0 6px 16px rgba(12,26,48,0.35);
+  }
+  .timer-btn .clock-icon{font-size:18px; line-height:1;}
+  .timer-btn.off{ color:var(--linea-tenue); border-color:var(--linea-tenue); }
+  .timer-btn.warning{ color:#fff; border-color:var(--rojo-vivo); background: linear-gradient(160deg, var(--rojo-vivo), var(--rojo-intenso)); animation:pulse 1s infinite; }
+
+  .timer-panel{
+    position:absolute; top:56px; right:0;
+    background:var(--azul-panel); border:1px solid var(--azul-borde);
+    border-radius:12px; box-shadow: var(--shadow); padding:18px;
+    width:230px; display:none;
+  }
+  .timer-panel.open{display:block;}
+  .timer-panel h3{
+    margin:0 0 12px; font-family:var(--serif); font-size:16px; color:var(--blanco);
+  }
+  .timer-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  .timer-row:last-child{margin-bottom:0;}
+  .timer-row span{font-size:13.5px; color:var(--blanco-tenue); font-weight:600;}
+
+  .switch{ position:relative; width:46px; height:26px; flex-shrink:0; }
+  .switch input{ opacity:0; width:0; height:0; }
+  .switch .slider{
+    position:absolute; inset:0; background:var(--superficie-1); border-radius:999px; cursor:pointer; transition:.2s;
+  }
+  .switch .slider::before{
+    content:""; position:absolute; width:20px; height:20px; left:3px; top:3px;
+    background:#fff; border-radius:50%; transition:.2s; box-shadow:0 1px 3px rgba(0,0,0,0.3);
+  }
+  .switch input:checked + .slider{ background: var(--verde-led); }
+  .switch input:checked + .slider::before{ transform: translateX(20px); }
+
+  .time-inputs{display:flex; align-items:center; gap:6px;}
+  .time-inputs input{
+    width:44px; text-align:center; font-family:var(--mono); font-weight:700; font-size:15px;
+    border:2px solid var(--azul-panel-alt); border-radius:7px; padding:5px 0;
+    background:var(--superficie-1); color:var(--blanco);
+  }
+  .time-inputs input:focus{ outline:3px solid var(--azul-neon-claro); outline-offset:1px; }
+  .time-inputs span{color:var(--blanco-tenue); font-weight:700;}
+
+  .flash-overlay{
+    position:fixed; inset:0; background:var(--rojo-marcador); opacity:0;
+    pointer-events:none; z-index:999;
+  }
+  .flash-overlay.active{ animation: flashRoja 0.7s ease-out; }
+  @keyframes flashRoja{
+    0%{opacity:0;}
+    12%{opacity:0.6;}
+    100%{opacity:0;}
+  }
+
+  @media (max-width:520px){
+    .tile{width:44px; height:54px;}
+    .tile-face{font-size:20px;}
+    .card{padding:20px;}
+    .top-right-controls{top:12px; right:12px;}
+    .timer-panel, .theme-panel{width:190px;}
+  }
+
+  /* ---------- Selector de temas ---------- */
+  .theme-widget{ position:relative; }
+  .theme-btn{
+    display:flex; align-items:center; gap:8px;
+    background: linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
+    color:var(--azul-neon-claro); border:2px solid var(--azul-neon);
+    border-radius:12px; padding:9px 14px; cursor:pointer;
+    font-family:var(--sans); font-weight:700; font-size:14px;
+    box-shadow: 0 6px 16px rgba(12,26,48,0.35);
+  }
+  .theme-btn .swatch-icon{font-size:16px; line-height:1;}
+  .theme-panel{
+    position:absolute; top:56px; right:0;
+    background:var(--azul-panel); border:1px solid var(--azul-borde);
+    border-radius:12px; box-shadow: var(--shadow); padding:10px;
+    width:210px; display:none;
+  }
+  .theme-panel.open{display:block;}
+  .theme-option{
+    display:flex; align-items:center; gap:10px; width:100%;
+    background:transparent; border:none; border-radius:9px; padding:9px 10px;
+    cursor:pointer; text-align:left; font-family:var(--sans); font-size:14px; font-weight:600;
+    color:var(--blanco);
+  }
+  .theme-option:hover{ background:var(--azul-borde); }
+  .theme-option.active{ background:var(--azul-panel-alt); color:var(--azul-neon-claro); }
+  .theme-swatch{
+    width:22px; height:22px; border-radius:6px; flex-shrink:0;
+    border:1px solid rgba(0,0,0,0.15);
+  }
+</style>
+</head>
+<body>
+
+  <div class="flash-overlay" id="flashOverlay"></div>
+
+  <div class="top-right-controls">
+
+    <div class="theme-widget">
+      <button class="theme-btn" id="themeBtn" type="button">
+        <span class="swatch-icon">🎨</span>
+        <span id="themeLabel">Clásico</span>
+      </button>
+      <div class="theme-panel" id="themePanel">
+        <button class="theme-option active" data-theme="clasico" type="button">
+          <span class="theme-swatch" style="background:linear-gradient(135deg, #2E9BFF, #FF3B3B);"></span>
+          Clásico
+        </button>
+        <button class="theme-option" data-theme="dia" type="button">
+          <span class="theme-swatch" style="background:linear-gradient(135deg, #FFFFFF, #4C93F2);"></span>
+          Día
+        </button>
+        <button class="theme-option" data-theme="noche" type="button">
+          <span class="theme-swatch" style="background:linear-gradient(135deg, #060C1C, #1C4E82);"></span>
+          Noche
+        </button>
+        <button class="theme-option" data-theme="elegancia" type="button">
+          <span class="theme-swatch" style="background:linear-gradient(135deg, #0F2648, #D9A441);"></span>
+          Elegancia
+        </button>
+      </div>
+    </div>
+
+    <div class="timer-widget">
+      <button class="timer-btn off" id="timerBtn" type="button">
+        <span class="clock-icon">⏱</span>
+        <span id="timerDisplay">--:--</span>
+      </button>
+      <div class="timer-panel" id="timerPanel">
+        <h3>Temporizador</h3>
+        <div class="timer-row">
+          <span>Activado</span>
+          <label class="switch">
+            <input type="checkbox" id="timerToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="timer-row">
+          <span>Duración</span>
+          <div class="time-inputs">
+            <input type="number" id="timerMin" min="0" max="30" value="2">
+            <span>:</span>
+            <input type="number" id="timerSec" min="0" max="59" value="0">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-mark">Aa</div>
+      <div class="titles">
+        <h1>La Palabra Más Grande</h1>
+        <p>Cifras y Letras · Sección de Letras</p>
+      </div>
+    </div>
+  </div>
+
+  <nav class="panel-control">
+    <div class="nav-interior">
+      <button class="btn-modo activo" data-tab="juego" type="button">El juego</button>
+      <button class="btn-modo" data-tab="resolutor" type="button">Resolutor</button>
+    </div>
+  </nav>
+
+  <section id="tab-juego" class="panel-tab activo">
+  <p class="section-desc" style="padding-left:20px;">Genera tu bolsa de 10 letras y comprueba si tu palabra es válida.</p>
+
+  <div class="wrap">
+
+    <div class="card">
+      <h2>1. Elige tus vocales</h2>
+      <p class="sub">Decide cuántas vocales quieres entre las 10 letras (el resto serán consonantes, repartidas según su frecuencia real en español).</p>
+      <div class="stepper-row">
+        <div class="stepper">
+          <button id="btnMenos" type="button" aria-label="Menos vocales">−</button>
+          <div class="value" id="valVocales">4</div>
+          <button id="btnMas" type="button" aria-label="Más vocales">+</button>
+        </div>
+        <span class="stepper-label">vocales · <span id="valConsonantes">6</span> consonantes</span>
+        <button class="btn btn-primary" id="btnGenerar" type="button" style="margin-left:auto;">Generar letras</button>
+      </div>
+
+      <div class="tiles" id="tiles"></div>
+    </div>
+
+    <div class="card" id="cardPalabra" style="display:none;">
+      <h2>2. Forma tu palabra</h2>
+      <p class="sub">Escribe la palabra más larga que puedas construir usando cada letra como máximo el número de veces que aparece en la bolsa.</p>
+      <div class="word-row">
+        <input type="text" id="inputPalabra" placeholder="TU PALABRA" autocomplete="off" spellcheck="false" disabled>
+        <button class="btn btn-primary" id="btnComprobar" type="button" disabled>Comprobar</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+
+      <div class="status-line">
+        <span class="dot loading" id="dictDot"></span>
+        <span id="dictStatus">Cargando diccionario de español…</span>
+      </div>
+    </div>
+
+    <div class="card" id="cardResultado" style="display:none;">
+      <h2>3. Resolver esta partida</h2>
+      <p class="sub" id="resultadoSub"></p>
+      <button class="btn btn-secondary" id="btnRevelar" type="button">Resolver</button>
+      <div class="reveal-box" id="revealBox" style="display:none;">
+        <p class="reveal-title" id="revealTitle"></p>
+        <div class="resultado-lista" id="revealList"></div>
+      </div>
+    </div>
+
+  </div>
+  </section>
+
+  <section id="tab-resolutor" class="panel-tab">
+  <p class="section-desc" style="padding-left:20px;">Introduce cualquier combinación de 10 letras y te devolvemos las palabras más largas que se pueden formar con ellas.</p>
+
+  <div class="wrap">
+    <div class="card">
+      <h2>Introduce las 10 letras</h2>
+      <p class="sub">Escribe una letra en cada casilla. El resolutor te devuelve hasta 2 palabras válidas para cada longitud, de 10 a 5 letras; si no encuentra ninguna, o solo una, te lo indica junto a esa longitud.</p>
+      <div class="letra-boxes" id="letraBoxes"></div>
+      <div class="resolutor-actions">
+        <button class="btn btn-primary" id="btnResolver" type="button" disabled>Resolver</button>
+        <button class="btn btn-secondary" id="btnLimpiarResolutor" type="button">Limpiar</button>
+      </div>
+      <div class="status-line">
+        <span class="dot loading" id="dictDot2"></span>
+        <span id="dictStatus2">Cargando diccionario de español…</span>
+      </div>
+      <div class="reveal-box" id="resolutorBox" style="display:none;">
+        <p class="reveal-title" id="resolutorTitle"></p>
+        <div class="resultado-lista" id="resolutorLista"></div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <footer>Diccionario de español cargado dinámicamente (~636.000 palabras) · La generación de letras respeta la frecuencia aproximada de cada letra en el idioma.</footer>
+
+<script>
+(function(){
+  const VOCALES = ['A','E','I','O','U'];
+  const PESOS_VOCALES = [12.53, 13.68, 6.25, 8.68, 3.93];
+  const CONSONANTES = ['B','C','D','F','G','H','J','L','M','N','Ñ','P','Q','R','S','T','V','X','Y','Z'];
+  const PESOS_CONSONANTES = [1.42,4.68,5.86,0.69,1.01,0.70,0.44,4.97,3.15,6.71,0.31,2.51,0.88,6.87,7.98,4.63,0.90,0.22,0.90,0.52];
+
+  const MIN_VOCALES = 3;
+  const MAX_VOCALES = 6;
+  let numVocales = 4;
+  let letrasActuales = [];       // bolsa de 10 letras (mayúsculas, sin tildes)
+  let dictNormalizedSet = null;  // Set<string> de palabras normalizadas (sin tildes, mayúsculas)
+  let dictEntries = [];          // [{display: 'CAMIÓN', norm:'CAMION'}, ...] longitud <=10
+  let dictLoaded = false;
+  let dictLoading = false;
+  let palabraJugadorValida = false;
+
+  // ---------- Temporizador ----------
+  let timerEnabled = false;
+  let timerTotalSeconds = 120;
+  let timerRemaining = 120;
+  let timerInterval = null;
+
+  const $ = (id) => document.getElementById(id);
+
+  function pesoAleatorio(items, pesos, k){
+    const total = pesos.reduce((a,b)=>a+b,0);
+    const acumulado = [];
+    let s = 0;
+    for(const p of pesos){ s += p; acumulado.push(s); }
+    const salida = [];
+    for(let i=0;i<k;i++){
+      const r = Math.random() * total;
+      let idx = acumulado.findIndex(c => r <= c);
+      if(idx === -1) idx = items.length - 1;
+      salida.push(items[idx]);
+    }
+    return salida;
+  }
+
+  function normalizar(palabra){
+    return palabra
+      .toLowerCase()
+      .trim()
+      .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u').replace(/ü/g,'u')
+      .toUpperCase();
+  }
+
+  function sePuedeFormar(palabraNorm, bolsa){
+    const disponibles = bolsa.slice();
+    for(const letra of palabraNorm){
+      const idx = disponibles.indexOf(letra);
+      if(idx === -1) return false;
+      disponibles.splice(idx,1);
+    }
+    return true;
+  }
+
+  // ---------- Stepper ----------
+  function actualizarStepper(){
+    $('valVocales').textContent = numVocales;
+    $('valConsonantes').textContent = 10 - numVocales;
+    $('btnMenos').disabled = numVocales <= MIN_VOCALES;
+    $('btnMas').disabled = numVocales >= MAX_VOCALES;
+  }
+  $('btnMenos').addEventListener('click', ()=>{ if(numVocales>MIN_VOCALES){ numVocales--; actualizarStepper(); }});
+  $('btnMas').addEventListener('click', ()=>{ if(numVocales<MAX_VOCALES){ numVocales++; actualizarStepper(); }});
+  actualizarStepper();
+
+  // ---------- Generar letras ----------
+  function renderTiles(letras){
+    const cont = $('tiles');
+    cont.innerHTML = '';
+    letras.forEach((letra, i) => {
+      const tile = document.createElement('div');
+      tile.className = 'tile' + (VOCALES.includes(letra) ? ' vowel' : '');
+      tile.innerHTML = `
+        <div class="tile-inner">
+          <div class="tile-face tile-front"></div>
+          <div class="tile-face tile-back">${letra}</div>
+        </div>`;
+      cont.appendChild(tile);
+      setTimeout(()=> tile.classList.add('flipped'), 120 + i*90);
+    });
+  }
+
+  $('btnGenerar').addEventListener('click', () => {
+    const vocalesElegidas = pesoAleatorio(VOCALES, PESOS_VOCALES, numVocales);
+    const consonantesElegidas = pesoAleatorio(CONSONANTES, PESOS_CONSONANTES, 10 - numVocales);
+    letrasActuales = vocalesElegidas.concat(consonantesElegidas);
+    // barajar
+    for(let i = letrasActuales.length - 1; i>0; i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [letrasActuales[i], letrasActuales[j]] = [letrasActuales[j], letrasActuales[i]];
+    }
+    renderTiles(letrasActuales);
+
+    $('cardPalabra').style.display = 'block';
+    $('cardResultado').style.display = 'none';
+    $('revealBox').style.display = 'none';
+    $('feedback').className = 'feedback';
+    $('inputPalabra').value = '';
+    palabraJugadorValida = false;
+    $('inputPalabra').disabled = !dictLoaded;
+    $('btnComprobar').disabled = !dictLoaded;
+
+    if(timerEnabled){
+      iniciarTemporizador();
+    }
+  });
+
+  // ---------- Resolutor: casillas de letras ----------
+  function crearCasillasResolutor(){
+    const cont = $('letraBoxes');
+    cont.innerHTML = '';
+    for(let i=0;i<10;i++){
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.maxLength = 1;
+      input.autocomplete = 'off';
+      input.spellcheck = false;
+      input.dataset.idx = i;
+      input.addEventListener('input', (e) => {
+        let v = e.target.value.toUpperCase().replace(/[^A-ZÑ]/g,'');
+        e.target.value = v.slice(-1);
+        if(e.target.value && i < 9){
+          cont.children[i+1].focus();
+        }
+        actualizarBotonResolver();
+      });
+      input.addEventListener('keydown', (e) => {
+        if(e.key === 'Backspace' && !e.target.value && i > 0){
+          cont.children[i-1].focus();
+        }
+      });
+      cont.appendChild(input);
+    }
+  }
+  crearCasillasResolutor();
+
+  function leerCasillasResolutor(){
+    return Array.from($('letraBoxes').children).map(inp => inp.value).filter(Boolean);
+  }
+
+  function actualizarBotonResolver(){
+    const letras = leerCasillasResolutor();
+    $('btnResolver').disabled = !(dictLoaded && letras.length === 10);
+  }
+
+  $('btnLimpiarResolutor').addEventListener('click', () => {
+    Array.from($('letraBoxes').children).forEach(inp => inp.value = '');
+    $('letraBoxes').children[0].focus();
+    $('resolutorBox').style.display = 'none';
+    actualizarBotonResolver();
+  });
+
+  // ---------- Cargar diccionario ----------
+  function cargarDiccionario(){
+    if(dictLoading || dictLoaded) return;
+    dictLoading = true;
+    fetch('https://unpkg.com/an-array-of-spanish-words@2.0.0/index.json')
+      .then(r => r.json())
+      .then(lista => {
+        const set = new Set();
+        const entries = [];
+        const re = /^[a-záéíóúüñ]+$/;
+        for(const palabra of lista){
+          if(!re.test(palabra)) continue;
+          if(palabra.length < 2 || palabra.length > 10) continue;
+          const norm = normalizar(palabra);
+          if(!set.has(norm)){
+            set.add(norm);
+            entries.push({display: palabra.toUpperCase(), norm});
+          }
+        }
+        dictNormalizedSet = set;
+        dictEntries = entries;
+        dictLoaded = true;
+        dictLoading = false;
+        $('dictDot').className = 'dot ready';
+        $('dictStatus').textContent = `Diccionario listo (${entries.length.toLocaleString('es-ES')} palabras).`;
+        $('dictDot2').className = 'dot ready';
+        $('dictStatus2').textContent = `Diccionario listo (${entries.length.toLocaleString('es-ES')} palabras).`;
+        if(letrasActuales.length){
+          $('inputPalabra').disabled = false;
+          $('btnComprobar').disabled = false;
+        }
+        actualizarBotonResolver();
+      })
+      .catch(err => {
+        dictLoading = false;
+        $('dictDot').className = 'dot';
+        $('dictDot').style.background = 'var(--rojo-marcador)';
+        $('dictStatus').textContent = 'No se ha podido cargar el diccionario. Comprueba tu conexión y recarga la página.';
+        $('dictDot2').className = 'dot';
+        $('dictDot2').style.background = 'var(--rojo-marcador)';
+        $('dictStatus2').textContent = 'No se ha podido cargar el diccionario. Comprueba tu conexión y recarga la página.';
+        console.error(err);
+      });
+  }
+  cargarDiccionario();
+
+  // ---------- Comprobar palabra del jugador ----------
+  function mostrarFeedback(tipo, titulo, texto){
+    const f = $('feedback');
+    f.className = 'feedback show ' + tipo;
+    f.innerHTML = `<strong>${titulo}</strong>${texto}`;
+  }
+
+  $('btnComprobar').addEventListener('click', comprobarPalabra);
+  $('inputPalabra').addEventListener('keydown', (e) => { if(e.key === 'Enter') comprobarPalabra(); });
+
+  function comprobarPalabra(){
+    const bruta = $('inputPalabra').value.trim();
+    if(!bruta){
+      mostrarFeedback('err', 'Escribe una palabra', 'Introduce una palabra formada con las letras de arriba.');
+      return;
+    }
+    const norm = normalizar(bruta);
+    if(!sePuedeFormar(norm, letrasActuales)){
+      mostrarFeedback('err', 'No se puede formar', 'Esa palabra usa letras que no están en tu bolsa, o repite alguna más veces de las disponibles.');
+      palabraJugadorValida = false;
+      mostrarResultado();
+      buscarMejorPalabra();
+      return;
+    }
+    if(!dictNormalizedSet.has(norm)){
+      mostrarFeedback('err', 'No está en el diccionario', 'La palabra se puede formar con tus letras, pero no la hemos encontrado en el diccionario de español.');
+      palabraJugadorValida = false;
+      mostrarResultado();
+      buscarMejorPalabra();
+      return;
+    }
+    mostrarFeedback('ok', '¡Palabra válida!', `"${bruta.toUpperCase()}" tiene ${norm.length} letras y es una palabra correcta.`);
+    palabraJugadorValida = true;
+    mostrarResultado(norm.length);
+    buscarMejorPalabra();
+  }
+
+  function mostrarResultado(longitudJugador){
+    $('cardResultado').style.display = 'block';
+    $('revealBox').style.display = 'none';
+    $('btnRevelar').disabled = false;
+    $('btnRevelar').textContent = 'Volver a resolver';
+    if(longitudJugador){
+      $('resultadoSub').textContent = `Tu palabra tiene ${longitudJugador} letras. Aquí tienes las palabras que ha encontrado el programa con esta misma bolsa, longitud a longitud.`;
+    } else {
+      $('resultadoSub').textContent = 'Aquí tienes las palabras que ha encontrado el programa con esta bolsa, longitud a longitud.';
+    }
+  }
+
+  // ---------- Cálculo compartido: 2 palabras por longitud (10 a 5) ----------
+  const LONGITUDES_OBJETIVO = [10,9,8,7,6,5];
+
+  function calcularPorLongitud(bolsa){
+    const encontradas = new Map();
+    LONGITUDES_OBJETIVO.forEach(L => encontradas.set(L, []));
+    for(const entry of dictEntries){
+      const L = entry.norm.length;
+      if(!encontradas.has(L)) continue;
+      const lista = encontradas.get(L);
+      if(lista.length >= 2) continue;
+      if(sePuedeFormar(entry.norm, bolsa)) lista.push(entry.display);
+    }
+    return encontradas;
+  }
+
+  function renderizarGruposPorLongitud(encontradas){
+    return LONGITUDES_OBJETIVO.map(L => {
+      const palabras = encontradas.get(L);
+      let contenido;
+      if(palabras.length === 0){
+        contenido = `<span class="length-note">No se ha encontrado ninguna palabra de ${L} letras.</span>`;
+      } else {
+        contenido = `<div class="word-chip-list">${palabras.map(p => `<span class="word-chip">${p}</span>`).join('')}</div>`;
+        if(palabras.length === 1){
+          contenido += `<span class="length-note">Solo se ha encontrado 1 palabra de ${L} letras.</span>`;
+        }
+      }
+      return `<div class="length-group"><span class="length-tag">${L} letras</span>${contenido}</div>`;
+    }).join('');
+  }
+
+  // ---------- Revelar mejor palabra (Sección 1) ----------
+  $('btnRevelar').addEventListener('click', () => {
+    $('btnRevelar').disabled = true;
+    $('btnRevelar').textContent = 'Resolviendo…';
+    setTimeout(buscarMejorPalabra, 30); // deja pintar el "Resolviendo…" antes de bloquear el hilo
+  });
+
+  function buscarMejorPalabra(){
+    const encontradas = calcularPorLongitud(letrasActuales);
+
+    $('btnRevelar').disabled = false;
+    $('btnRevelar').textContent = 'Resolver';
+
+    const box = $('revealBox');
+    box.style.display = 'block';
+    $('revealTitle').textContent = 'Hasta 2 palabras encontradas para cada longitud, de 10 a 5 letras:';
+    $('revealList').innerHTML = renderizarGruposPorLongitud(encontradas);
+  }
+
+  // ---------- Resolutor (Sección 2): 2 palabras por longitud (10 a 5) ----------
+  $('btnResolver').addEventListener('click', () => {
+    const letras = leerCasillasResolutor();
+    if(letras.length !== 10 || !dictLoaded) return;
+    $('btnResolver').disabled = true;
+    $('btnResolver').textContent = 'Resolviendo…';
+    setTimeout(() => resolverPalabras(letras), 30);
+  });
+
+  function resolverPalabras(bolsa){
+    const encontradas = calcularPorLongitud(bolsa);
+
+    $('btnResolver').disabled = false;
+    $('btnResolver').textContent = 'Resolver';
+
+    const box = $('resolutorBox');
+    box.style.display = 'block';
+    $('resolutorTitle').textContent = 'Hasta 2 palabras encontradas para cada longitud, de 10 a 5 letras:';
+    $('resolutorLista').innerHTML = renderizarGruposPorLongitud(encontradas);
+  }
+
+  // ---------- Temporizador ----------
+  function formatearTiempo(segundos){
+    const m = Math.floor(segundos / 60).toString().padStart(2,'0');
+    const s = Math.floor(segundos % 60).toString().padStart(2,'0');
+    return `${m}:${s}`;
+  }
+
+  function leerDuracionConfigurada(){
+    const min = Math.max(0, Math.min(30, parseInt($('timerMin').value, 10) || 0));
+    const sec = Math.max(0, Math.min(59, parseInt($('timerSec').value, 10) || 0));
+    return min * 60 + sec;
+  }
+
+  function actualizarDisplayTemporizador(){
+    const btn = $('timerBtn');
+    btn.classList.remove('off','warning');
+    if(!timerEnabled){
+      btn.classList.add('off');
+      $('timerDisplay').textContent = '--:--';
+      return;
+    }
+    $('timerDisplay').textContent = formatearTiempo(timerRemaining);
+    if(timerRemaining <= 10 && timerInterval){
+      btn.classList.add('warning');
+    }
+  }
+
+  function iniciarTemporizador(){
+    if(timerInterval) clearInterval(timerInterval);
+    timerTotalSeconds = leerDuracionConfigurada();
+    timerRemaining = timerTotalSeconds;
+    actualizarDisplayTemporizador();
+    if(timerTotalSeconds <= 0) return;
+    timerInterval = setInterval(() => {
+      timerRemaining--;
+      actualizarDisplayTemporizador();
+      if(timerRemaining <= 0){
+        clearInterval(timerInterval);
+        timerInterval = null;
+        lanzarDestelloRojo();
+      }
+    }, 1000);
+  }
+
+  function detenerTemporizador(){
+    if(timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+    timerTotalSeconds = leerDuracionConfigurada();
+    timerRemaining = timerTotalSeconds;
+    actualizarDisplayTemporizador();
+  }
+
+  function lanzarDestelloRojo(){
+    const overlay = $('flashOverlay');
+    overlay.classList.remove('active');
+    // forzar reflow para poder relanzar la animación si ya se usó antes
+    void overlay.offsetWidth;
+    overlay.classList.add('active');
+    setTimeout(() => overlay.classList.remove('active'), 700);
+  }
+
+  $('timerBtn').addEventListener('click', () => {
+    $('timerPanel').classList.toggle('open');
+    $('themePanel').classList.remove('open');
+  });
+  document.addEventListener('click', (e) => {
+    if(!e.target.closest('.timer-widget')){
+      $('timerPanel').classList.remove('open');
+    }
+    if(!e.target.closest('.theme-widget')){
+      $('themePanel').classList.remove('open');
+    }
+  });
+
+  // ---------- Selector de temas (mismo mecanismo que en Cifras: clases body.tema-x) ----------
+  const CLASES_TEMA = ['tema-dia', 'tema-noche', 'tema-elegancia']; // "clásico" = sin clase
+  const NOMBRES_TEMA = { clasico:'Clásico', dia:'Día', noche:'Noche', elegancia:'Elegancia' };
+  const CLAVE_TEMA_COMPARTIDA = 'cifrasYLetrasTema';
+
+  function aplicarTema(nombre, guardarComoPreferencia = true){
+    document.body.classList.remove(...CLASES_TEMA);
+    if(nombre !== 'clasico') document.body.classList.add(`tema-${nombre}`);
+    $('themeLabel').textContent = NOMBRES_TEMA[nombre] || nombre;
+    document.querySelectorAll('.theme-option').forEach(b => {
+      b.classList.toggle('active', b.dataset.theme === nombre);
+    });
+    if (guardarComoPreferencia){
+      try { localStorage.setItem(CLAVE_TEMA_COMPARTIDA, nombre); } catch(e){}
+      if (window.parent && window.parent !== window){
+        window.parent.postMessage({ tipo:'cifrasYLetrasTema', tema: nombre }, '*');
+      }
+    }
+  }
+
+  $('themeBtn').addEventListener('click', () => {
+    $('themePanel').classList.toggle('open');
+    $('timerPanel').classList.remove('open');
+  });
+
+  document.querySelectorAll('.theme-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      aplicarTema(btn.dataset.theme);
+      $('themePanel').classList.remove('open');
+    });
+  });
+
+  let temaGuardado = 'clasico';
+  try { temaGuardado = localStorage.getItem(CLAVE_TEMA_COMPARTIDA) || 'clasico'; } catch(e){}
+  aplicarTema(temaGuardado, false);
+
+  // Si el tema cambia desde la sección de Cifras (misma web, otra pestaña/iframe), se refleja aquí al instante
+  window.addEventListener('storage', (e) => {
+    if (e.key === CLAVE_TEMA_COMPARTIDA && e.newValue){
+      aplicarTema(e.newValue, false);
+    }
+  });
+  // Vía de refuerzo: si index.html nos reenvía el cambio directamente
+  window.addEventListener('message', (e) => {
+    if (e.data && e.data.tipo === 'cifrasYLetrasTema' && e.data.tema){
+      aplicarTema(e.data.tema, false);
+    }
+  });
+
+  // ---------- Navegación por pestañas (igual que en Cifras) ----------
+  document.querySelectorAll('.btn-modo').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.btn-modo').forEach(b => b.classList.remove('activo'));
+      document.querySelectorAll('.panel-tab').forEach(p => p.classList.remove('activo'));
+      btn.classList.add('activo');
+      document.getElementById(`tab-${btn.dataset.tab}`).classList.add('activo');
+    });
+  });
+
+  $('timerToggle').addEventListener('change', (e) => {
+    timerEnabled = e.target.checked;
+    if(timerEnabled){
+      timerTotalSeconds = leerDuracionConfigurada();
+      timerRemaining = timerTotalSeconds;
+      actualizarDisplayTemporizador();
+    } else {
+      detenerTemporizador();
+      actualizarDisplayTemporizador();
+    }
+  });
+
+  ['timerMin','timerSec'].forEach(id => {
+    $(id).addEventListener('change', () => {
+      if(timerEnabled && !timerInterval){
+        timerTotalSeconds = leerDuracionConfigurada();
+        timerRemaining = timerTotalSeconds;
+        actualizarDisplayTemporizador();
+      }
+    });
+  });
+
+  actualizarDisplayTemporizador();
+
+})();
+</script>
+</body>
+</html>

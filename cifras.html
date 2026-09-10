@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Cifra Exacta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* --- núcleo cromático (tema clásico, por defecto) --- */
+    --azul-noche:#040814;
+    --azul-panel:#0A1B3D;
+    --azul-panel-alt:#0F2A57;
+    --azul-borde:#1E4B8F;
+    --azul-neon:#2E9BFF;
+    --azul-neon-claro:#7FC4FF;
+    --rojo-vivo:#FF3B3B;
+    --rojo-intenso:#D6172B;
+    --blanco:#F7FAFF;
+    --blanco-tenue:#AFC2E0;
+    --verde-led:#57D68D;
+    --rojo-marcador:#FF3B3B;
+
+    /* --- tripletas rgb, para usar dentro de rgba() --- */
+    --azul-neon-rgb:46,155,255;
+    --rojo-vivo-rgb:255,59,59;
+    --rojo-marcador-rgb:255,59,59;
+    --blanco-rgb:247,250,255;
+    --negro-rgb:0,0,0;
+    --verde-rgb:87,214,141;
+
+    /* --- texto de contraste sobre botones rellenos --- */
+    --texto-sobre-rojo:#F7FAFF;
+    --texto-sobre-azul:#04101F;
+    --exito-texto:#CFF5DF;
+    --alerta-texto:#FBD8D0;
+
+    /* --- superficies y degradados específicos --- */
+    --fondo-fin:#02040a;
+    --ficha-grad-1:#163864;
+    --superficie-1:#0C1F3C;
+    --led-bg:#04101F;
+    --nav-grad-1:#081733;
+    --nav-grad-2:#05102A;
+    --drawer-grad-1:#0D2242;
+    --drawer-grad-2:#081326;
+    --calc-tecla-bg:#122A50;
+    --linea-tenue:#3A6FB0;
+    --scanline:rgba(255,255,255,0.015);
+
+    --sombra-tablero:0 20px 45px rgba(0,0,0,0.55);
+    --radio:14px;
+  }
+
+  /* ---------- TEMA DÍA: colores claros, alto contraste diurno ---------- */
+  body.tema-dia{
+    --azul-noche:#F4F8FF;
+    --azul-panel:#FFFFFF;
+    --azul-panel-alt:#F0F5FF;
+    --azul-borde:#C7D9F2;
+    --azul-neon:#1C6FE0;
+    --azul-neon-claro:#4C93F2;
+    --rojo-vivo:#E63946;
+    --rojo-intenso:#C81E2E;
+    --blanco:#12233F;
+    --blanco-tenue:#4C6079;
+    --verde-led:#1C9A55;
+    --rojo-marcador:#E63946;
+    --azul-neon-rgb:28,111,224;
+    --rojo-vivo-rgb:230,57,70;
+    --rojo-marcador-rgb:230,57,70;
+    --blanco-rgb:18,35,63;
+    --negro-rgb:0,0,0;
+    --verde-rgb:28,154,85;
+    --texto-sobre-rojo:#FFFFFF;
+    --texto-sobre-azul:#FFFFFF;
+    --exito-texto:#0F5C33;
+    --alerta-texto:#7A1620;
+    --fondo-fin:#DCE8FB;
+    --ficha-grad-1:#FFFFFF;
+    --superficie-1:#EAF1FC;
+    --led-bg:#0B1B33;
+    --nav-grad-1:#F5F9FF;
+    --nav-grad-2:#E4EDFB;
+    --drawer-grad-1:#FFFFFF;
+    --drawer-grad-2:#F0F5FF;
+    --calc-tecla-bg:#EAF1FC;
+    --linea-tenue:#9FB8DC;
+    --scanline:rgba(18,35,63,0.02);
+    --sombra-tablero:0 14px 34px rgba(28,60,110,0.16);
+  }
+
+  /* ---------- TEMA NOCHE: colores apagados para jugar de noche ---------- */
+  body.tema-noche{
+    --azul-noche:#02040a;
+    --azul-panel:#060C1C;
+    --azul-panel-alt:#0A1226;
+    --azul-borde:#152238;
+    --azul-neon:#1C4E82;
+    --azul-neon-claro:#3A6FA6;
+    --rojo-vivo:#A32A2A;
+    --rojo-intenso:#7A1E1E;
+    --blanco:#C9D2E0;
+    --blanco-tenue:#66748C;
+    --verde-led:#2E8F5C;
+    --rojo-marcador:#A32A2A;
+    --azul-neon-rgb:28,78,130;
+    --rojo-vivo-rgb:163,42,42;
+    --rojo-marcador-rgb:163,42,42;
+    --blanco-rgb:201,210,224;
+    --negro-rgb:0,0,0;
+    --verde-rgb:46,143,92;
+    --texto-sobre-rojo:#F2F5FA;
+    --texto-sobre-azul:#EAF2FB;
+    --exito-texto:#9FCBB0;
+    --alerta-texto:#D2A8A2;
+    --fondo-fin:#000000;
+    --ficha-grad-1:#0D1B33;
+    --superficie-1:#070E1E;
+    --led-bg:#010609;
+    --nav-grad-1:#050B18;
+    --nav-grad-2:#03060E;
+    --drawer-grad-1:#070E22;
+    --drawer-grad-2:#04070F;
+    --calc-tecla-bg:#0A1428;
+    --linea-tenue:#1F3252;
+    --scanline:rgba(255,255,255,0.008);
+    --sombra-tablero:0 20px 45px rgba(0,0,0,0.7);
+  }
+
+  /* ---------- TEMA ELEGANCIA: azul marino y dorado (diseño original) ---------- */
+  body.tema-elegancia{
+    --azul-noche:#081326;
+    --azul-panel:#0F2648;
+    --azul-panel-alt:#142F58;
+    --azul-borde:#1C3A66;
+    --azul-neon:#D9A441;
+    --azul-neon-claro:#F4CB74;
+    --rojo-vivo:#D9A441;
+    --rojo-intenso:#B9862F;
+    --blanco:#F1E9D8;
+    --blanco-tenue:#B9C3D6;
+    --verde-led:#57D68D;
+    --rojo-marcador:#E0654F;
+    --azul-neon-rgb:217,164,65;
+    --rojo-vivo-rgb:217,164,65;
+    --rojo-marcador-rgb:224,101,79;
+    --blanco-rgb:241,233,216;
+    --negro-rgb:0,0,0;
+    --verde-rgb:87,214,141;
+    --texto-sobre-rojo:#231402;
+    --texto-sobre-azul:#231402;
+    --exito-texto:#CFF5DF;
+    --alerta-texto:#FBD8D0;
+    --fondo-fin:#050c18;
+    --ficha-grad-1:#163864;
+    --superficie-1:#0C1F3C;
+    --led-bg:#04101F;
+    --nav-grad-1:#0D2242;
+    --nav-grad-2:#081326;
+    --drawer-grad-1:#0D2242;
+    --drawer-grad-2:#081326;
+    --calc-tecla-bg:#122A50;
+    --linea-tenue:#3A6FB0;
+    --scanline:rgba(217,164,65,0.02);
+    --sombra-tablero:0 20px 45px rgba(0,0,0,0.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 1000px 520px at 50% -8%, rgba(var(--azul-neon-rgb),0.22), transparent 62%),
+      radial-gradient(ellipse 620px 420px at 100% 6%, rgba(var(--rojo-vivo-rgb),0.14), transparent 58%),
+      radial-gradient(ellipse 620px 420px at 0% 96%, rgba(var(--azul-neon-rgb),0.12), transparent 58%),
+      linear-gradient(180deg, var(--azul-noche), var(--fondo-fin) 70%);
+    color:var(--blanco);
+    font-family:'Work Sans', sans-serif;
+    padding: 0 0 80px;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:repeating-linear-gradient(180deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .envoltorio{
+    max-width:960px;
+    margin:0 auto;
+    padding:0 24px;
+    position:relative;
+    z-index:1;
+  }
+
+  /* ---------- CABECERA ---------- */
+  header.cabecera{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    padding:56px 24px 18px;
+    text-align:center;
+    flex-direction:column;
+  }
+
+  .logo-marca{
+    display:flex;
+    gap:6px;
+  }
+  .logo-marca .ficha-logo{
+    width:44px; height:54px;
+    border-radius:6px;
+    background:linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
+    border:2px solid var(--azul-neon);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Share Tech Mono', monospace;
+    font-size:1.4rem;
+    color:var(--blanco);
+    box-shadow: inset 0 2px 4px rgba(var(--blanco-rgb),0.08), 0 6px 14px rgba(var(--negro-rgb),0.4);
+    transform:rotate(var(--r,0deg));
+  }
+  .logo-marca .ficha-logo:nth-child(1){--r:-6deg;}
+  .logo-marca .ficha-logo:nth-child(2){--r:6deg; margin-top:8px;}
+
+  h1.titulo{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:clamp(2.6rem, 7vw, 4.4rem);
+    letter-spacing:0.06em;
+    margin:6px 0 0;
+    color:var(--blanco);
+    text-shadow:0 0 20px rgba(var(--azul-neon-rgb),0.55), 0 0 40px rgba(var(--rojo-vivo-rgb),0.25);
+  }
+  p.tagline{
+    margin:2px 0 0;
+    color:var(--blanco-tenue);
+    font-size:1.02rem;
+    max-width:520px;
+  }
+
+  /* ---------- NAV: bandeja superior a todo lo ancho ---------- */
+  nav.panel-control{
+    position:sticky;
+    top:0;
+    z-index:15;
+    width:100%;
+    background:linear-gradient(180deg, var(--nav-grad-1), var(--nav-grad-2));
+    border-top:1px solid var(--azul-borde);
+    border-bottom:2px solid var(--azul-neon);
+    box-shadow:0 0 26px rgba(var(--azul-neon-rgb),0.3), 0 14px 30px rgba(var(--negro-rgb),0.45);
+    margin:30px 0 34px;
+  }
+  .nav-interior{
+    display:flex;
+    max-width:960px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  .btn-modo{
+    flex:1;
+    font-family:'Bebas Neue', sans-serif;
+    font-size:1.2rem;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    padding:20px 12px;
+    border-radius:0;
+    border:none;
+    border-right:1px solid rgba(var(--blanco-rgb),0.07);
+    background:transparent;
+    color:var(--blanco-tenue);
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  .btn-modo:last-child{border-right:none;}
+  .btn-modo:hover{background:rgba(var(--azul-neon-rgb),0.12); color:var(--blanco);}
+  .btn-modo.activo{
+    background:linear-gradient(160deg, var(--rojo-vivo), var(--rojo-intenso));
+    color:var(--texto-sobre-rojo);
+    box-shadow:inset 0 -5px 0 rgba(var(--blanco-rgb),0.18), 0 0 20px rgba(var(--rojo-vivo-rgb),0.4);
+  }
+  @media (max-width:560px){
+    .btn-modo{font-size:1rem; padding:16px 8px;}
+  }
+
+  /* ---------- PANELES ---------- */
+  .panel-tab{display:none; animation:aparecer .4s ease;}
+  .panel-tab.activo{display:block;}
+  @keyframes aparecer{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .tablero{
+    background:linear-gradient(165deg, var(--azul-panel-alt), var(--azul-panel));
+    border:1px solid var(--azul-borde);
+    border-radius:var(--radio);
+    padding:30px;
+    box-shadow:var(--sombra-tablero);
+    margin-bottom:22px;
+  }
+
+  .btn-primario{
+    font-family:'Work Sans', sans-serif;
+    font-weight:700;
+    font-size:1rem;
+    padding:14px 26px;
+    border-radius:10px;
+    border:none;
+    background:linear-gradient(160deg, var(--rojo-vivo), var(--rojo-intenso));
+    color:var(--texto-sobre-rojo);
+    cursor:pointer;
+    box-shadow:0 10px 26px rgba(var(--rojo-vivo-rgb),0.35);
+    transition:transform .18s ease, box-shadow .18s ease;
+    width:100%;
+  }
+  .btn-primario:hover{transform:translateY(-2px); box-shadow:0 14px 32px rgba(var(--rojo-vivo-rgb),0.5);}
+  .btn-primario:active{transform:translateY(0);}
+  .btn-primario.btn-plus{
+    background:linear-gradient(160deg, var(--azul-neon-claro), var(--azul-neon));
+    color:var(--texto-sobre-azul);
+    box-shadow:0 10px 26px rgba(var(--azul-neon-rgb),0.35);
+  }
+  .btn-primario.btn-plus:hover{box-shadow:0 14px 32px rgba(var(--azul-neon-rgb),0.5);}
+
+  .btn-secundario{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
+    padding:12px 18px;
+    border-radius:10px;
+    border:1.5px solid var(--azul-borde);
+    background:rgba(var(--blanco-rgb),0.02);
+    color:var(--blanco);
+    cursor:pointer;
+    transition:all .2s ease;
+    width:100%;
+  }
+  .btn-secundario:hover{border-color:var(--azul-neon); background:rgba(var(--azul-neon-rgb),0.1);}
+
+  .fila-botones{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px;}
+  @media (max-width:560px){.fila-botones{grid-template-columns:1fr;}}
+
+  .vacio{
+    text-align:center;
+    color:var(--blanco-tenue);
+    padding:30px 10px;
+    font-size:0.98rem;
+  }
+
+  /* ---------- FICHAS ---------- */
+  .zona-numeros{display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;}
+  .grupo-fichas{display:flex; gap:10px; flex-wrap:wrap;}
+  .ficha{
+    width:58px; height:70px;
+    border-radius:8px;
+    background:linear-gradient(160deg, var(--ficha-grad-1), var(--superficie-1));
+    border:2px solid var(--azul-neon);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Share Tech Mono', monospace;
+    font-size:1.5rem;
+    color:var(--blanco);
+    box-shadow:inset 0 2px 3px rgba(var(--blanco-rgb),0.12), 0 0 18px rgba(var(--azul-neon-rgb),0.35), 0 8px 16px rgba(var(--negro-rgb),0.35);
+    opacity:0;
+    animation:girarFicha .5s ease forwards;
+  }
+  @keyframes girarFicha{
+    from{opacity:0; transform:rotateY(90deg) translateY(6px);}
+    to{opacity:1; transform:rotateY(0) translateY(0);}
+  }
+
+  .marcador-objetivo{
+    text-align:center;
+    min-width:150px;
+  }
+
+  /* ---------- CONSTRUCTOR DE SOLUCIÓN (clics del jugador) ---------- */
+  .divisor-seccion{
+    border-top:1px solid var(--azul-borde);
+    margin:28px 0 24px;
+    padding-top:24px;
+  }
+  .titulo-seccion{
+    font-family:'Bebas Neue', sans-serif;
+    letter-spacing:0.05em;
+    font-size:1.4rem;
+    color:var(--blanco);
+    margin:0 0 4px;
+  }
+  .ficha.clicable{
+    cursor:pointer;
+    animation:none;
+    opacity:1;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .ficha.clicable:hover{transform:translateY(-3px);}
+  .ficha.clicable.seleccionada{
+    border-color:var(--rojo-vivo);
+    box-shadow:0 0 18px rgba(var(--rojo-vivo-rgb),0.6);
+    transform:translateY(-5px);
+  }
+  .fila-operadores{
+    display:none;
+    gap:12px;
+    margin:18px 0;
+  }
+  .fila-operadores button{
+    width:52px; height:52px;
+    border-radius:50%;
+    border:2px solid var(--azul-neon);
+    background:var(--azul-panel);
+    color:var(--blanco);
+    font-size:1.3rem;
+    cursor:pointer;
+    transition:all .18s ease;
+  }
+  .fila-operadores button:hover{
+    background:var(--azul-neon);
+    color:var(--texto-sobre-azul);
+    transform:translateY(-2px);
+  }
+  .marcador-objetivo .etiqueta{
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-size:0.72rem;
+    color:var(--blanco-tenue);
+    margin-bottom:6px;
+  }
+  .marcador-objetivo .display-led{
+    font-family:'Share Tech Mono', monospace;
+    font-size:2.6rem;
+    color:var(--blanco);
+    background:var(--led-bg);
+    border:1px solid var(--azul-neon);
+    border-radius:8px;
+    padding:6px 18px;
+    text-shadow:0 0 16px rgba(var(--azul-neon-rgb),0.7);
+  }
+
+  /* ---------- FORM RESOLUTOR MANUAL ---------- */
+  .rejilla-inputs{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:12px;
+    margin:16px 0 22px;
+  }
+  @media (max-width:640px){.rejilla-inputs{grid-template-columns:repeat(3, 1fr);}}
+
+  .campo-numero label{
+    display:block;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--blanco-tenue);
+    margin-bottom:6px;
+    text-align:center;
+  }
+  .campo-numero input{
+    width:100%;
+    text-align:center;
+    font-family:'Share Tech Mono', monospace;
+    font-size:1.25rem;
+    padding:10px 4px;
+    border-radius:8px;
+    border:2px solid var(--azul-borde);
+    background:var(--superficie-1);
+    color:var(--blanco);
+  }
+  .campo-numero input:focus, input:focus-visible, button:focus-visible{
+    outline:2px solid var(--azul-neon-claro);
+    outline-offset:2px;
+    border-color:var(--azul-neon-claro);
+  }
+
+  .campo-objetivo{margin-bottom:20px;}
+  .campo-objetivo label{
+    font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--blanco-tenue); display:block; margin-bottom:8px;
+  }
+  .campo-objetivo input{
+    font-family:'Share Tech Mono', monospace;
+    font-size:1.6rem;
+    padding:10px 16px;
+    width:180px;
+    border-radius:8px;
+    border:2px solid rgba(87,214,141,0.4);
+    background:#04140C;
+    color:var(--verde-led);
+  }
+
+  .mensaje-error{
+    background:rgba(var(--rojo-marcador-rgb),0.12);
+    border:1px solid var(--rojo-marcador);
+    color:var(--alerta-texto);
+    padding:12px 16px;
+    border-radius:8px;
+    margin-top:14px;
+    font-size:0.92rem;
+  }
+
+  /* ---------- RELOJ (elemento de firma) ---------- */
+  .reloj-caja{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    padding:26px 10px 8px;
+  }
+  .reloj-caja.activo{display:flex;}
+  .reloj-svg circle.esfera{fill:var(--led-bg); stroke:var(--azul-neon); stroke-width:3;}
+  .reloj-svg .marcas{stroke:var(--linea-tenue);}
+  .reloj-svg line.aguja{stroke:var(--rojo-vivo); stroke-width:3; stroke-linecap:round; transform-origin:60px 60px; animation:girar 1.1s linear infinite;}
+  @keyframes girar{to{transform:rotate(360deg);}}
+  .texto-reloj{
+    font-family:'Share Tech Mono', monospace;
+    color:var(--azul-neon-claro);
+    font-size:0.9rem;
+    letter-spacing:0.04em;
+    animation:parpadeo 1.4s ease-in-out infinite;
+  }
+  @keyframes parpadeo{0%,100%{opacity:0.55;} 50%{opacity:1;}}
+
+  /* ---------- RESULTADOS ---------- */
+  .bloque-resultado{margin-top:22px;}
+  .aviso{
+    padding:14px 18px;
+    border-radius:8px;
+    font-size:0.95rem;
+    margin-bottom:16px;
+    border:1px solid;
+  }
+  .aviso.exito{background:rgba(var(--verde-rgb),0.1); border-color:var(--verde-led); color:var(--exito-texto);}
+  .aviso.alerta{background:rgba(var(--rojo-marcador-rgb),0.1); border-color:var(--rojo-marcador); color:var(--alerta-texto);}
+  .aviso small{display:block; margin-top:4px; opacity:0.85;}
+
+  ol.lista-pasos{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  ol.lista-pasos li{
+    font-family:'Share Tech Mono', monospace;
+    background:var(--superficie-1);
+    border-left:3px solid var(--azul-neon);
+    padding:10px 14px;
+    border-radius:0 6px 6px 0;
+    font-size:0.95rem;
+    opacity:0;
+    animation:entrarPaso .4s ease forwards;
+  }
+  @keyframes entrarPaso{from{opacity:0; transform:translateX(-8px);} to{opacity:1; transform:translateX(0);}}
+
+  details.opcion{
+    background:var(--azul-panel);
+    border:1px solid var(--azul-borde);
+    border-radius:8px;
+    margin-bottom:8px;
+    overflow:hidden;
+  }
+  details.opcion summary{
+    cursor:pointer;
+    padding:12px 16px;
+    font-weight:600;
+    font-size:0.92rem;
+    color:var(--azul-neon-claro);
+    list-style:none;
+  }
+  details.opcion summary::-webkit-details-marker{display:none;}
+  details.opcion summary::before{content:"▸ "; }
+  details.opcion[open] summary::before{content:"▾ "; }
+  details.opcion .lista-pasos{padding:0 16px 14px;}
+
+  .nota-oculta{color:var(--blanco-tenue); font-size:0.85rem; margin-top:6px;}
+
+  /* ---------- CALCULADORA ---------- */
+  .calc-fab{
+    position:fixed;
+    top:20px; left:20px;
+    width:56px;height:56px;
+    border-radius:50%;
+    border:2px solid var(--azul-neon);
+    background:linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
+    color:var(--azul-neon-claro);
+    font-size:1.4rem;
+    cursor:pointer;
+    box-shadow:0 0 18px rgba(var(--azul-neon-rgb),0.4), 0 10px 24px rgba(var(--negro-rgb),0.5);
+    z-index:40;
+    transition:transform .2s ease, opacity .2s ease;
+  }
+  .calc-fab:hover{transform:scale(1.06);}
+  .calc-fab.oculto{opacity:0; pointer-events:none; transform:scale(0.8);}
+
+  .calc-drawer{
+    position:fixed;
+    top:0; left:0; height:100vh;
+    width:300px;
+    background:linear-gradient(175deg, var(--drawer-grad-1), var(--drawer-grad-2));
+    border-right:1px solid var(--azul-borde);
+    box-shadow:16px 0 40px rgba(var(--negro-rgb),0.5);
+    transform:translateX(-100%);
+    transition:transform .3s ease;
+    z-index:35;
+    padding:24px 20px;
+    overflow-y:auto;
+  }
+  .calc-drawer.abierta{transform:translateX(0);}
+
+  .calc-drawer h2{
+    font-family:'Bebas Neue', sans-serif;
+    letter-spacing:0.05em;
+    font-size:1.5rem;
+    color:var(--azul-neon-claro);
+    margin:0 0 14px;
+  }
+  .calc-cerrar{
+    position:absolute; top:20px; right:16px;
+    background:none; border:none; color:var(--blanco-tenue);
+    font-size:1.3rem; cursor:pointer;
+  }
+  .calc-pantalla{
+    width:100%;
+    font-family:'Share Tech Mono', monospace;
+    font-size:1.4rem;
+    background:#04140C;
+    color:var(--verde-led);
+    border:1px solid rgba(87,214,141,0.4);
+    border-radius:8px;
+    padding:12px;
+    text-align:right;
+    margin-bottom:10px;
+    min-height:26px;
+    word-break:break-all;
+  }
+  .calc-ans{font-size:0.78rem; color:var(--blanco-tenue); margin-bottom:14px;}
+  .calc-teclado{display:grid; grid-template-columns:repeat(5, 1fr); gap:8px;}
+  .calc-teclado button{
+    font-family:'Share Tech Mono', monospace;
+    font-size:1rem;
+    padding:12px 0;
+    border-radius:6px;
+    border:1px solid var(--azul-borde);
+    background:var(--calc-tecla-bg);
+    color:var(--blanco);
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .calc-teclado button:hover{border-color:var(--azul-neon); color:var(--azul-neon-claro);}
+  .calc-teclado button.op{color:var(--rojo-vivo);}
+  .calc-teclado button.igual{background:linear-gradient(160deg, var(--rojo-vivo), var(--rojo-intenso)); color:var(--texto-sobre-rojo); font-weight:700; border:none;}
+  .calc-historial{margin-top:18px; font-size:0.82rem; color:var(--blanco-tenue);}
+  .calc-historial h3{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--blanco-tenue); margin:0 0 8px;}
+  .calc-historial div{font-family:'Share Tech Mono', monospace; padding:2px 0; border-bottom:1px dashed rgba(var(--blanco-rgb),0.08);}
+
+  @media (max-width:420px){
+    .calc-drawer{
+      top:auto; bottom:0; left:0; right:0;
+      width:100%;
+      height:auto;
+      max-height:78vh;
+      border-radius:18px 18px 0 0;
+      border-right:none;
+      border-top:1px solid var(--azul-borde);
+      box-shadow:0 -16px 40px rgba(var(--negro-rgb),0.5);
+      transform:translateY(100%);
+      padding-bottom:32px;
+    }
+    .calc-drawer.abierta{transform:translateY(0);}
+  }
+
+  footer{
+    text-align:center;
+    color:var(--blanco-tenue);
+    font-size:0.8rem;
+    margin-top:50px;
+    opacity:0.6;
+  }
+
+  /* ---------- BARRA DE ICONOS SUPERIOR-DERECHA (tema + temporizador) ---------- */
+  .barra-iconos-derecha{
+    position:fixed;
+    top:20px; right:20px;
+    z-index:40;
+    display:flex;
+    flex-direction:row-reverse;
+    align-items:flex-start;
+    gap:10px;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .barra-iconos-derecha.oculto{opacity:0; pointer-events:none; transform:scale(0.85);}
+  .grupo-boton{position:relative;}
+
+  .btn-icono-redondo{
+    width:56px; height:56px;
+    border-radius:50%;
+    border:2px solid var(--azul-neon);
+    background:linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
+    color:var(--azul-neon-claro);
+    font-size:1.3rem;
+    cursor:pointer;
+    box-shadow:0 0 18px rgba(var(--azul-neon-rgb),0.4), 0 10px 24px rgba(var(--negro-rgb),0.5);
+    transition:transform .2s ease;
+  }
+  .btn-icono-redondo:hover{transform:scale(1.06);}
+
+  .menu-tema{
+    display:none;
+    position:absolute;
+    top:66px; right:0;
+    width:max(190px, 0px);
+    max-width:calc(100vw - 40px);
+    background:linear-gradient(175deg, var(--drawer-grad-1), var(--drawer-grad-2));
+    border:1px solid var(--azul-borde);
+    border-radius:10px;
+    box-shadow:0 16px 34px rgba(var(--negro-rgb),0.5);
+    overflow:hidden;
+    padding:6px;
+  }
+  .menu-tema.abierto{display:block;}
+  .menu-tema button{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    text-align:left;
+    padding:10px 12px;
+    border:none;
+    border-radius:6px;
+    background:transparent;
+    color:var(--blanco);
+    font-family:'Work Sans', sans-serif;
+    font-size:0.9rem;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .menu-tema button:hover{background:rgba(var(--azul-neon-rgb),0.12);}
+  .menu-tema button.activo{color:var(--azul-neon-claro); font-weight:600;}
+  .menu-tema .muestra{
+    width:16px; height:16px;
+    border-radius:50%;
+    border:1px solid rgba(var(--blanco-rgb),0.3);
+    flex-shrink:0;
+  }
+
+  /* ---------- TEMPORIZADOR ---------- */
+  .btn-temporizador{
+    min-width:64px;
+    height:56px;
+    padding:0 16px;
+    border-radius:28px;
+    border:2px solid var(--azul-neon);
+    background:linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
+    color:var(--azul-neon-claro);
+    font-family:'Share Tech Mono', monospace;
+    font-size:1.05rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    white-space:nowrap;
+    box-shadow:0 0 18px rgba(var(--azul-neon-rgb),0.4), 0 10px 24px rgba(var(--negro-rgb),0.5);
+    transition:transform .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn-temporizador:hover{transform:scale(1.04);}
+  @keyframes pulsoTemporizador{0%,100%{opacity:1;} 50%{opacity:0.72;}}
+
+  .panel-temporizador{
+    display:none;
+    position:absolute;
+    top:66px; right:0;
+    width:230px;
+    max-width:calc(100vw - 40px);
+    background:linear-gradient(175deg, var(--drawer-grad-1), var(--drawer-grad-2));
+    border:1px solid var(--azul-borde);
+    border-radius:12px;
+    box-shadow:0 16px 34px rgba(var(--negro-rgb),0.5);
+    padding:18px;
+  }
+  .panel-temporizador.abierto{display:block;}
+  .panel-temporizador h3{
+    font-family:'Bebas Neue', sans-serif;
+    letter-spacing:0.05em;
+    font-size:1.2rem;
+    color:var(--blanco);
+    margin:0 0 14px;
+    text-align:center;
+  }
+  .display-temporizador{
+    font-family:'Share Tech Mono', monospace;
+    font-size:2.1rem;
+    text-align:center;
+    color:var(--azul-neon-claro);
+    background:var(--led-bg);
+    border:1px solid var(--azul-neon);
+    border-radius:8px;
+    padding:8px;
+    margin-bottom:14px;
+    text-shadow:0 0 14px rgba(var(--azul-neon-rgb),0.6);
+  }
+  .campos-tiempo{
+    display:flex;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .campo-tiempo{flex:1; text-align:center;}
+  .campo-tiempo label{
+    display:block;
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--blanco-tenue);
+    margin-bottom:4px;
+  }
+  .campo-tiempo input{
+    width:100%;
+    text-align:center;
+    font-family:'Share Tech Mono', monospace;
+    font-size:1.1rem;
+    padding:8px 4px;
+    border-radius:6px;
+    border:2px solid var(--azul-borde);
+    background:var(--superficie-1);
+    color:var(--blanco);
+  }
+  .fila-switch-temporizador{display:flex; align-items:center; gap:12px;}
+  .switch-temporizador{position:relative; display:inline-block; width:46px; height:26px; flex-shrink:0;}
+  .switch-temporizador input{opacity:0; width:0; height:0; position:absolute;}
+  .switch-slider{
+    position:absolute; inset:0; cursor:pointer;
+    background:var(--superficie-1);
+    border:1px solid var(--azul-borde);
+    border-radius:999px;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .switch-slider::before{
+    content:"";
+    position:absolute;
+    height:18px; width:18px;
+    left:3px; top:2px;
+    background:var(--blanco-tenue);
+    border-radius:50%;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .switch-temporizador input:checked + .switch-slider{background:rgba(var(--verde-rgb),0.35); border-color:var(--verde-led);}
+  .switch-temporizador input:checked + .switch-slider::before{transform:translateX(20px); background:var(--verde-led);}
+  .switch-texto{display:flex; flex-direction:column; font-size:0.78rem; color:var(--blanco-tenue); line-height:1.3;}
+  .switch-texto strong{color:var(--blanco); font-size:0.9rem;}
+
+  .btn-temporizador.apagado{
+    opacity:0.6;
+    border-color:var(--azul-borde);
+    color:var(--blanco-tenue);
+    box-shadow:none;
+  }
+  .btn-temporizador.pulso-fin{
+    animation:pulsoTemporizador 0.3s ease-in-out 2;
+    border-color:var(--rojo-marcador);
+  }
+
+  /* ---------- DESTELLO DE FIN DE TIEMPO (a toda pantalla) ---------- */
+  .flash-alerta{
+    position:fixed;
+    inset:0;
+    background:rgba(var(--rojo-marcador-rgb), 0.6);
+    opacity:0;
+    pointer-events:none;
+    z-index:200;
+  }
+  .flash-alerta.activo{
+    animation:parpadeoFinTiempo 0.9s ease-out;
+  }
+  @keyframes parpadeoFinTiempo{
+    0%{opacity:0;}
+    12%{opacity:1;}
+    100%{opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flash-alerta.activo{animation-duration:0.001ms;}
+  }
+
+  @media (max-width:480px){
+    .barra-iconos-derecha{top:16px; right:16px; gap:8px;}
+    .btn-icono-redondo{width:50px; height:50px; font-size:1.15rem;}
+    .btn-temporizador{height:50px; font-size:0.92rem; padding:0 12px; min-width:56px;}
+    .switch-texto{font-size:0.72rem;}
+    .calc-fab{width:50px; height:50px; top:16px; left:16px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="envoltorio">
+
+  <header class="cabecera">
+    <div class="logo-marca">
+      <div class="ficha-logo">7</div>
+      <div class="ficha-logo">5</div>
+    </div>
+    <h1 class="titulo">La Cifra Exacta</h1>
+    <p class="tagline">Combina seis números con las cuatro operaciones básicas para alcanzar el objetivo. Genera partidas o resuelve las tuyas propias.</p>
+  </header>
+</div>
+
+<nav class="panel-control">
+  <div class="nav-interior">
+    <button class="btn-modo activo" data-tab="juego">Modo juego</button>
+    <button class="btn-modo" data-tab="resolutor">Resolutor manual</button>
+  </div>
+</nav>
+
+<div class="envoltorio">
+  <main>
+    <!-- ================= MODO JUEGO ================= -->
+    <section id="tab-juego" class="panel-tab activo">
+      <div class="tablero">
+        <div class="fila-botones" style="margin-top:0;">
+          <button id="btn-generar" class="btn-primario">Generar partida</button>
+          <button id="btn-generar-plus" class="btn-primario btn-plus">Generar partida +</button>
+        </div>
+        <p class="nota-oculta" style="margin-top:10px;">El modo <strong>+</strong> usa números del 1 al 100 y un objetivo de entre 201 y 2500.</p>
+
+        <div id="contenido-juego" style="margin-top:24px; display:none;">
+          <div class="zona-numeros">
+            <div>
+              <div class="marcador-objetivo etiqueta" style="text-align:left; margin-bottom:8px;">Tus números</div>
+              <div class="grupo-fichas" id="grupo-fichas"></div>
+            </div>
+            <div class="marcador-objetivo">
+              <div class="etiqueta">Objetivo</div>
+              <div class="display-led" id="display-objetivo">—</div>
+            </div>
+          </div>
+
+          <div class="divisor-seccion">
+            <h3 class="titulo-seccion">Comprueba tu solución</h3>
+            <p class="nota-oculta">Haz clic en dos fichas, elige la operación y comprueba si llegas al objetivo.</p>
+
+            <div class="grupo-fichas" id="fichas-jugador"></div>
+
+            <div class="fila-operadores" id="operadores-jugador">
+              <button type="button" data-op="+" aria-label="Sumar">+</button>
+              <button type="button" data-op="-" aria-label="Restar">−</button>
+              <button type="button" data-op="*" aria-label="Multiplicar">×</button>
+              <button type="button" data-op="/" aria-label="Dividir">÷</button>
+            </div>
+
+            <div id="error-constructor"></div>
+
+            <div class="fila-botones">
+              <button id="btn-reiniciar-constructor" class="btn-secundario">↺ Reiniciar fichas</button>
+              <button id="btn-comprobar-objetivo" class="btn-secundario">Comprobar objetivo</button>
+            </div>
+
+            <div id="pasos-jugador"></div>
+            <div id="veredicto-jugador"></div>
+          </div>
+
+          <div class="fila-botones">
+            <button id="btn-ver-original" class="btn-secundario">Ver la solución generada</button>
+            <button id="btn-motor-juego" class="btn-secundario">Buscar todas las soluciones</button>
+          </div>
+
+          <div class="reloj-caja" id="reloj-juego">
+            <svg class="reloj-svg" viewBox="0 0 120 120" width="76" height="76" aria-hidden="true">
+              <circle class="esfera" cx="60" cy="60" r="52"></circle>
+              <g class="marcas" stroke-width="2">
+                <line x1="60" y1="12" x2="60" y2="20"></line>
+                <line x1="60" y1="100" x2="60" y2="108"></line>
+                <line x1="12" y1="60" x2="20" y2="60"></line>
+                <line x1="100" y1="60" x2="108" y2="60"></line>
+              </g>
+              <line class="aguja" x1="60" y1="60" x2="60" y2="26"></line>
+            </svg>
+            <div class="texto-reloj">Explorando combinatoria…</div>
+          </div>
+
+          <div class="bloque-resultado" id="resultado-juego"></div>
+        </div>
+
+        <p class="vacio" id="vacio-juego">Pulsa «Generar partida» para recibir tus seis números y el objetivo a alcanzar.</p>
+      </div>
+    </section>
+
+    <!-- ================= RESOLUTOR MANUAL ================= -->
+    <section id="tab-resolutor" class="panel-tab">
+      <div class="tablero">
+        <p style="margin-top:0; color:var(--blanco-tenue);">Introduce seis números naturales y el objetivo que quieres alcanzar.</p>
+
+        <div class="rejilla-inputs" id="rejilla-inputs"></div>
+
+        <div class="campo-objetivo">
+          <label for="input-objetivo">Objetivo</label>
+          <input type="number" id="input-objetivo" min="1" step="1" value="100">
+        </div>
+
+        <button id="btn-resolver-manual" class="btn-primario">Resolver</button>
+
+        <div class="reloj-caja" id="reloj-manual">
+          <svg class="reloj-svg" viewBox="0 0 120 120" width="76" height="76" aria-hidden="true">
+            <circle class="esfera" cx="60" cy="60" r="52"></circle>
+            <g class="marcas" stroke-width="2">
+              <line x1="60" y1="12" x2="60" y2="20"></line>
+              <line x1="60" y1="100" x2="60" y2="108"></line>
+              <line x1="12" y1="60" x2="20" y2="60"></line>
+              <line x1="100" y1="60" x2="108" y2="60"></line>
+            </g>
+            <line class="aguja" x1="60" y1="60" x2="60" y2="26"></line>
+          </svg>
+          <div class="texto-reloj">Calculando todas las combinaciones…</div>
+        </div>
+
+        <div id="error-manual"></div>
+        <div class="bloque-resultado" id="resultado-manual"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>La Cifra Exacta — inspirado en el clásico juego de números de Cifras y Letras.</footer>
+</div>
+
+<button class="calc-fab" id="btn-calc-toggle" aria-label="Abrir calculadora">🧮</button>
+
+<div class="barra-iconos-derecha" id="barra-iconos-derecha">
+  <div class="grupo-boton" id="grupo-tema">
+    <button class="btn-icono-redondo" id="btn-tema-toggle" aria-label="Elegir tema" aria-haspopup="true" aria-expanded="false">🎨</button>
+    <div class="menu-tema" id="menu-tema" role="menu">
+      <button type="button" data-tema="clasico" role="menuitem">
+        <span class="muestra" style="background:linear-gradient(135deg, #2E9BFF, #FF3B3B);"></span> Clásico
+      </button>
+      <button type="button" data-tema="dia" role="menuitem">
+        <span class="muestra" style="background:linear-gradient(135deg, #FFFFFF, #4C93F2);"></span> Día
+      </button>
+      <button type="button" data-tema="noche" role="menuitem">
+        <span class="muestra" style="background:linear-gradient(135deg, #060C1C, #1C4E82);"></span> Noche
+      </button>
+      <button type="button" data-tema="elegancia" role="menuitem">
+        <span class="muestra" style="background:linear-gradient(135deg, #0F2648, #D9A441);"></span> Elegancia
+      </button>
+    </div>
+  </div>
+
+  <div class="grupo-boton" id="grupo-temporizador">
+    <button class="btn-temporizador" id="btn-temporizador-toggle" aria-label="Abrir temporizador" aria-haspopup="true" aria-expanded="false">
+      <span id="icono-temporizador-texto">⏱ 00:30</span>
+    </button>
+    <div class="panel-temporizador" id="panel-temporizador" role="menu">
+      <h3>Temporizador</h3>
+      <div class="display-temporizador" id="display-temporizador">00:30</div>
+
+      <div class="campos-tiempo">
+        <div class="campo-tiempo">
+          <label for="input-min">Min</label>
+          <input type="number" id="input-min" min="0" max="99" value="0">
+        </div>
+        <div class="campo-tiempo">
+          <label for="input-seg">Seg</label>
+          <input type="number" id="input-seg" min="0" max="59" value="30">
+        </div>
+      </div>
+
+      <div class="fila-switch-temporizador">
+        <label class="switch-temporizador">
+          <input type="checkbox" id="switch-temporizador">
+          <span class="switch-slider"></span>
+        </label>
+        <div class="switch-texto">
+          <strong id="switch-temporizador-estado">Apagado</strong>
+          <span>Se pone en marcha al generar una partida</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flash-alerta" id="flash-alerta" aria-hidden="true"></div>
+
+<aside class="calc-drawer" id="calc-drawer" aria-hidden="true">
+  <button class="calc-cerrar" id="calc-cerrar" aria-label="Cerrar calculadora">✕</button>
+  <h2>Calculadora</h2>
+  <div class="calc-pantalla" id="calc-pantalla">&nbsp;</div>
+  <div id="calc-error"></div>
+  <div class="calc-ans">Último resultado (ANS): <span id="calc-ans-valor">0</span></div>
+  <div class="calc-teclado">
+    <button data-simbolo="7">7</button>
+    <button data-simbolo="8">8</button>
+    <button data-simbolo="9">9</button>
+    <button class="op" data-simbolo="(">(</button>
+    <button class="op" data-simbolo=")">)</button>
+
+    <button data-simbolo="4">4</button>
+    <button data-simbolo="5">5</button>
+    <button data-simbolo="6">6</button>
+    <button class="op" data-simbolo="*">×</button>
+    <button class="op" data-simbolo="/">÷</button>
+
+    <button data-simbolo="1">1</button>
+    <button data-simbolo="2">2</button>
+    <button data-simbolo="3">3</button>
+    <button class="op" data-simbolo="+">+</button>
+    <button class="op" data-simbolo="-">−</button>
+
+    <button data-simbolo="0">0</button>
+    <button data-simbolo=".">.</button>
+    <button data-accion="ans">ANS</button>
+    <button data-accion="borrar-todo">C</button>
+    <button data-accion="borrar-ultimo">⌫</button>
+
+    <button data-accion="calcular" class="igual" style="grid-column:span 5;">=</button>
+  </div>
+  <div class="calc-historial">
+    <h3>Últimas 6 cuentas</h3>
+    <div id="calc-historial-lista">Aún no hay operaciones guardadas.</div>
+  </div>
+</aside>
+
+<script>
+/* =========================================================
+   1. LÓGICA MATEMÁTICA: GENERADOR (puerto fiel del original)
+   ========================================================= */
+function randInt(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+function muestraSinReemplazo(arr, n){
+  const pool = arr.slice();
+  const elegidos = [];
+  for (let k = 0; k < n; k++){
+    const idx = Math.floor(Math.random() * pool.length);
+    elegidos.push(pool[idx]);
+    pool.splice(idx, 1);
+  }
+  return elegidos;
+}
+
+function elegirDosIndices(longitud){
+  let i = Math.floor(Math.random() * longitud);
+  let j = Math.floor(Math.random() * longitud);
+  while (j === i) j = Math.floor(Math.random() * longitud);
+  return [i, j];
+}
+
+function eleccionPonderada(valores, pesos){
+  const total = pesos.reduce((a, b) => a + b, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < valores.length; i++){
+    if (r < pesos[i]) return valores[i];
+    r -= pesos[i];
+  }
+  return valores[valores.length - 1];
+}
+
+function generarPartidaCifras(){
+  const fichasDisponibles = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,25,50,75,100];
+  const TOPE_INTENTOS = 3000;
+
+  for (let intento = 0; intento < TOPE_INTENTOS; intento++){
+    const fichasIniciales = muestraSinReemplazo(fichasDisponibles, 6);
+    let fichasTrabajo = fichasIniciales.slice();
+    const maxFicha = Math.max(...fichasIniciales);
+
+    let operacionesRestantes = randInt(3, 5);
+    const historialPasos = [];
+    let resultadoExacto = 0;
+
+    while (operacionesRestantes > 0 && fichasTrabajo.length >= 2){
+      const [idx1, idx2] = elegirDosIndices(fichasTrabajo.length);
+      const n1 = fichasTrabajo[idx1], n2 = fichasTrabajo[idx2];
+      const a = randInt(1, 4);
+      let operacionValida = false;
+      let resultado, pasoStr;
+
+      if (a === 1){
+        resultado = n1 + n2; pasoStr = `${n1} + ${n2} = ${resultado}`; operacionValida = true;
+      } else if (a === 2){
+        if (n1 !== n2){
+          const mayor = Math.max(n1, n2), menor = Math.min(n1, n2);
+          resultado = mayor - menor; pasoStr = `${mayor} - ${menor} = ${resultado}`; operacionValida = true;
+        }
+      } else if (a === 3){
+        resultado = n1 * n2; pasoStr = `${n1} * ${n2} = ${resultado}`; operacionValida = true;
+      } else if (a === 4){
+        const mayor = Math.max(n1, n2), menor = Math.min(n1, n2);
+        if (menor > 1 && mayor % menor === 0){
+          resultado = Math.floor(mayor / menor); pasoStr = `${mayor} / ${menor} = ${resultado}`; operacionValida = true;
+        }
+      }
+
+      if (operacionValida){
+        [idx1, idx2].sort((a, b) => b - a).forEach(idx => fichasTrabajo.splice(idx, 1));
+        fichasTrabajo.push(resultado);
+        historialPasos.push(pasoStr);
+        operacionesRestantes--;
+        resultadoExacto = resultado;
+      }
+    }
+
+    if (historialPasos.length > 0){
+      const valoresC = [];
+      for (let v = -15; v <= 15; v++) valoresC.push(v);
+      const pesos = valoresC.map(v => v !== 0 ? 0.05/30 : 0.95);
+      const c = eleccionPonderada(valoresC, pesos);
+      const objetivoFinal = resultadoExacto + c;
+
+      if (objetivoFinal > maxFicha && objetivoFinal >= 100 && objetivoFinal <= 1500){
+        return { fichasIniciales, objetivoFinal, historialPasos, c, resultadoExacto, modo:'clasico' };
+      }
+    }
+  }
+  // Fallback extremadamente improbable
+  return { fichasIniciales:[1,2,3,4,5,6], objetivoFinal:21, historialPasos:["1 + 2 = 3"], c:0, resultadoExacto:21, modo:'clasico' };
+}
+
+// --- GENERADOR "+": números del 1 al 100 con la misma probabilidad,
+//     objetivo siempre superior a 200 para aumentar la dificultad ---
+function generarPartidaPlus(){
+  const fichasIniciales = [];
+  for (let i = 0; i < 6; i++) fichasIniciales.push(randInt(1, 100));
+  const objetivoFinal = randInt(201, 2500);
+  return { fichasIniciales, objetivoFinal, historialPasos:[], c:null, resultadoExacto:null, modo:'plus' };
+}
+
+/* =========================================================
+   2. LÓGICA MATEMÁTICA: RESOLVEDOR (puerto fiel del original)
+   ========================================================= */
+function resolverCifrasMotor(numerosIniciales, objetivo){
+  let mejorDiferencia = Infinity;
+  let mejorAproximacion = null;
+  let mejorCamino = [];
+  const solucionesMap = new Map();
+  let exitosBrutos = 0;
+
+  function dfs(numeros, caminoActual){
+    if (numeros.length <= 1) return;
+    for (let i = 0; i < numeros.length; i++){
+      for (let j = i + 1; j < numeros.length; j++){
+        const n1 = numeros[i], n2 = numeros[j];
+        const mayor = Math.max(n1, n2), menor = Math.min(n1, n2);
+        const restantes = numeros.filter((_, k) => k !== i && k !== j);
+
+        const operaciones = [];
+        operaciones.push([mayor + menor, `${mayor} + ${menor} = ${mayor + menor}`]);
+        if (mayor > menor) operaciones.push([mayor - menor, `${mayor} - ${menor} = ${mayor - menor}`]);
+        if (menor > 1) operaciones.push([mayor * menor, `${mayor} * ${menor} = ${mayor * menor}`]);
+        if (menor > 1 && mayor % menor === 0) operaciones.push([Math.floor(mayor / menor), `${mayor} / ${menor} = ${Math.floor(mayor / menor)}`]);
+
+        for (const [resultado, pasoStr] of operaciones){
+          const nuevoCamino = caminoActual.concat([pasoStr]);
+          const diferencia = Math.abs(resultado - objetivo);
+
+          if (diferencia < mejorDiferencia){
+            mejorDiferencia = diferencia;
+            mejorAproximacion = resultado;
+            mejorCamino = nuevoCamino;
+          }
+
+          if (diferencia === 0){
+            exitosBrutos++;
+            const clave = nuevoCamino.slice().sort().join('|');
+            if (!solucionesMap.has(clave)) solucionesMap.set(clave, nuevoCamino);
+          } else {
+            if (restantes.length + 1 >= 2){
+              dfs(restantes.concat([resultado]), nuevoCamino);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  for (const n of numerosIniciales){
+    const diff = Math.abs(n - objetivo);
+    if (diff < mejorDiferencia){
+      mejorDiferencia = diff;
+      mejorAproximacion = n;
+      mejorCamino = [`La ficha ${n} ya era el objetivo inicial.`];
+    }
+  }
+
+  if (mejorDiferencia !== 0){
+    dfs(numerosIniciales, []);
+  }
+
+  return {
+    soluciones: Array.from(solucionesMap.values()),
+    mejorAproximacion, mejorDiferencia, mejorCamino, exitosBrutos
+  };
+}
+
+/* =========================================================
+   3. UTILIDADES DE INTERFAZ
+   ========================================================= */
+async function conAnimacionReloj(idReloj, computeFn, minMs = 650){
+  const reloj = document.getElementById(idReloj);
+  reloj.classList.add('activo');
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const inicio = performance.now();
+  const resultado = computeFn();
+  const transcurrido = performance.now() - inicio;
+  if (transcurrido < minMs) await new Promise(r => setTimeout(r, minMs - transcurrido));
+  reloj.classList.remove('activo');
+  return resultado;
+}
+
+function crearListaPasos(pasos){
+  const ol = document.createElement('ol');
+  ol.className = 'lista-pasos';
+  pasos.forEach((paso, i) => {
+    const li = document.createElement('li');
+    li.textContent = `Paso ${i + 1}: ${paso}`;
+    li.style.animationDelay = `${i * 80}ms`;
+    ol.appendChild(li);
+  });
+  return ol;
+}
+
+function renderizarSoluciones(contenedor, soluciones, mejorAprox, mejorDiff, mejorCamino, exitos, tope){
+  contenedor.innerHTML = '';
+  if (soluciones.length === 0){
+    const aviso = document.createElement('div');
+    aviso.className = 'aviso alerta';
+    aviso.innerHTML = `No existe ninguna forma matemática de llegar al número exacto.<br><small>Mejor aproximación encontrada: ${mejorAprox} (diferencia de ${mejorDiff})</small>`;
+    contenedor.appendChild(aviso);
+    contenedor.appendChild(crearListaPasos(mejorCamino));
+    return;
+  }
+
+  const aviso = document.createElement('div');
+  aviso.className = 'aviso exito';
+  aviso.innerHTML = `Se encontraron ${soluciones.length} formas únicas de operar.<br><small>Ramas exploradas con éxito: ${exitos}</small>`;
+  contenedor.appendChild(aviso);
+
+  const max = Math.min(tope, soluciones.length);
+  for (let idx = 0; idx < max; idx++){
+    const det = document.createElement('details');
+    det.className = 'opcion';
+    const sum = document.createElement('summary');
+    sum.textContent = `Ver opción ${idx + 1}`;
+    det.appendChild(sum);
+    det.appendChild(crearListaPasos(soluciones[idx]));
+    contenedor.appendChild(det);
+  }
+  if (soluciones.length > tope){
+    const nota = document.createElement('p');
+    nota.className = 'nota-oculta';
+    nota.textContent = `… y ${soluciones.length - tope} combinaciones más ocultas.`;
+    contenedor.appendChild(nota);
+  }
+}
+
+/* =========================================================
+   4. NAVEGACIÓN ENTRE PESTAÑAS
+   ========================================================= */
+document.querySelectorAll('.btn-modo').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.btn-modo').forEach(b => b.classList.remove('activo'));
+    document.querySelectorAll('.panel-tab').forEach(p => p.classList.remove('activo'));
+    btn.classList.add('activo');
+    document.getElementById(`tab-${btn.dataset.tab}`).classList.add('activo');
+  });
+});
+
+/* =========================================================
+   5. MODO JUEGO
+   ========================================================= */
+let estadoJuego = null;
+
+function pintarPartida(nuevoEstado){
+  estadoJuego = nuevoEstado;
+  document.getElementById('vacio-juego').style.display = 'none';
+  document.getElementById('contenido-juego').style.display = 'block';
+  document.getElementById('resultado-juego').innerHTML = '';
+
+  const grupo = document.getElementById('grupo-fichas');
+  grupo.innerHTML = '';
+  estadoJuego.fichasIniciales.forEach((num, i) => {
+    const ficha = document.createElement('div');
+    ficha.className = 'ficha';
+    ficha.textContent = num;
+    ficha.style.animationDelay = `${i * 60}ms`;
+    grupo.appendChild(ficha);
+  });
+  document.getElementById('display-objetivo').textContent = estadoJuego.objetivoFinal;
+
+  // El modo "+" no tiene un camino de generador que mostrar
+  document.getElementById('btn-ver-original').style.display = estadoJuego.modo === 'plus' ? 'none' : 'block';
+
+  iniciarConstructor();
+  iniciarCuentaSiArmado();
+}
+
+document.getElementById('btn-generar').addEventListener('click', () => {
+  pintarPartida(generarPartidaCifras());
+});
+
+document.getElementById('btn-generar-plus').addEventListener('click', () => {
+  pintarPartida(generarPartidaPlus());
+});
+
+document.getElementById('btn-ver-original').addEventListener('click', () => {
+  if (!estadoJuego) return;
+  const cont = document.getElementById('resultado-juego');
+  cont.innerHTML = '';
+  const aviso = document.createElement('div');
+  if (estadoJuego.c === 0){
+    aviso.className = 'aviso exito';
+    aviso.textContent = `Existe solución exacta para llegar a ${estadoJuego.objetivoFinal}.`;
+  } else {
+    aviso.className = 'aviso alerta';
+    aviso.textContent = `Se generó partiendo del ${estadoJuego.resultadoExacto} (diferencia de ${Math.abs(estadoJuego.c)}).`;
+  }
+  cont.appendChild(aviso);
+  cont.appendChild(crearListaPasos(estadoJuego.historialPasos));
+});
+
+document.getElementById('btn-motor-juego').addEventListener('click', async () => {
+  if (!estadoJuego) return;
+  const cont = document.getElementById('resultado-juego');
+  cont.innerHTML = '';
+  const { soluciones, mejorAproximacion, mejorDiferencia, mejorCamino, exitosBrutos } =
+    await conAnimacionReloj('reloj-juego', () => resolverCifrasMotor(estadoJuego.fichasIniciales, estadoJuego.objetivoFinal));
+  renderizarSoluciones(cont, soluciones, mejorAproximacion, mejorDiferencia, mejorCamino, exitosBrutos, 10);
+});
+
+/* =========================================================
+   5b. CONSTRUCTOR INTERACTIVO DE SOLUCIÓN (clics del jugador)
+   ========================================================= */
+let jugadorPool = [];
+let jugadorSeleccion = [];
+let jugadorPasos = [];
+let jugadorTerminado = false;
+
+function iniciarConstructor(){
+  if (!estadoJuego) return;
+  jugadorPool = estadoJuego.fichasIniciales.slice();
+  jugadorSeleccion = [];
+  jugadorPasos = [];
+  jugadorTerminado = false;
+  document.getElementById('error-constructor').innerHTML = '';
+  document.getElementById('veredicto-jugador').innerHTML = '';
+  document.getElementById('operadores-jugador').style.display = 'none';
+  renderFichasJugador();
+  renderPasosJugador();
+}
+
+function renderFichasJugador(){
+  const cont = document.getElementById('fichas-jugador');
+  cont.innerHTML = '';
+  jugadorPool.forEach((num, i) => {
+    const f = document.createElement('div');
+    f.className = 'ficha clicable' + (jugadorSeleccion.includes(i) ? ' seleccionada' : '');
+    f.textContent = num;
+    f.setAttribute('role', 'button');
+    f.setAttribute('tabindex', '0');
+    f.addEventListener('click', () => alternarSeleccionJugador(i));
+    f.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') alternarSeleccionJugador(i); });
+    cont.appendChild(f);
+  });
+}
+
+function alternarSeleccionJugador(i){
+  if (jugadorTerminado) return;
+  document.getElementById('error-constructor').innerHTML = '';
+  if (jugadorSeleccion.includes(i)){
+    jugadorSeleccion = jugadorSeleccion.filter(x => x !== i);
+  } else if (jugadorSeleccion.length < 2){
+    jugadorSeleccion.push(i);
+  } else {
+    jugadorSeleccion = [i];
+  }
+  renderFichasJugador();
+  document.getElementById('operadores-jugador').style.display = jugadorSeleccion.length === 2 ? 'flex' : 'none';
+}
+
+function aplicarOperacionJugador(simbolo){
+  if (jugadorSeleccion.length !== 2) return;
+  const [i1, i2] = jugadorSeleccion;
+  const n1 = jugadorPool[i1], n2 = jugadorPool[i2];
+  const mayor = Math.max(n1, n2), menor = Math.min(n1, n2);
+  const errorCont = document.getElementById('error-constructor');
+  errorCont.innerHTML = '';
+
+  let resultado, pasoStr;
+  if (simbolo === '+'){
+    resultado = mayor + menor;
+    pasoStr = `${mayor} + ${menor} = ${resultado}`;
+  } else if (simbolo === '-'){
+    if (mayor === menor){
+      errorCont.innerHTML = '<div class="mensaje-error">⚠️ No puedes restar dos números iguales: el resultado sería 0.</div>';
+      return;
+    }
+    resultado = mayor - menor;
+    pasoStr = `${mayor} - ${menor} = ${resultado}`;
+  } else if (simbolo === '*'){
+    if (menor <= 1){
+      errorCont.innerHTML = '<div class="mensaje-error">⚠️ Multiplicar por 1 no cuenta como paso válido. Elige otra combinación.</div>';
+      return;
+    }
+    resultado = mayor * menor;
+    pasoStr = `${mayor} * ${menor} = ${resultado}`;
+  } else if (simbolo === '/'){
+    if (menor <= 1 || mayor % menor !== 0){
+      errorCont.innerHTML = '<div class="mensaje-error">⚠️ Estos dos números no son divisibles de forma exacta entre sí.</div>';
+      return;
+    }
+    resultado = mayor / menor;
+    pasoStr = `${mayor} / ${menor} = ${resultado}`;
+  }
+
+  jugadorPool = jugadorPool.filter((_, idx) => idx !== i1 && idx !== i2);
+  jugadorPool.push(resultado);
+  jugadorPasos.push(pasoStr);
+  jugadorSeleccion = [];
+  document.getElementById('operadores-jugador').style.display = 'none';
+  renderFichasJugador();
+  renderPasosJugador();
+
+  if (jugadorPool.length === 1){
+    jugadorTerminado = true;
+    evaluarVeredictoJugador();
+  }
+}
+
+function renderPasosJugador(){
+  const cont = document.getElementById('pasos-jugador');
+  cont.innerHTML = '';
+  if (jugadorPasos.length > 0) cont.appendChild(crearListaPasos(jugadorPasos));
+}
+
+function evaluarVeredictoJugador(){
+  const veredictoCont = document.getElementById('veredicto-jugador');
+  const resultadoFinal = jugadorPool[0];
+  if (resultadoFinal === estadoJuego.objetivoFinal){
+    veredictoCont.innerHTML = `<div class="aviso exito">🎯 ¡Correcto! Has llegado exactamente a ${estadoJuego.objetivoFinal}.</div>`;
+  } else {
+    const diff = Math.abs(resultadoFinal - estadoJuego.objetivoFinal);
+    veredictoCont.innerHTML = `<div class="aviso alerta">Te has quedado en ${resultadoFinal}, a una diferencia de ${diff} del objetivo (${estadoJuego.objetivoFinal}). Pulsa «Reiniciar fichas» para intentarlo de nuevo.</div>`;
+  }
+}
+
+document.getElementById('btn-comprobar-objetivo').addEventListener('click', () => {
+  if (!estadoJuego) return;
+  const veredictoCont = document.getElementById('veredicto-jugador');
+  if (jugadorPool.includes(estadoJuego.objetivoFinal)){
+    veredictoCont.innerHTML = `<div class="aviso exito">🎯 ¡Ya tienes el ${estadoJuego.objetivoFinal} entre tus fichas! Objetivo conseguido.</div>`;
+  } else {
+    veredictoCont.innerHTML = `<div class="aviso alerta">Todavía no. Sigue combinando fichas para acercarte a ${estadoJuego.objetivoFinal}.</div>`;
+  }
+});
+
+document.getElementById('btn-reiniciar-constructor').addEventListener('click', () => {
+  iniciarConstructor();
+});
+
+document.querySelectorAll('#operadores-jugador button').forEach(btn => {
+  btn.addEventListener('click', () => aplicarOperacionJugador(btn.dataset.op));
+});
+
+/* =========================================================
+   6. RESOLUTOR MANUAL
+   ========================================================= */
+const valoresPorDefecto = [1, 2, 3, 4, 5, 10];
+const rejilla = document.getElementById('rejilla-inputs');
+valoresPorDefecto.forEach((valor, i) => {
+  const div = document.createElement('div');
+  div.className = 'campo-numero';
+  div.innerHTML = `<label for="num-${i}">Nº ${i + 1}</label><input type="number" id="num-${i}" min="1" step="1" value="${valor}">`;
+  rejilla.appendChild(div);
+});
+
+document.getElementById('btn-resolver-manual').addEventListener('click', async () => {
+  const numeros = valoresPorDefecto.map((_, i) => parseInt(document.getElementById(`num-${i}`).value, 10));
+  const objetivo = parseInt(document.getElementById('input-objetivo').value, 10);
+  const todos = numeros.concat([objetivo]);
+
+  const errorCont = document.getElementById('error-manual');
+  const resCont = document.getElementById('resultado-manual');
+  errorCont.innerHTML = '';
+  resCont.innerHTML = '';
+
+  const sonNaturales = todos.every(n => Number.isInteger(n) && n > 0);
+  if (!sonNaturales){
+    errorCont.innerHTML = '<div class="mensaje-error">⚠️ Todos los valores deben ser números naturales. Revisa tu entrada.</div>';
+    return;
+  }
+
+  const { soluciones, mejorAproximacion, mejorDiferencia, mejorCamino, exitosBrutos } =
+    await conAnimacionReloj('reloj-manual', () => resolverCifrasMotor(numeros, objetivo));
+
+  const titulo = document.createElement('h3');
+  titulo.style.cssText = 'font-family:Bebas Neue, sans-serif; letter-spacing:0.04em; color:var(--azul-neon-claro); font-size:1.3rem; margin-top:0;';
+  titulo.textContent = `Resultados para conseguir el ${objetivo}`;
+  resCont.appendChild(titulo);
+
+  renderizarSoluciones(resCont, soluciones, mejorAproximacion, mejorDiferencia, mejorCamino, exitosBrutos, 15);
+});
+
+/* =========================================================
+   7. CALCULADORA AUXILIAR
+   ========================================================= */
+let calcPantalla = '';
+let calcAns = 0;
+let calcEvaluado = false;
+let calcHistorial = [];
+
+const elCalcPantalla = document.getElementById('calc-pantalla');
+const elCalcAns = document.getElementById('calc-ans-valor');
+const elCalcError = document.getElementById('calc-error');
+const elCalcHistorial = document.getElementById('calc-historial-lista');
+
+function actualizarCalcPantalla(){
+  elCalcPantalla.textContent = calcPantalla || '\u00A0';
+}
+function ocultarCalcError(){ elCalcError.innerHTML = ''; }
+function mostrarCalcError(msg){ elCalcError.innerHTML = `<div class="mensaje-error">${msg}</div>`; }
+
+function calcPulsar(simbolo){
+  ocultarCalcError();
+  const continuadores = ['+', '-', '*', '/'];
+  if (calcEvaluado){
+    calcPantalla = continuadores.includes(simbolo) ? calcPantalla + simbolo : simbolo;
+    calcEvaluado = false;
+  } else {
+    calcPantalla += simbolo;
+  }
+  actualizarCalcPantalla();
+}
+function calcBorrarTodo(){ calcPantalla = ''; calcEvaluado = false; ocultarCalcError(); actualizarCalcPantalla(); }
+function calcBorrarUltimo(){ calcPantalla = calcPantalla.slice(0, -1); actualizarCalcPantalla(); }
+function calcUsarAns(){ calcPulsar(String(calcAns)); }
+
+function calcEjecutar(){
+  ocultarCalcError();
+  if (!calcPantalla.trim()) return;
+  if (!/^[0-9+\-*/.\s()]+$/.test(calcPantalla)){
+    mostrarCalcError('Error: Operación no válida');
+    return;
+  }
+  try {
+    const resultado = Function('"use strict"; return (' + calcPantalla + ')')();
+    if (typeof resultado !== 'number' || !isFinite(resultado)) throw new Error('invalido');
+    const redondeado = Math.round(resultado * 1e6) / 1e6;
+    calcHistorial.unshift(`${calcPantalla} = ${redondeado}`);
+    calcHistorial = calcHistorial.slice(0, 6);
+    calcAns = redondeado;
+    calcPantalla = String(redondeado);
+    calcEvaluado = true;
+    actualizarCalcPantalla();
+    elCalcAns.textContent = calcAns;
+    elCalcHistorial.innerHTML = calcHistorial.map(h => `<div>${h}</div>`).join('') || 'Aún no hay operaciones guardadas.';
+  } catch (e){
+    mostrarCalcError('Error: Operación no válida');
+  }
+}
+
+document.querySelectorAll('.calc-teclado button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.accion === 'borrar-todo') calcBorrarTodo();
+    else if (btn.dataset.accion === 'borrar-ultimo') calcBorrarUltimo();
+    else if (btn.dataset.accion === 'ans') calcUsarAns();
+    else if (btn.dataset.accion === 'calcular') calcEjecutar();
+    else if (btn.dataset.simbolo) calcPulsar(btn.dataset.simbolo);
+  });
+});
+
+const calcDrawer = document.getElementById('calc-drawer');
+const calcFab = document.getElementById('btn-calc-toggle');
+const barraIconosDerecha = document.getElementById('barra-iconos-derecha');
+document.getElementById('btn-calc-toggle').addEventListener('click', () => {
+  calcDrawer.classList.add('abierta');
+  calcDrawer.setAttribute('aria-hidden', 'false');
+  calcFab.classList.add('oculto');
+  barraIconosDerecha.classList.add('oculto');
+  cerrarMenuTema();
+  cerrarPanelTemporizador();
+});
+document.getElementById('calc-cerrar').addEventListener('click', () => {
+  calcDrawer.classList.remove('abierta');
+  calcDrawer.setAttribute('aria-hidden', 'true');
+  calcFab.classList.remove('oculto');
+  barraIconosDerecha.classList.remove('oculto');
+});
+
+/* =========================================================
+   8. SELECTOR DE TEMA
+   ========================================================= */
+const CLASES_TEMA = ['tema-dia', 'tema-noche', 'tema-elegancia']; // "clásico" = sin clase
+const CLAVE_TEMA_COMPARTIDA = 'cifrasYLetrasTema';
+const btnTemaToggle = document.getElementById('btn-tema-toggle');
+const menuTema = document.getElementById('menu-tema');
+
+function cerrarMenuTema(){
+  menuTema.classList.remove('abierto');
+  btnTemaToggle.setAttribute('aria-expanded', 'false');
+}
+
+function aplicarTema(nombre, guardarComoPreferencia = true){
+  document.body.classList.remove(...CLASES_TEMA);
+  if (nombre !== 'clasico') document.body.classList.add(`tema-${nombre}`);
+  document.querySelectorAll('.menu-tema button').forEach(b => {
+    b.classList.toggle('activo', b.dataset.tema === nombre);
+  });
+  if (guardarComoPreferencia){
+    try { localStorage.setItem(CLAVE_TEMA_COMPARTIDA, nombre); } catch(e){}
+    if (window.parent && window.parent !== window){
+      window.parent.postMessage({ tipo:'cifrasYLetrasTema', tema: nombre }, '*');
+    }
+  }
+}
+
+document.querySelectorAll('.menu-tema button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    aplicarTema(btn.dataset.tema);
+    cerrarMenuTema();
+  });
+});
+
+btnTemaToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  cerrarPanelTemporizador();
+  const abierto = menuTema.classList.toggle('abierto');
+  btnTemaToggle.setAttribute('aria-expanded', String(abierto));
+});
+
+let temaGuardado = 'clasico';
+try { temaGuardado = localStorage.getItem(CLAVE_TEMA_COMPARTIDA) || 'clasico'; } catch(e){}
+aplicarTema(temaGuardado, false);
+
+// Si el tema cambia desde la sección de Letras (misma web, otra pestaña/iframe), se refleja aquí al instante
+window.addEventListener('storage', (e) => {
+  if (e.key === CLAVE_TEMA_COMPARTIDA && e.newValue){
+    aplicarTema(e.newValue, false);
+  }
+});
+// Vía de refuerzo: si index.html nos reenvía el cambio directamente
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.tipo === 'cifrasYLetrasTema' && e.data.tema){
+    aplicarTema(e.data.tema, false);
+  }
+});
+
+/* =========================================================
+   9. TEMPORIZADOR
+   ========================================================= */
+const btnTemporizadorToggle = document.getElementById('btn-temporizador-toggle');
+const panelTemporizador = document.getElementById('panel-temporizador');
+const iconoTemporizadorTexto = document.getElementById('icono-temporizador-texto');
+const displayTemporizador = document.getElementById('display-temporizador');
+const inputMin = document.getElementById('input-min');
+const inputSeg = document.getElementById('input-seg');
+const switchTemporizador = document.getElementById('switch-temporizador');
+const switchTemporizadorEstado = document.getElementById('switch-temporizador-estado');
+const flashAlerta = document.getElementById('flash-alerta');
+
+let temporizadorConfigurado = 30; // segundos elegidos por el usuario
+let temporizadorRestante = 30;
+let temporizadorArmado = false;   // interruptor ON/OFF
+let temporizadorCorriendo = false; // contando activamente (solo durante una partida)
+let temporizadorIntervalo = null;
+
+function formatearTiempo(totalSegundos){
+  const m = Math.floor(totalSegundos / 60);
+  const s = totalSegundos % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+function refrescarUiTemporizador(){
+  btnTemporizadorToggle.classList.toggle('apagado', !temporizadorArmado);
+  iconoTemporizadorTexto.textContent = temporizadorArmado
+    ? `⏱ ${formatearTiempo(temporizadorRestante)}`
+    : '⏱ OFF';
+
+  displayTemporizador.textContent = formatearTiempo(temporizadorRestante);
+  inputMin.disabled = temporizadorCorriendo;
+  inputSeg.disabled = temporizadorCorriendo;
+  switchTemporizador.checked = temporizadorArmado;
+  switchTemporizadorEstado.textContent = temporizadorArmado ? 'Encendido' : 'Apagado';
+}
+
+function pausarTemporizador(){
+  temporizadorCorriendo = false;
+  if (temporizadorIntervalo){
+    clearInterval(temporizadorIntervalo);
+    temporizadorIntervalo = null;
+  }
+}
+
+function dispararFlashFinTiempo(){
+  flashAlerta.classList.remove('activo');
+  void flashAlerta.offsetWidth; // fuerza el reflow para poder repetir la animación
+  flashAlerta.classList.add('activo');
+
+  btnTemporizadorToggle.classList.remove('pulso-fin');
+  void btnTemporizadorToggle.offsetWidth;
+  btnTemporizadorToggle.classList.add('pulso-fin');
+  setTimeout(() => btnTemporizadorToggle.classList.remove('pulso-fin'), 900);
+}
+
+function tickTemporizador(){
+  temporizadorRestante--;
+  if (temporizadorRestante <= 0){
+    temporizadorRestante = 0;
+    pausarTemporizador();
+    dispararFlashFinTiempo();
+  }
+  refrescarUiTemporizador();
+}
+
+// Se llama automáticamente al generar una partida (normal o +), solo si el interruptor está en ON
+function iniciarCuentaSiArmado(){
+  pausarTemporizador();
+  if (!temporizadorArmado) return;
+  temporizadorRestante = temporizadorConfigurado;
+  temporizadorCorriendo = true;
+  temporizadorIntervalo = setInterval(tickTemporizador, 1000);
+  refrescarUiTemporizador();
+}
+
+function aplicarTiempoDesdeInputs(){
+  const min = Math.max(0, Math.min(99, parseInt(inputMin.value, 10) || 0));
+  const seg = Math.max(0, Math.min(59, parseInt(inputSeg.value, 10) || 0));
+  inputMin.value = min;
+  inputSeg.value = seg;
+  temporizadorConfigurado = Math.max(1, min * 60 + seg);
+  if (!temporizadorCorriendo){
+    temporizadorRestante = temporizadorConfigurado;
+  }
+  refrescarUiTemporizador();
+}
+
+switchTemporizador.addEventListener('change', () => {
+  temporizadorArmado = switchTemporizador.checked;
+  if (!temporizadorArmado){
+    // Apagar cancela cualquier cuenta atrás en curso
+    pausarTemporizador();
+    temporizadorRestante = temporizadorConfigurado;
+  }
+  refrescarUiTemporizador();
+});
+
+inputMin.addEventListener('change', aplicarTiempoDesdeInputs);
+inputSeg.addEventListener('change', aplicarTiempoDesdeInputs);
+
+function cerrarPanelTemporizador(){
+  panelTemporizador.classList.remove('abierto');
+  btnTemporizadorToggle.setAttribute('aria-expanded', 'false');
+}
+
+btnTemporizadorToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  cerrarMenuTema();
+  const abierto = panelTemporizador.classList.toggle('abierto');
+  btnTemporizadorToggle.setAttribute('aria-expanded', String(abierto));
+});
+
+document.addEventListener('click', (e) => {
+  if (!menuTema.contains(e.target) && e.target !== btnTemaToggle){
+    cerrarMenuTema();
+  }
+  if (!panelTemporizador.contains(e.target) && e.target !== btnTemporizadorToggle && !btnTemporizadorToggle.contains(e.target)){
+    cerrarPanelTemporizador();
+  }
+});
+
+refrescarUiTemporizador();
+
+
+</script>
+</body>
+</html>
