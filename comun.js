@@ -619,5 +619,33 @@
     crearTemporizador, crearCalculadora, evaluarExpresion,
   };
 
+  /* =========================================================
+     10. APLICACIÓN INSTALABLE (iPhone y Android)
+     ========================================================= */
+  // El service worker guarda la app para usarla sin conexión (solo en la web publicada, por https)
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(e => console.warn('Sin modo sin conexión:', e));
+    });
+  }
+
+  // En iPhone no existe botón de instalar: se explica una vez cómo añadirla a la pantalla de inicio
+  function avisoInstalacion() {
+    const CLAVE = 'cifrasYLetrasAvisoInstalar';
+    const esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const yaInstalada = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+    if (!esIOS || yaInstalada || leer(CLAVE)) return;
+
+    const cerrar = crear('button', { class: 'btn-icono es-chico', type: 'button', 'aria-label': 'Cerrar', html: icono('x', 16) });
+    const banda = crear('aside', { class: 'instalar', 'aria-label': 'Instalar la aplicación' },
+      crear('img', { src: 'icono-180.png', alt: '', width: '44', height: '44' }),
+      crear('p', {}, crear('strong', { text: 'Instálala como app' }),
+        'Pulsa Compartir y elige «Añadir a pantalla de inicio».'),
+      cerrar);
+    cerrar.addEventListener('click', () => { guardar(CLAVE, '1'); banda.remove(); });
+    document.body.append(banda);
+  }
+
   iniciarTema();
+  avisoInstalacion();
 })();

@@ -304,7 +304,31 @@ body.con-dock main{padding-bottom:130px;}
 
 h1,h2,h3,h4,p{margin:0;}
 button,input{font:inherit; color:inherit;}
-button{-webkit-tap-highlight-color:transparent;}
+/* touch-action evita el zoom por doble toque al pulsar fichas y botones deprisa */
+button,a{-webkit-tap-highlight-color:transparent; touch-action:manipulation;}
+
+/* Instalada como app en el móvil: se respetan la muesca y la barra inferior del iPhone */
+body{
+  padding-top:env(safe-area-inset-top);
+  padding-left:env(safe-area-inset-left);
+  padding-right:env(safe-area-inset-right);
+}
+@media (display-mode:standalone){
+  html{-webkit-user-select:none; user-select:none; -webkit-touch-callout:none; overscroll-behavior-y:none;}
+  input{-webkit-user-select:text; user-select:text;}
+}
+.instalar{
+  position:fixed; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom)); z-index:70;
+  display:flex; align-items:center; gap:12px;
+  padding:12px;
+  border:1px solid var(--borde-2); border-radius:20px;
+  background:var(--panel-2);
+  box-shadow:var(--sombra);
+  animation:aparecer .4s ease;
+}
+.instalar img{border-radius:11px; flex:none;}
+.instalar p{flex:1; min-width:0; font-size:.9rem; line-height:1.35; color:var(--texto-2);}
+.instalar strong{display:block; color:var(--texto); font:700 .78rem/1.3 var(--f-titular); text-transform:uppercase;}
 a{color:var(--acento-2);}
 [hidden]{display:none !important;}
 :focus-visible{outline:3px solid var(--foco); outline-offset:3px;}
@@ -880,7 +904,7 @@ button.ficha.usada{opacity:.26; transform:translateY(5px) scale(.94); box-shadow
 
 /* ---------- 6. HERRAMIENTAS (barra flotante, temporizador, calculadora) ---------- */
 .dock{
-  position:fixed; right:20px; bottom:20px; z-index:56;   /* por encima de la calculadora */
+  position:fixed; right:calc(20px + env(safe-area-inset-right)); bottom:calc(20px + env(safe-area-inset-bottom)); z-index:56;   /* por encima de la calculadora */
   display:flex; gap:4px; padding:6px;
   background:var(--panel-2);
   background:color-mix(in srgb, var(--panel-2) 86%, transparent);
@@ -1210,7 +1234,7 @@ p.nota-vacia{padding:4px 2px;}
 .record strong{color:var(--realce-b); font:800 1rem var(--f-titular);}
 
 .hud{
-  position:sticky; top:12px; z-index:20;
+  position:sticky; top:calc(12px + env(safe-area-inset-top)); z-index:20;
   display:flex; align-items:center; justify-content:space-between; gap:14px;
   margin:22px 0 18px; padding:14px 24px;
   background:var(--panel-2);
@@ -1510,7 +1534,7 @@ html[data-tema="dia"] .acceso .etiqueta{color:var(--texto-2);}
 
 @media (max-width:480px){
   .marca-texto{font-size:.9rem;}
-  .dock{right:12px; bottom:12px;}
+  .dock{right:12px; bottom:calc(12px + env(safe-area-inset-bottom));}
   .calc{
     right:0; left:0; bottom:0;
     width:100%; max-width:none;
