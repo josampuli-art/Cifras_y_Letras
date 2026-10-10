@@ -1,1254 +1,617 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-tema="clasico">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulación de concurso — Cifras y Letras</title>
+<title>Simulación de concurso · Cifras y Letras</title>
+<meta name="description" content="Vive una partida completa de Cifras y Letras: cinco asaltos alternando cifras y letras, con cronómetro y puntuación.">
+<meta name="theme-color" content="#04051A">
+<script>try{var t=localStorage.getItem('cifrasYLetrasTema');if(t)document.documentElement.dataset.tema=t;}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B1150'/%3E%3Crect x='11' y='7' width='42' height='46' rx='9' fill='%23FFC61A'/%3E%3Crect x='11' y='7' width='42' height='42' rx='9' fill='%23FFF0A0'/%3E%3Ctext x='32' y='41' font-family='Arial Black,Arial,sans-serif' font-size='30' font-weight='900' text-anchor='middle' fill='%233A1E00'%3E%C3%91%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --azul-noche:#040814;
-    --azul-panel:#0A1B3D;
-    --azul-panel-alt:#0F2A57;
-    --azul-borde:#1E4B8F;
-    --azul-neon:#2E9BFF;
-    --azul-neon-claro:#7FC4FF;
-    --rojo-vivo:#FF3B3B;
-    --rojo-intenso:#D6172B;
-    --blanco:#F7FAFF;
-    --blanco-tenue:#AFC2E0;
-    --verde-led:#57D68D;
-    --rojo-marcador:#FF3B3B;
-
-    --azul-neon-rgb:46,155,255;
-    --rojo-vivo-rgb:255,59,59;
-    --rojo-marcador-rgb:255,59,59;
-    --blanco-rgb:247,250,255;
-    --negro-rgb:0,0,0;
-    --verde-rgb:87,214,141;
-
-    --texto-sobre-rojo:#F7FAFF;
-    --texto-sobre-azul:#04101F;
-    --exito-texto:#CFF5DF;
-    --alerta-texto:#FBD8D0;
-
-    --fondo-fin:#02040a;
-    --ficha-grad-1:#163864;
-    --superficie-1:#0C1F3C;
-    --led-bg:#04101F;
-    --linea-tenue:#3A6FB0;
-    --scanline:rgba(255,255,255,0.015);
-
-    --sombra-tablero:0 20px 45px rgba(0,0,0,0.55);
-    --radio:14px;
-  }
-
-  body.tema-dia{
-    --azul-noche:#F4F8FF; --azul-panel:#FFFFFF; --azul-panel-alt:#F0F5FF; --azul-borde:#C7D9F2;
-    --azul-neon:#1C6FE0; --azul-neon-claro:#4C93F2; --rojo-vivo:#E63946; --rojo-intenso:#C81E2E;
-    --blanco:#12233F; --blanco-tenue:#4C6079; --verde-led:#1C9A55; --rojo-marcador:#E63946;
-    --azul-neon-rgb:28,111,224; --rojo-vivo-rgb:230,57,70; --rojo-marcador-rgb:230,57,70;
-    --blanco-rgb:18,35,63; --negro-rgb:0,0,0; --verde-rgb:28,154,85;
-    --texto-sobre-rojo:#FFFFFF; --texto-sobre-azul:#FFFFFF; --exito-texto:#0F5C33; --alerta-texto:#7A1620;
-    --fondo-fin:#DCE8FB; --ficha-grad-1:#FFFFFF; --superficie-1:#EAF1FC; --led-bg:#0B1B33;
-    --linea-tenue:#9FB8DC; --scanline:rgba(18,35,63,0.02); --sombra-tablero:0 14px 34px rgba(28,60,110,0.16);
-  }
-
-  body.tema-noche{
-    --azul-noche:#02040a; --azul-panel:#060C1C; --azul-panel-alt:#0A1226; --azul-borde:#152238;
-    --azul-neon:#1C4E82; --azul-neon-claro:#3A6FA6; --rojo-vivo:#A32A2A; --rojo-intenso:#7A1E1E;
-    --blanco:#C9D2E0; --blanco-tenue:#66748C; --verde-led:#2E8F5C; --rojo-marcador:#A32A2A;
-    --azul-neon-rgb:28,78,130; --rojo-vivo-rgb:163,42,42; --rojo-marcador-rgb:163,42,42;
-    --blanco-rgb:201,210,224; --negro-rgb:0,0,0; --verde-rgb:46,143,92;
-    --texto-sobre-rojo:#F2F5FA; --texto-sobre-azul:#EAF2FB; --exito-texto:#9FCBB0; --alerta-texto:#D2A8A2;
-    --fondo-fin:#000000; --ficha-grad-1:#0D1B33; --superficie-1:#070E1E; --led-bg:#010609;
-    --linea-tenue:#1F3252; --scanline:rgba(255,255,255,0.008); --sombra-tablero:0 20px 45px rgba(0,0,0,0.7);
-  }
-
-  body.tema-elegancia{
-    --azul-noche:#081326; --azul-panel:#0F2648; --azul-panel-alt:#142F58; --azul-borde:#1C3A66;
-    --azul-neon:#D9A441; --azul-neon-claro:#F4CB74; --rojo-vivo:#D9A441; --rojo-intenso:#B9862F;
-    --blanco:#F1E9D8; --blanco-tenue:#B9C3D6; --verde-led:#57D68D; --rojo-marcador:#E0654F;
-    --azul-neon-rgb:217,164,65; --rojo-vivo-rgb:217,164,65; --rojo-marcador-rgb:224,101,79;
-    --blanco-rgb:241,233,216; --negro-rgb:0,0,0; --verde-rgb:87,214,141;
-    --texto-sobre-rojo:#231402; --texto-sobre-azul:#231402; --exito-texto:#CFF5DF; --alerta-texto:#FBD8D0;
-    --fondo-fin:#050c18; --ficha-grad-1:#163864; --superficie-1:#0C1F3C; --led-bg:#04101F;
-    --linea-tenue:#3A6FB0; --scanline:rgba(217,164,65,0.02); --sombra-tablero:0 20px 45px rgba(0,0,0,0.5);
-  }
-
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0; min-height:100vh;
-    background:
-      radial-gradient(ellipse 1000px 520px at 50% -8%, rgba(var(--azul-neon-rgb),0.22), transparent 62%),
-      radial-gradient(ellipse 620px 420px at 100% 6%, rgba(var(--rojo-vivo-rgb),0.14), transparent 58%),
-      radial-gradient(ellipse 620px 420px at 0% 96%, rgba(var(--azul-neon-rgb),0.12), transparent 58%),
-      linear-gradient(180deg, var(--azul-noche), var(--fondo-fin) 70%);
-    color:var(--blanco);
-    font-family:'Work Sans', sans-serif;
-    padding:0 0 60px;
-    position:relative;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:""; position:fixed; inset:0;
-    background-image:repeating-linear-gradient(180deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px);
-    pointer-events:none; z-index:0;
-  }
-
-  .envoltorio{ max-width:900px; margin:0 auto; padding:0 24px; position:relative; z-index:1; }
-
-  header.cabecera{
-    display:flex; flex-direction:column; align-items:center; gap:14px;
-    padding:44px 24px 10px; text-align:center;
-  }
-  .logo-marca{ display:flex; gap:6px; }
-  .logo-marca .ficha-logo{
-    width:40px; height:50px; border-radius:6px;
-    background:linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
-    border:2px solid var(--azul-neon);
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Share Tech Mono', monospace; font-size:1.25rem; color:var(--blanco);
-    box-shadow: inset 0 2px 4px rgba(var(--blanco-rgb),0.08), 0 6px 14px rgba(var(--negro-rgb),0.4);
-    transform:rotate(var(--r,0deg));
-  }
-  .logo-marca .ficha-logo:nth-child(1){--r:-6deg;}
-  .logo-marca .ficha-logo:nth-child(2){--r:6deg; margin-top:8px;}
-
-  h1.titulo{
-    font-family:'Bebas Neue', sans-serif;
-    font-size:clamp(2.2rem, 6vw, 3.4rem);
-    letter-spacing:0.05em; margin:4px 0 0; color:var(--blanco);
-  }
-  .tagline{ color:var(--blanco-tenue); max-width:560px; margin:0 auto; line-height:1.55; }
-
-  .tablero{
-    background:linear-gradient(180deg, var(--azul-panel), var(--azul-panel-alt));
-    border:1px solid var(--azul-borde);
-    border-radius:var(--radio);
-    box-shadow:var(--sombra-tablero);
-    padding:28px 24px;
-    margin-top:24px;
-  }
-
-  .btn-primario, .btn-secundario{
-    font-family:'Work Sans', sans-serif; font-weight:700; font-size:1rem;
-    border-radius:10px; padding:14px 22px; cursor:pointer; border:none;
-    transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;
-  }
-  .btn-primario{
-    background:linear-gradient(135deg, var(--azul-neon), #1C6FE0);
-    color:var(--texto-sobre-azul);
-    box-shadow:0 10px 24px rgba(var(--azul-neon-rgb),0.35);
-  }
-  .btn-primario:hover{ filter:brightness(1.08); transform:translateY(-1px); }
-  .btn-primario:disabled{ opacity:0.5; cursor:not-allowed; transform:none; filter:none; }
-  .btn-secundario{
-    background:transparent; color:var(--blanco);
-    border:1px solid var(--azul-borde);
-  }
-  .btn-secundario:hover{ border-color:var(--azul-neon); color:var(--azul-neon-claro); }
-  .btn-grande{ display:block; margin:26px auto 4px; font-size:1.1rem; padding:16px 34px; }
-
-  #intro{ text-align:center; }
-  #intro ul{ text-align:left; max-width:460px; margin:18px auto; color:var(--blanco-tenue); line-height:1.7; padding-left:22px; }
-  #intro li strong{ color:var(--blanco); }
-
-  .barra-progreso{
-    display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; justify-content:space-between;
-    font-family:'Share Tech Mono', monospace; letter-spacing:0.03em;
-    color:var(--azul-neon-claro); font-size:0.95rem; margin-bottom:18px;
-  }
-  .barra-progreso span{ background:var(--superficie-1); border:1px solid var(--azul-borde); border-radius:8px; padding:6px 12px; }
-
-  .reloj-grande{
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:2px; margin:0 auto 20px; width:140px; height:140px; border-radius:50%;
-    background:var(--led-bg); border:4px solid var(--azul-borde);
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 0 6px rgba(var(--azul-neon-rgb),0.06);
-  }
-  .reloj-grande.urgente{ border-color:var(--rojo-vivo); box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 0 6px rgba(var(--rojo-vivo-rgb),0.12); }
-  #reloj-numero{ font-family:'Share Tech Mono', monospace; font-size:2.6rem; color:var(--verde-led); }
-  .reloj-grande.urgente #reloj-numero{ color:var(--rojo-vivo); }
-  #reloj-etiqueta{ font-size:0.72rem; color:var(--blanco-tenue); text-align:center; padding:0 10px; }
-
-  .zona-numeros{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
-  .grupo-fichas{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
-  .ficha{
-    width:56px; height:68px; border-radius:8px;
-    background:linear-gradient(160deg, var(--ficha-grad-1), var(--azul-panel));
-    border:1px solid var(--azul-borde);
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Share Tech Mono', monospace; font-size:1.3rem; color:var(--blanco);
-    box-shadow: inset 0 2px 4px rgba(var(--blanco-rgb),0.06), 0 6px 14px rgba(var(--negro-rgb),0.35);
-    user-select:none;
-  }
-  .ficha.clicable{ cursor:pointer; transition:transform .12s ease, border-color .12s ease; }
-  .ficha.clicable:hover{ transform:translateY(-3px); border-color:var(--azul-neon); }
-  .ficha.seleccionada{ border-color:var(--azul-neon); box-shadow:0 0 0 2px rgba(var(--azul-neon-rgb),0.5); }
-  .ficha.bloqueada{ opacity:0.55; cursor:not-allowed; }
-
-  .marcador-objetivo{ text-align:center; }
-  .etiqueta{ font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--blanco-tenue); margin-bottom:6px; }
-  .display-led{
-    font-family:'Share Tech Mono', monospace; font-size:2.1rem; color:var(--rojo-marcador);
-    background:var(--led-bg); border:1px solid var(--azul-borde); border-radius:8px;
-    padding:8px 18px; min-width:110px; text-shadow:0 0 10px rgba(var(--rojo-marcador-rgb),0.6);
-  }
-
-  .fila-operadores{ display:flex; gap:10px; justify-content:center; margin:18px 0; }
-  .fila-operadores button{
-    width:52px; height:52px; border-radius:10px; font-size:1.3rem; font-weight:700;
-    background:var(--superficie-1); border:1px solid var(--azul-borde); color:var(--blanco); cursor:pointer;
-  }
-  .fila-operadores button:hover{ border-color:var(--azul-neon); color:var(--azul-neon-claro); }
-
-  #pasos-simulacion{ font-family:'Share Tech Mono', monospace; font-size:0.9rem; color:var(--blanco-tenue); margin-top:10px; line-height:1.7; text-align:center; }
-
-  .nota-oculta{ color:var(--blanco-tenue); font-size:0.9rem; text-align:center; margin-top:14px; }
-
-  .mensaje-error{
-    background:rgba(var(--rojo-marcador-rgb),0.12);
-    border:1px solid var(--rojo-marcador);
-    color:var(--alerta-texto);
-    padding:12px 16px;
-    border-radius:8px;
-    margin-top:14px;
-    font-size:0.92rem;
-    text-align:center;
-  }
-
-  /* ---------- CALCULADORA (idéntica a la web de Cifras) ---------- */
-  .calc-fab{
-    position:fixed; top:20px; left:20px; width:56px; height:56px; border-radius:50%;
-    border:2px solid var(--azul-neon);
-    background:linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
-    color:var(--azul-neon-claro); font-size:1.4rem; cursor:pointer;
-    box-shadow:0 0 18px rgba(var(--azul-neon-rgb),0.4), 0 10px 24px rgba(var(--negro-rgb),0.5);
-    z-index:40; transition:transform .2s ease, opacity .2s ease;
-  }
-  .calc-fab:hover{ transform:scale(1.06); }
-  .calc-fab.oculto{ opacity:0; pointer-events:none; transform:scale(0.8); }
-
-  .calc-drawer{
-    position:fixed; top:0; left:0; height:100vh; width:300px;
-    background:linear-gradient(175deg, var(--azul-panel-alt), var(--azul-noche));
-    border-right:1px solid var(--azul-borde);
-    box-shadow:16px 0 40px rgba(var(--negro-rgb),0.5);
-    transform:translateX(-100%); transition:transform .3s ease;
-    z-index:35; padding:24px 20px; overflow-y:auto;
-  }
-  .calc-drawer.abierta{ transform:translateX(0); }
-  .calc-drawer h2{ font-family:'Bebas Neue', sans-serif; letter-spacing:0.05em; font-size:1.5rem; color:var(--azul-neon-claro); margin:0 0 14px; }
-  .calc-cerrar{ position:absolute; top:20px; right:16px; background:none; border:none; color:var(--blanco-tenue); font-size:1.3rem; cursor:pointer; }
-  .calc-pantalla{
-    width:100%; font-family:'Share Tech Mono', monospace; font-size:1.4rem;
-    background:#04140C; color:var(--verde-led);
-    border:1px solid rgba(87,214,141,0.4); border-radius:8px; padding:12px;
-    text-align:right; margin-bottom:10px; min-height:26px; word-break:break-all;
-  }
-  .calc-ans{ font-size:0.78rem; color:var(--blanco-tenue); margin-bottom:14px; }
-  .calc-teclado{ display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; }
-  .calc-teclado button{
-    font-family:'Share Tech Mono', monospace; font-size:1rem; padding:12px 0;
-    border-radius:6px; border:1px solid var(--azul-borde); background:var(--superficie-1);
-    color:var(--blanco); cursor:pointer; transition:all .15s ease;
-  }
-  .calc-teclado button:hover{ border-color:var(--azul-neon); color:var(--azul-neon-claro); }
-  .calc-teclado button.op{ color:var(--rojo-vivo); }
-  .calc-teclado button.igual{ background:linear-gradient(160deg, var(--rojo-vivo), var(--rojo-intenso)); color:var(--texto-sobre-rojo); font-weight:700; border:none; }
-  .calc-historial{ margin-top:18px; font-size:0.82rem; color:var(--blanco-tenue); }
-  .calc-historial h3{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--blanco-tenue); margin:0 0 8px; }
-  .calc-historial div{ font-family:'Share Tech Mono', monospace; padding:2px 0; border-bottom:1px dashed rgba(var(--blanco-rgb),0.08); }
-
-  @media (max-width:420px){
-    .calc-drawer{
-      top:auto; bottom:0; left:0; right:0; width:100%; height:auto; max-height:78vh;
-      border-radius:18px 18px 0 0; border-right:none; border-top:1px solid var(--azul-borde);
-      box-shadow:0 -16px 40px rgba(var(--negro-rgb),0.5);
-      transform:translateY(100%); padding-bottom:32px;
-    }
-    .calc-drawer.abierta{ transform:translateY(0); }
-    .calc-fab{ width:50px; height:50px; top:16px; left:16px; }
-  }
-
-  /* ---------- SELECTOR DE TEMA (esquina superior derecha, igual que en Cifras/Letras) ---------- */
-  .barra-iconos-derecha{
-    position:fixed; top:20px; right:20px; z-index:40;
-    display:flex; flex-direction:row-reverse; align-items:flex-start; gap:10px;
-    transition:opacity .2s ease, transform .2s ease;
-  }
-  .grupo-tema{ position:relative; }
-  .btn-icono-redondo{
-    width:56px; height:56px; border-radius:50%;
-    border:2px solid var(--azul-neon);
-    background:linear-gradient(160deg, var(--azul-panel-alt), var(--azul-panel));
-    color:var(--azul-neon-claro); font-size:1.3rem; cursor:pointer;
-    box-shadow:0 0 18px rgba(var(--azul-neon-rgb),0.4), 0 10px 24px rgba(var(--negro-rgb),0.5);
-    transition:transform .2s ease;
-  }
-  .btn-icono-redondo:hover{ transform:scale(1.06); }
-  .menu-tema{
-    display:none; position:absolute; top:66px; right:0;
-    width:max(190px, 0px); max-width:calc(100vw - 40px);
-    background:linear-gradient(175deg, var(--azul-panel-alt), var(--azul-noche));
-    border:1px solid var(--azul-borde); border-radius:10px;
-    box-shadow:0 16px 34px rgba(var(--negro-rgb),0.5);
-    overflow:hidden; padding:6px;
-  }
-  .menu-tema.abierto{ display:block; }
-  .menu-tema button{
-    display:flex; align-items:center; gap:10px; width:100%; text-align:left;
-    padding:10px 12px; border:none; border-radius:6px; background:transparent;
-    color:var(--blanco); font-family:'Work Sans', sans-serif; font-size:0.9rem;
-    cursor:pointer; transition:background .15s ease;
-  }
-  .menu-tema button:hover{ background:rgba(var(--azul-neon-rgb),0.12); }
-  .menu-tema button.activo{ color:var(--azul-neon-claro); font-weight:600; }
-  .menu-tema .muestra{ width:16px; height:16px; border-radius:50%; border:1px solid rgba(var(--blanco-rgb),0.3); flex-shrink:0; }
-
-  @media (max-width:640px){
-    .barra-iconos-derecha{ top:16px; right:16px; }
-    .btn-icono-redondo{ width:50px; height:50px; font-size:1.15rem; }
-  }
-
-  .tiles-simulacion{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:22px; }
-  .tile-sim{
-    width:52px; height:62px; border-radius:8px;
-    background:linear-gradient(160deg, var(--ficha-grad-1), var(--azul-panel));
-    border:1px solid var(--azul-borde);
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Share Tech Mono', monospace; font-size:1.4rem; font-weight:700; color:var(--blanco);
-    box-shadow: inset 0 2px 4px rgba(var(--blanco-rgb),0.06), 0 6px 14px rgba(var(--negro-rgb),0.35);
-  }
-  .tile-sim.vocal{ border-color:var(--rojo-vivo); color:var(--rojo-vivo); }
-
-  .campo-palabra{ display:flex; gap:10px; max-width:420px; margin:0 auto; }
-  .campo-palabra input{
-    flex:1; padding:14px 16px; border-radius:10px; border:1px solid var(--azul-borde);
-    background:var(--superficie-1); color:var(--blanco); font-size:1.1rem;
-    font-family:'Share Tech Mono', monospace; text-transform:uppercase;
-  }
-  .campo-palabra input:focus{ outline:none; border-color:var(--azul-neon); }
-  .campo-palabra input:disabled{ opacity:0.5; }
-
-  .aviso{ border-radius:10px; padding:14px 16px; margin-bottom:14px; font-size:0.98rem; line-height:1.5; }
-  .aviso.exito{ background:rgba(var(--verde-rgb),0.12); border:1px solid var(--verde-led); color:var(--exito-texto); }
-  .aviso.alerta{ background:rgba(var(--rojo-vivo-rgb),0.1); border:1px solid var(--rojo-vivo); color:var(--alerta-texto); }
-
-  #veredicto-ronda{ text-align:center; }
-  .lista-pasos-sim{ text-align:left; max-width:340px; margin:0 auto 14px; color:var(--blanco-tenue); font-family:'Share Tech Mono', monospace; font-size:0.92rem; line-height:1.7; }
-  .puntos-ronda{ font-family:'Bebas Neue', sans-serif; letter-spacing:0.04em; font-size:1.3rem; color:var(--azul-neon-claro); margin:14px 0; }
-
-  #final{ text-align:center; }
-  .fila-resumen{
-    display:flex; justify-content:space-between; gap:12px; align-items:center;
-    background:var(--superficie-1); border:1px solid var(--azul-borde); border-radius:8px;
-    padding:10px 14px; margin-bottom:8px; font-size:0.92rem; flex-wrap:wrap;
-  }
-  .fila-resumen span:first-child{ font-weight:700; color:var(--azul-neon-claro); flex:0 0 auto; }
-  .fila-resumen span:last-child{ font-family:'Share Tech Mono', monospace; color:var(--blanco); }
-  #puntuacion-total{ font-family:'Bebas Neue', sans-serif; font-size:1.8rem; letter-spacing:0.05em; color:var(--verde-led); margin:22px 0 8px; }
-  .nota-puntuacion{ color:var(--blanco-tenue); font-size:0.85rem; margin-bottom:18px; }
-
-  footer{ text-align:center; color:var(--blanco-tenue); font-size:0.85rem; padding:36px 24px 0; position:relative; z-index:1; }
-
-  @media (max-width:560px){
-    .zona-numeros{ flex-direction:column; }
-    .ficha{ width:48px; height:58px; font-size:1.1rem; }
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Doto:ROND,wght@100,900&family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
-<div class="barra-iconos-derecha" id="barra-iconos-derecha">
-  <div class="grupo-tema" id="grupo-tema">
-    <button class="btn-icono-redondo" id="btn-tema-toggle" aria-label="Elegir tema" aria-haspopup="true" aria-expanded="false">🎨</button>
-    <div class="menu-tema" id="menu-tema" role="menu">
-      <button type="button" data-tema="clasico" role="menuitem">
-        <span class="muestra" style="background:linear-gradient(135deg, #2E9BFF, #FF3B3B);"></span> Clásico
-      </button>
-      <button type="button" data-tema="dia" role="menuitem">
-        <span class="muestra" style="background:linear-gradient(135deg, #FFFFFF, #4C93F2);"></span> Día
-      </button>
-      <button type="button" data-tema="noche" role="menuitem">
-        <span class="muestra" style="background:linear-gradient(135deg, #060C1C, #1C4E82);"></span> Noche
-      </button>
-      <button type="button" data-tema="elegancia" role="menuitem">
-        <span class="muestra" style="background:linear-gradient(135deg, #0F2648, #D9A441);"></span> Elegancia
-      </button>
-    </div>
+<header class="cabecera">
+  <a class="marca" href="index.html" aria-label="Cifras y Letras, inicio">
+    <span class="marca-fichas" aria-hidden="true"><i>7</i><i>Ñ</i></span>
+    <span class="marca-texto">Cifras <span>y</span> Letras</span>
+  </a>
+  <nav class="nav" aria-label="Secciones">
+    <a href="cifras.html">Cifras</a>
+    <a href="letras.html">Letras</a>
+    <a href="simulacion.html" aria-current="page">Simulación</a>
+  </nav>
+  <div class="tema">
+    <button class="btn-icono" id="btn-tema" type="button" aria-label="Cambiar tema" aria-haspopup="menu" aria-expanded="false">
+      <svg class="icono" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+    </button>
+    <div class="flotante abajo menu-tema" id="menu-tema" role="menu" aria-label="Tema" hidden></div>
   </div>
-</div>
+</header>
 
-<div class="envoltorio">
-  <header class="cabecera">
-    <div class="logo-marca">
-      <div class="ficha-logo">7</div>
-      <div class="ficha-logo">Ñ</div>
+<main>
+  <section class="portada" id="portada-sim">
+    <div>
+      <span class="sobretitulo">Partida completa</span>
+      <h1>Simulación <em>de concurso</em></h1>
+      <p>Vive una partida real: 5 asaltos alternando cifras y letras, con el mismo cronómetro que usarías en el plató.</p>
     </div>
-    <h1 class="titulo">Simulación de concurso</h1>
-    <p class="tagline">Vive una partida real: 5 asaltos alternando cifras y letras, con el mismo cronómetro que usarías en el plató.</p>
-  </header>
+    <div class="portada-lado">
+      <div class="portada-arte" aria-hidden="true">
+        <span class="ficha es-letra">7</span>
+        <div class="reloj">
+          <svg viewBox="0 0 120 120"><circle class="reloj-pista" cx="60" cy="60" r="52"></circle><circle class="reloj-arco" cx="60" cy="60" r="52" pathLength="100"></circle></svg>
+          <div class="reloj-centro"><span class="reloj-num">30</span></div>
+        </div>
+        <span class="ficha es-letra es-vocal">Ñ</span>
+      </div>
+    </div>
+  </section>
 
   <!-- ================= PANTALLA DE INICIO ================= -->
-  <div class="tablero" id="intro">
-    <h2 style="font-family:'Bebas Neue', sans-serif; letter-spacing:0.04em; margin-top:0;">Cómo funciona</h2>
-    <ul>
-      <li><strong>5 asaltos.</strong> Cada uno combina una prueba de Cifras y otra de Letras, en ese orden.</li>
-      <li><strong>Cifras:</strong> 30 segundos para pensar tu operación y, después, 10 segundos para construirla pulsando fichas y operadores.</li>
-      <li><strong>Letras:</strong> 30 segundos para escribir la palabra más larga posible con las 10 letras.</li>
-      <li>Al final de cada prueba verás si has acertado y, tras los 5 asaltos, tu puntuación total.</li>
-    </ul>
-    <button id="btn-empezar" class="btn-primario btn-grande">Empezar simulación</button>
-  </div>
+  <section class="plato" id="intro">
+    <div class="plato-pantalla">
+      <h2 class="tarjeta-titulo">Cómo funciona</h2>
+      <ol class="reglas" id="reglas"></ol>
+      <div class="intro-pie">
+        <p class="record" id="record"></p>
+        <button id="btn-empezar" class="btn btn-primario btn-grande" type="button">Empezar simulación</button>
+      </div>
+    </div>
+  </section>
 
   <!-- ================= PANTALLA DE JUEGO ================= -->
-  <div id="juego" style="display:none;">
-    <div class="barra-progreso">
-      <span id="ronda-label">Ronda 1 de 5</span>
-      <span id="fase-label">Cifras</span>
-      <span id="puntuacion-parcial">Puntos: 0</span>
+  <section id="juego" hidden>
+    <div class="hud">
+      <div class="hud-dato">
+        <span class="etiqueta">Asalto</span>
+        <strong id="hud-asalto">1/5</strong>
+      </div>
+      <ol class="pips" id="pips" aria-label="Progreso de la partida"></ol>
+      <div class="hud-dato">
+        <span class="etiqueta">Puntos</span>
+        <strong id="hud-puntos" aria-live="polite">0</strong>
+      </div>
     </div>
 
-    <div class="reloj-grande" id="reloj-grande">
-      <div id="reloj-numero">30</div>
-      <div id="reloj-etiqueta">segundos</div>
-    </div>
-
-    <div class="tablero">
-      <!-- CIFRAS -->
-      <section id="panel-cifras">
-        <div class="zona-numeros">
-          <div class="grupo-fichas" id="fichas-simulacion"></div>
-          <div class="marcador-objetivo">
-            <div class="etiqueta">Objetivo</div>
-            <div class="display-led" id="objetivo-simulacion">—</div>
+    <div class="plato escenario">
+      <div class="plato-pantalla">
+        <div class="escenario-cab">
+          <div>
+            <span class="etiqueta" id="fase-etiqueta"></span>
+            <h2 class="tarjeta-titulo" id="fase-titulo" aria-live="polite"></h2>
+            <p class="tarjeta-sub" id="fase-ayuda"></p>
+          </div>
+          <div class="reloj" id="reloj" role="timer" aria-label="Segundos restantes">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="reloj-pista" cx="60" cy="60" r="52"></circle>
+              <circle class="reloj-arco" id="reloj-arco" cx="60" cy="60" r="52" pathLength="100"></circle>
+            </svg>
+            <div class="reloj-centro">
+              <span class="reloj-num" id="reloj-num">30</span>
+              <span class="reloj-txt">seg.</span>
+            </div>
           </div>
         </div>
 
-        <div class="fila-operadores" id="operadores-simulacion" style="display:none;">
-          <button type="button" data-op="+" aria-label="Sumar">+</button>
-          <button type="button" data-op="-" aria-label="Restar">−</button>
-          <button type="button" data-op="*" aria-label="Multiplicar">×</button>
-          <button type="button" data-op="/" aria-label="Dividir">÷</button>
+        <!-- CIFRAS -->
+        <div id="panel-cifras">
+          <div class="consola">
+            <aside class="consola-objetivo">
+              <span class="etiqueta">Objetivo</span>
+              <output class="led" id="objetivo">—</output>
+              <p class="cerca" id="cerca" aria-live="polite"></p>
+            </aside>
+            <div class="consola-juego">
+              <div id="tablero"></div>
+            </div>
+          </div>
+          <div class="acciones-sim" id="acciones-pensar">
+            <button id="btn-lo-tengo" class="btn btn-primario btn-grande" type="button">¡Lo tengo! Responder ya</button>
+          </div>
+          <div class="acciones-sim" id="acciones-responder" hidden>
+            <button id="btn-deshacer" class="btn btn-fantasma" type="button">Deshacer</button>
+            <button id="btn-reiniciar" class="btn btn-fantasma" type="button">Reiniciar</button>
+            <button id="btn-entregar" class="btn btn-primario" type="button">Entregar resultado</button>
+          </div>
         </div>
 
-        <div id="pasos-simulacion"></div>
-        <div id="error-cifras-simulacion"></div>
-        <p class="nota-oculta" id="aviso-fase-cifras"></p>
-      </section>
-
-      <!-- LETRAS -->
-      <section id="panel-letras" style="display:none;">
-        <div class="tiles-simulacion" id="tiles-simulacion"></div>
-        <div class="campo-palabra">
-          <input type="text" id="input-palabra-simulacion" placeholder="TU PALABRA" autocomplete="off" spellcheck="false">
-          <button id="btn-enviar-palabra" class="btn-secundario">Enviar</button>
+        <!-- LETRAS -->
+        <div id="panel-letras" hidden>
+          <div id="espera-dic" hidden></div>
+          <div id="zona-letras">
+            <div class="atril"><div class="fichas" id="fichas-letras"></div></div>
+            <div class="fila-palabra">
+              <input class="campo-palabra" type="text" id="entrada" placeholder="Tu palabra" aria-label="Tu palabra" aria-describedby="ayuda-palabra" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="10">
+              <button id="btn-enviar" class="btn btn-primario btn-grande" type="button">Enviar</button>
+            </div>
+            <p class="ayuda-palabra" id="ayuda-palabra"></p>
+          </div>
         </div>
-        <p class="nota-oculta" id="dict-status-simulacion">Cargando diccionario de español…</p>
-      </section>
 
-      <!-- VEREDICTO -->
-      <div id="veredicto-ronda" style="display:none;">
-        <div id="veredicto-contenido"></div>
-        <button id="btn-continuar" class="btn-primario">Continuar</button>
+        <!-- VEREDICTO -->
+        <div id="panel-veredicto" hidden>
+          <div id="veredicto-contenido"></div>
+          <div class="acciones-sim">
+            <button id="btn-continuar" class="btn btn-primario btn-grande" type="button">Continuar</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+
+    <p class="salir-fila"><button id="btn-salir" class="btn-enlace" type="button">Abandonar la partida</button></p>
+  </section>
 
   <!-- ================= PANTALLA FINAL ================= -->
-  <div class="tablero" id="final" style="display:none;">
-    <h2 style="font-family:'Bebas Neue', sans-serif; letter-spacing:0.04em; margin-top:0;">Resultado final</h2>
-    <div id="resumen-rondas"></div>
-    <div id="puntuacion-total"></div>
-    <p class="nota-puntuacion">Puntuación: 10 puntos por llegar exacto al objetivo en Cifras, 7 puntos por una buena aproximación (ficha final a 20 o menos del objetivo), y tantos puntos como letras en la palabra válida de Letras.</p>
-    <button id="btn-reiniciar" class="btn-primario">Jugar de nuevo</button>
-  </div>
+  <section class="plato" id="final" hidden>
+    <div class="plato-pantalla">
+      <div class="total">
+        <span class="etiqueta">Puntuación total</span>
+        <output class="led" id="total">0</output>
+        <p id="total-texto"></p>
+      </div>
+      <div class="resumen" id="resumen"></div>
+      <div class="final-pie">
+        <p class="nota" id="nota-puntuacion"></p>
+        <button id="btn-jugar-de-nuevo" class="btn btn-primario btn-grande" type="button">Jugar de nuevo</button>
+      </div>
+    </div>
+  </section>
+</main>
 
-  <footer>Simulación de concurso — combina las secciones de Cifras y de Letras de esta misma web.</footer>
-</div>
+<footer class="pie">Simulación de concurso — combina las secciones de Cifras y de Letras de esta misma web.</footer>
 
-<button class="calc-fab oculto" id="btn-calc-toggle" aria-label="Abrir calculadora">🧮</button>
-
-<aside class="calc-drawer" id="calc-drawer" aria-hidden="true">
-  <button class="calc-cerrar" id="calc-cerrar" aria-label="Cerrar calculadora">✕</button>
-  <h2>Calculadora</h2>
-  <div class="calc-pantalla" id="calc-pantalla">&nbsp;</div>
-  <div id="calc-error"></div>
-  <div class="calc-ans">Último resultado (ANS): <span id="calc-ans-valor">0</span></div>
-  <div class="calc-teclado">
-    <button data-simbolo="7">7</button>
-    <button data-simbolo="8">8</button>
-    <button data-simbolo="9">9</button>
-    <button class="op" data-simbolo="(">(</button>
-    <button class="op" data-simbolo=")">)</button>
-
-    <button data-simbolo="4">4</button>
-    <button data-simbolo="5">5</button>
-    <button data-simbolo="6">6</button>
-    <button class="op" data-simbolo="*">×</button>
-    <button class="op" data-simbolo="/">÷</button>
-
-    <button data-simbolo="1">1</button>
-    <button data-simbolo="2">2</button>
-    <button data-simbolo="3">3</button>
-    <button class="op" data-simbolo="+">+</button>
-    <button class="op" data-simbolo="-">−</button>
-
-    <button data-simbolo="0">0</button>
-    <button data-simbolo=".">.</button>
-    <button data-accion="ans">ANS</button>
-    <button data-accion="borrar-todo">C</button>
-    <button data-accion="borrar-ultimo">⌫</button>
-
-    <button data-accion="calcular" class="igual" style="grid-column:span 5;">=</button>
-  </div>
-  <div class="calc-historial">
-    <h3>Últimas 6 cuentas</h3>
-    <div id="calc-historial-lista">Aún no hay operaciones guardadas.</div>
-  </div>
-</aside>
-
+<script src="comun.js"></script>
+<script src="cifras-motor.js"></script>
+<script src="letras-motor.js"></script>
 <script>
-/* =========================================================
-   0. TEMA COMPARTIDO (sincronizado con Cifras, Letras e index)
-   ========================================================= */
-const CLASES_TEMA = ['tema-dia', 'tema-noche', 'tema-elegancia'];
-const CLAVE_TEMA_COMPARTIDA = 'cifrasYLetrasTema';
-const btnTemaToggle = document.getElementById('btn-tema-toggle');
-const menuTema = document.getElementById('menu-tema');
+(function () {
+  'use strict';
+  const { $, crear, aviso, listaPasos } = CyL;
 
-function cerrarMenuTema(){
-  menuTema.classList.remove('abierto');
-  btnTemaToggle.setAttribute('aria-expanded', 'false');
-}
+  /* =========================================================
+     1. REGLAS DE LA PARTIDA (los textos se generan a partir de aquí)
+     ========================================================= */
+  const TOTAL_ASALTOS = 5;
+  const T_PENSAR = 30;      // segundos para pensar la operación de Cifras
+  const T_RESPONDER = 20;   // segundos para construirla con las fichas
+  const T_LETRAS = 30;      // segundos para la palabra
+  const PTS_EXACTO = 10;
+  const PTS_APROX = 7;
+  const MARGEN_APROX = 20;  // distancia máxima al objetivo para puntuar como aproximación
+  const CLAVE_RECORD = 'cifrasYLetrasRecord';
 
-function aplicarTema(nombre, guardarComoPreferencia = true){
-  document.body.classList.remove(...CLASES_TEMA);
-  if (nombre !== 'clasico') document.body.classList.add(`tema-${nombre}`);
-  document.querySelectorAll('.menu-tema button').forEach(b => {
-    b.classList.toggle('activo', b.dataset.tema === nombre);
-  });
-  if (guardarComoPreferencia){
-    try { localStorage.setItem(CLAVE_TEMA_COMPARTIDA, nombre); } catch(e){}
-    // Avisa a la página que nos contiene (index.html) para que reenvíe el cambio
-    // a las otras secciones al instante, sin depender solo del evento 'storage'.
-    if (window.parent && window.parent !== window){
-      window.parent.postMessage({ tipo:'cifrasYLetrasTema', tema: nombre }, '*');
-    }
+  // 'intro' | 'pensar' | 'responder' | 'cerrando' | 'letras-espera' | 'letras' | 'veredicto' | 'final'
+  let fase = 'intro';
+  let tipoActual = null;    // 'cifras' | 'letras'
+  let asalto = 0;
+  let resultados = [];
+  let partida = null;
+  let bolsa = [];
+  let crono = null;
+  let alContinuar = null;
+
+  const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+  const sumaPuntos = () => resultados.reduce((total, r) => total + r.puntos, 0);
+  const conPuntero = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  const regla = (fuerte, texto) => crear('li', {}, crear('div', {}, crear('strong', { text: fuerte }), texto));
+  $('#reglas').append(
+    regla(`${TOTAL_ASALTOS} asaltos`, 'Cada uno combina una prueba de Cifras y otra de Letras, en ese orden.'),
+    regla('Cifras', `${T_PENSAR} segundos para pensar tu operación y, después, ${T_RESPONDER} segundos para construirla pulsando fichas y operadores.`),
+    regla('Letras', `${T_LETRAS} segundos para escribir la palabra más larga posible con las 10 letras. Solo vale un intento.`),
+    regla('Puntos', `${PTS_EXACTO} por llegar exacto al objetivo, ${PTS_APROX} por quedarte a ${MARGEN_APROX} o menos, y un punto por cada letra de tu palabra válida.`));
+  $('#nota-puntuacion').textContent =
+    `Puntuación: ${PTS_EXACTO} puntos por llegar exacto al objetivo en Cifras, ${PTS_APROX} por una buena aproximación (a ${MARGEN_APROX} o menos del objetivo) y tantos puntos como letras tenga tu palabra válida en Letras.`;
+
+  const calc = CyL.crearCalculadora();
+  calc.disponible(false);
+  const tablero = new Cifras.Tablero($('#tablero'), { alCambiar: alCambiarTablero });
+  const atril = new Letras.Atril({ fichas: $('#fichas-letras'), entrada: $('#entrada'), ayuda: $('#ayuda-palabra') });
+
+  /* =========================================================
+     2. PANTALLAS, MARCADOR Y CRONÓMETRO
+     ========================================================= */
+  function mostrar(pantalla) {
+    for (const id of ['intro', 'juego', 'final']) $(`#${id}`).hidden = id !== pantalla;
+    $('#portada-sim').hidden = pantalla !== 'intro';   // durante la partida y en el marcador final manda el plató
+    // Al jugar, el marcador queda arriba del todo para que el plató entero quepa en pantalla
+    if (pantalla === 'juego') $('#juego').scrollIntoView({ block: 'start' });
+    else window.scrollTo({ top: 0 });
   }
-}
 
-document.querySelectorAll('.menu-tema button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    aplicarTema(btn.dataset.tema);
-    cerrarMenuTema();
-  });
-});
-
-btnTemaToggle.addEventListener('click', (e) => {
-  e.stopPropagation();
-  const abierto = menuTema.classList.toggle('abierto');
-  btnTemaToggle.setAttribute('aria-expanded', String(abierto));
-});
-
-document.addEventListener('click', (e) => {
-  if (!menuTema.contains(e.target) && e.target !== btnTemaToggle){
-    cerrarMenuTema();
+  function mostrarPanel(nombre) {
+    for (const p of ['cifras', 'letras', 'veredicto']) $(`#panel-${p}`).hidden = p !== nombre;
+    $('#reloj').hidden = nombre === 'veredicto';
   }
-});
 
-let temaGuardado = 'clasico';
-try { temaGuardado = localStorage.getItem(CLAVE_TEMA_COMPARTIDA) || 'clasico'; } catch(e){}
-aplicarTema(temaGuardado, false);
-
-// Si el tema cambia desde Cifras o Letras (misma web, otro iframe), se refleja aquí al instante
-window.addEventListener('storage', (e) => {
-  if (e.key === CLAVE_TEMA_COMPARTIDA && e.newValue) aplicarTema(e.newValue, false);
-});
-// Vía de refuerzo: si index.html nos reenvía el cambio directamente
-window.addEventListener('message', (e) => {
-  if (e.data && e.data.tipo === 'cifrasYLetrasTema' && e.data.tema){
-    aplicarTema(e.data.tema, false);
+  function ponerFase(titulo, ayuda) {
+    $('#fase-etiqueta').textContent = `Asalto ${asalto + 1} · ${tipoActual === 'cifras' ? 'Cifras' : 'Letras'}`;
+    $('#fase-titulo').textContent = titulo;
+    $('#fase-ayuda').textContent = ayuda;
+    $('#fase-ayuda').hidden = !ayuda;
   }
-});
 
-/* =========================================================
-   1. LÓGICA DE CIFRAS (mismo generador y motor que en cifras.html)
-   ========================================================= */
-function randInt(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
-
-function muestraSinReemplazo(arr, n){
-  const pool = arr.slice();
-  const elegidos = [];
-  for (let k = 0; k < n; k++){
-    const idx = Math.floor(Math.random() * pool.length);
-    elegidos.push(pool[idx]);
-    pool.splice(idx, 1);
-  }
-  return elegidos;
-}
-function elegirDosIndices(longitud){
-  let i = Math.floor(Math.random() * longitud);
-  let j = Math.floor(Math.random() * longitud);
-  while (j === i) j = Math.floor(Math.random() * longitud);
-  return [i, j];
-}
-function eleccionPonderada(valores, pesos){
-  const total = pesos.reduce((a, b) => a + b, 0);
-  let r = Math.random() * total;
-  for (let i = 0; i < valores.length; i++){
-    if (r < pesos[i]) return valores[i];
-    r -= pesos[i];
-  }
-  return valores[valores.length - 1];
-}
-
-function generarPartidaCifras(){
-  const fichasDisponibles = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,25,50,75,100];
-  const TOPE_INTENTOS = 3000;
-
-  for (let intento = 0; intento < TOPE_INTENTOS; intento++){
-    const fichasIniciales = muestraSinReemplazo(fichasDisponibles, 6);
-    let fichasTrabajo = fichasIniciales.slice();
-    const maxFicha = Math.max(...fichasIniciales);
-
-    let operacionesRestantes = randInt(3, 5);
-    const historialPasos = [];
-    let resultadoExacto = 0;
-
-    while (operacionesRestantes > 0 && fichasTrabajo.length >= 2){
-      const [idx1, idx2] = elegirDosIndices(fichasTrabajo.length);
-      const n1 = fichasTrabajo[idx1], n2 = fichasTrabajo[idx2];
-      const a = randInt(1, 4);
-      let operacionValida = false;
-      let resultado, pasoStr;
-
-      if (a === 1){
-        resultado = n1 + n2; pasoStr = `${n1} + ${n2} = ${resultado}`; operacionValida = true;
-      } else if (a === 2){
-        if (n1 !== n2){
-          const mayor = Math.max(n1, n2), menor = Math.min(n1, n2);
-          resultado = mayor - menor; pasoStr = `${mayor} - ${menor} = ${resultado}`; operacionValida = true;
-        }
-      } else if (a === 3){
-        resultado = n1 * n2; pasoStr = `${n1} * ${n2} = ${resultado}`; operacionValida = true;
-      } else if (a === 4){
-        const mayor = Math.max(n1, n2), menor = Math.min(n1, n2);
-        if (menor > 1 && mayor % menor === 0){
-          resultado = Math.floor(mayor / menor); pasoStr = `${mayor} / ${menor} = ${resultado}`; operacionValida = true;
-        }
+  function pintarMarcador() {
+    $('#hud-asalto').textContent = `${Math.min(asalto + 1, TOTAL_ASALTOS)}/${TOTAL_ASALTOS}`;
+    $('#hud-puntos').textContent = sumaPuntos();
+    const pips = [];
+    for (let a = 0; a < TOTAL_ASALTOS; a++) {
+      const li = crear('li');
+      for (const tipo of ['cifras', 'letras']) {
+        const r = resultados.find(x => x.asalto === a && x.tipo === tipo);
+        let clase = 'pip';
+        if (r) clase += r.puntos > 0 ? ' es-ok' : ' es-cero';
+        else if (a === asalto && tipo === tipoActual) clase += ' es-actual';
+        li.append(crear('span', { class: clase, text: tipo === 'cifras' ? 'C' : 'L' }));
       }
+      pips.push(li);
+    }
+    $('#pips').replaceChildren(...pips);
+  }
 
-      if (operacionValida){
-        [idx1, idx2].sort((a, b) => b - a).forEach(idx => fichasTrabajo.splice(idx, 1));
-        fichasTrabajo.push(resultado);
-        historialPasos.push(pasoStr);
-        operacionesRestantes--;
-        resultadoExacto = resultado;
+  function pintarRecord() {
+    const record = Number(CyL.leer(CLAVE_RECORD, '0')) || 0;
+    const el = $('#record');
+    el.replaceChildren();
+    if (record) el.append('Tu récord: ', crear('strong', { text: plural(record, 'punto', 'puntos') }));
+  }
+
+  function detenerCrono() {
+    if (crono) { crono.parar(); crono = null; }
+  }
+
+  // Cuenta atrás contra la hora real; llama a alFin una sola vez
+  function cuentaAtras(segundos, alFin) {
+    detenerCrono();
+    const reloj = $('#reloj'), arco = $('#reloj-arco'), num = $('#reloj-num');
+    const fin = Date.now() + segundos * 1000;
+    let mostrado = -1;
+    let vivo = true;
+
+    reloj.classList.remove('es-pausa');
+    // El anillo empieza lleno, sin animar el salto desde la fase anterior
+    arco.style.transition = 'none';
+    arco.style.strokeDashoffset = '0';
+    void arco.getBoundingClientRect();
+    arco.style.transition = '';
+
+    function pintar() {
+      if (!vivo) return;
+      const ms = Math.max(0, fin - Date.now());
+      const s = Math.ceil(ms / 1000);
+      if (s !== mostrado) {
+        mostrado = s;
+        num.textContent = s;
+        reloj.classList.toggle('es-urgente', s <= 5);
+        arco.style.strokeDashoffset = String(100 * (1 - Math.max(0, s - 1) / segundos));
+      }
+      if (ms <= 0) {
+        parar();
+        crono = null;
+        alFin();
       }
     }
+    function parar() { vivo = false; clearInterval(id); }
 
-    if (historialPasos.length > 0){
-      const valoresC = [];
-      for (let v = -15; v <= 15; v++) valoresC.push(v);
-      const pesos = valoresC.map(v => v !== 0 ? 0.05/30 : 0.95);
-      const c = eleccionPonderada(valoresC, pesos);
-      const objetivoFinal = resultadoExacto + c;
-
-      if (objetivoFinal > maxFicha && objetivoFinal >= 100 && objetivoFinal <= 1500){
-        return { fichasIniciales, objetivoFinal, historialPasos, c, resultadoExacto };
-      }
-    }
-  }
-  return { fichasIniciales:[1,2,3,4,5,6], objetivoFinal:21, historialPasos:["1 + 2 = 3"], c:0, resultadoExacto:21 };
-}
-
-function resolverCifrasMotor(numerosIniciales, objetivo){
-  let mejorDiferencia = Infinity;
-  let mejorAproximacion = null;
-  let mejorCamino = [];
-  const solucionesMap = new Map();
-
-  function dfs(numeros, caminoActual){
-    if (numeros.length <= 1) return;
-    for (let i = 0; i < numeros.length; i++){
-      for (let j = i + 1; j < numeros.length; j++){
-        const n1 = numeros[i], n2 = numeros[j];
-        const mayor = Math.max(n1, n2), menor = Math.min(n1, n2);
-        const restantes = numeros.filter((_, k) => k !== i && k !== j);
-
-        const operaciones = [];
-        operaciones.push([mayor + menor, `${mayor} + ${menor} = ${mayor + menor}`]);
-        if (mayor > menor) operaciones.push([mayor - menor, `${mayor} - ${menor} = ${mayor - menor}`]);
-        if (menor > 1) operaciones.push([mayor * menor, `${mayor} * ${menor} = ${mayor * menor}`]);
-        if (menor > 1 && mayor % menor === 0) operaciones.push([Math.floor(mayor / menor), `${mayor} / ${menor} = ${Math.floor(mayor / menor)}`]);
-
-        for (const [resultado, pasoStr] of operaciones){
-          const nuevoCamino = caminoActual.concat([pasoStr]);
-          const diferencia = Math.abs(resultado - objetivo);
-
-          if (diferencia < mejorDiferencia){
-            mejorDiferencia = diferencia;
-            mejorAproximacion = resultado;
-            mejorCamino = nuevoCamino;
-          }
-          if (diferencia === 0){
-            const clave = nuevoCamino.slice().sort().join('|');
-            if (!solucionesMap.has(clave)) solucionesMap.set(clave, nuevoCamino);
-          } else if (restantes.length + 1 >= 2){
-            dfs(restantes.concat([resultado]), nuevoCamino);
-          }
-        }
-      }
-    }
+    const id = setInterval(pintar, 200);
+    crono = { parar };
+    pintar();
   }
 
-  for (const n of numerosIniciales){
-    const diff = Math.abs(n - objetivo);
-    if (diff < mejorDiferencia){
-      mejorDiferencia = diff; mejorAproximacion = n;
-      mejorCamino = [`La ficha ${n} ya era el objetivo inicial.`];
-    }
-  }
-  if (mejorDiferencia !== 0) dfs(numerosIniciales, []);
-
-  return { soluciones: Array.from(solucionesMap.values()), mejorAproximacion, mejorDiferencia, mejorCamino };
-}
-
-/* =========================================================
-   2. LÓGICA DE LETRAS (mismos pesos y diccionario que en letras.html)
-   ========================================================= */
-const VOCALES_SIM = ['A','E','I','O','U'];
-const PESOS_VOCALES_SIM = [12.53, 13.68, 6.25, 8.68, 3.93];
-const CONSONANTES_SIM = ['B','C','D','F','G','H','J','L','M','N','Ñ','P','Q','R','S','T','V','X','Y','Z'];
-const PESOS_CONSONANTES_SIM = [1.42,4.68,5.86,0.69,1.01,0.70,0.44,4.97,3.15,6.71,0.31,2.51,0.88,6.87,7.98,4.63,0.90,0.22,0.90,0.52];
-
-function pesoAleatorioSim(items, pesos, k){
-  const total = pesos.reduce((a,b)=>a+b,0);
-  const acumulado = [];
-  let s = 0;
-  for(const p of pesos){ s += p; acumulado.push(s); }
-  const salida = [];
-  for(let i=0;i<k;i++){
-    const r = Math.random() * total;
-    let idx = acumulado.findIndex(c => r <= c);
-    if(idx === -1) idx = items.length - 1;
-    salida.push(items[idx]);
-  }
-  return salida;
-}
-function normalizarSim(palabra){
-  return palabra.toLowerCase().trim()
-    .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u').replace(/ü/g,'u')
-    .toUpperCase();
-}
-function sePuedeFormarSim(palabraNorm, bolsa){
-  const disponibles = bolsa.slice();
-  for(const letra of palabraNorm){
-    const idx = disponibles.indexOf(letra);
-    if(idx === -1) return false;
-    disponibles.splice(idx,1);
-  }
-  return true;
-}
-
-let dictNormalizedSet = null;
-let dictEntriesOrdenadas = [];
-let dictLoaded = false;
-let dictLoading = false;
-
-function actualizarEstadoDiccionario(error){
-  const el = document.getElementById('dict-status-simulacion');
-  if(!el) return;
-  if(error){ el.textContent = 'No se pudo cargar el diccionario. Comprueba tu conexión y recarga la página.'; return; }
-  el.textContent = dictLoaded ? '' : 'Cargando diccionario de español…';
-  const input = document.getElementById('input-palabra-simulacion');
-  const boton = document.getElementById('btn-enviar-palabra');
-  if(input) input.disabled = !dictLoaded;
-  if(boton) boton.disabled = !dictLoaded;
-}
-
-function cargarDiccionarioSim(){
-  if(dictLoading || dictLoaded) return;
-  dictLoading = true;
-  fetch('https://unpkg.com/an-array-of-spanish-words@2.0.0/index.json')
-    .then(r => r.json())
-    .then(lista => {
-      const set = new Set();
-      const entries = [];
-      const re = /^[a-záéíóúüñ]+$/;
-      for(const palabra of lista){
-        if(!re.test(palabra)) continue;
-        if(palabra.length < 2 || palabra.length > 10) continue;
-        const norm = normalizarSim(palabra);
-        if(!set.has(norm)){
-          set.add(norm);
-          entries.push({display: palabra.toUpperCase(), norm});
-        }
-      }
-      entries.sort((a,b) => b.norm.length - a.norm.length);
-      dictNormalizedSet = set;
-      dictEntriesOrdenadas = entries;
-      dictLoaded = true;
-      dictLoading = false;
-      actualizarEstadoDiccionario();
-    })
-    .catch(err => {
-      dictLoading = false;
-      actualizarEstadoDiccionario(true);
-      console.error(err);
-    });
-}
-cargarDiccionarioSim();
-
-/* =========================================================
-   3. CRONÓMETRO GENÉRICO
-   ========================================================= */
-let temporizadorId = null;
-let cronometroToken = 0;
-
-function actualizarReloj(restante, etiqueta){
-  const relojNumero = document.getElementById('reloj-numero');
-  const relojEtiqueta = document.getElementById('reloj-etiqueta');
-  const relojGrande = document.getElementById('reloj-grande');
-  relojNumero.textContent = restante;
-  relojEtiqueta.textContent = etiqueta;
-  relojGrande.classList.toggle('urgente', restante <= 5);
-}
-
-function iniciarCuentaAtras(segundos, etiqueta, onFin){
-  clearInterval(temporizadorId);
-  const miToken = ++cronometroToken;
-  let restante = segundos;
-  actualizarReloj(restante, etiqueta);
-  temporizadorId = setInterval(() => {
-    restante--;
-    actualizarReloj(Math.max(restante,0), etiqueta);
-    if(restante <= 0){
-      clearInterval(temporizadorId);
-      if(miToken === cronometroToken) onFin();
-    }
-  }, 1000);
-
-  return function forzarFin(){
-    if(miToken !== cronometroToken) return;
-    clearInterval(temporizadorId);
-    cronometroToken++;
-    onFin();
-  };
-}
-
-/* =========================================================
-   4. CALCULADORA AUXILIAR (idéntica a la de cifras.html)
-   ========================================================= */
-let calcPantalla = '';
-let calcAns = 0;
-let calcEvaluado = false;
-let calcHistorial = [];
-
-const elCalcPantalla = document.getElementById('calc-pantalla');
-const elCalcAns = document.getElementById('calc-ans-valor');
-const elCalcError = document.getElementById('calc-error');
-const elCalcHistorial = document.getElementById('calc-historial-lista');
-
-function actualizarCalcPantalla(){
-  elCalcPantalla.textContent = calcPantalla || '\u00A0';
-}
-function ocultarCalcError(){ elCalcError.innerHTML = ''; }
-function mostrarCalcError(msg){ elCalcError.innerHTML = `<div class="mensaje-error">${msg}</div>`; }
-
-function calcPulsar(simbolo){
-  ocultarCalcError();
-  const continuadores = ['+', '-', '*', '/'];
-  if (calcEvaluado){
-    calcPantalla = continuadores.includes(simbolo) ? calcPantalla + simbolo : simbolo;
-    calcEvaluado = false;
-  } else {
-    calcPantalla += simbolo;
-  }
-  actualizarCalcPantalla();
-}
-function calcBorrarTodo(){ calcPantalla = ''; calcEvaluado = false; ocultarCalcError(); actualizarCalcPantalla(); }
-function calcBorrarUltimo(){ calcPantalla = calcPantalla.slice(0, -1); actualizarCalcPantalla(); }
-function calcUsarAns(){ calcPulsar(String(calcAns)); }
-
-function calcEjecutar(){
-  ocultarCalcError();
-  if (!calcPantalla.trim()) return;
-  if (!/^[0-9+\-*/.\s()]+$/.test(calcPantalla)){
-    mostrarCalcError('Error: Operación no válida');
-    return;
-  }
-  try {
-    const resultado = Function('"use strict"; return (' + calcPantalla + ')')();
-    if (typeof resultado !== 'number' || !isFinite(resultado)) throw new Error('invalido');
-    const redondeado = Math.round(resultado * 1e6) / 1e6;
-    calcHistorial.unshift(`${calcPantalla} = ${redondeado}`);
-    calcHistorial = calcHistorial.slice(0, 6);
-    calcAns = redondeado;
-    calcPantalla = String(redondeado);
-    calcEvaluado = true;
-    actualizarCalcPantalla();
-    elCalcAns.textContent = calcAns;
-    elCalcHistorial.innerHTML = calcHistorial.map(h => `<div>${h}</div>`).join('') || 'Aún no hay operaciones guardadas.';
-  } catch (e){
-    mostrarCalcError('Error: Operación no válida');
-  }
-}
-
-document.querySelectorAll('.calc-teclado button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    if (btn.dataset.accion === 'borrar-todo') calcBorrarTodo();
-    else if (btn.dataset.accion === 'borrar-ultimo') calcBorrarUltimo();
-    else if (btn.dataset.accion === 'ans') calcUsarAns();
-    else if (btn.dataset.accion === 'calcular') calcEjecutar();
-    else if (btn.dataset.simbolo) calcPulsar(btn.dataset.simbolo);
-  });
-});
-
-const calcDrawer = document.getElementById('calc-drawer');
-const calcFab = document.getElementById('btn-calc-toggle');
-calcFab.addEventListener('click', () => {
-  calcDrawer.classList.add('abierta');
-  calcDrawer.setAttribute('aria-hidden', 'false');
-});
-document.getElementById('calc-cerrar').addEventListener('click', cerrarCalculadora);
-function cerrarCalculadora(){
-  calcDrawer.classList.remove('abierta');
-  calcDrawer.setAttribute('aria-hidden', 'true');
-}
-
-/* =========================================================
-   5. FLUJO DE LA SIMULACIÓN
-   ========================================================= */
-const TOTAL_RONDAS = 5;
-let ronda = 0;
-let resultados = [];
-let finAnticipado = null;
-
-let estadoCifra = null;
-let cifraPool = [];
-let cifraSeleccion = [];
-let cifraPasos = [];
-
-let letrasPool = [];
-
-function sumaPuntos(){ return resultados.reduce((a,r) => a + r.puntos, 0); }
-
-function actualizarBarra(faseTexto){
-  document.getElementById('ronda-label').textContent = `Ronda ${ronda+1} de ${TOTAL_RONDAS}`;
-  document.getElementById('fase-label').textContent = faseTexto;
-  document.getElementById('puntuacion-parcial').textContent = `Puntos: ${sumaPuntos()}`;
-}
-
-function listaPasosHtml(pasos){
-  return '<ol class="lista-pasos-sim">' + pasos.map(p => `<li>${p}</li>`).join('') + '</ol>';
-}
-
-document.getElementById('btn-empezar').addEventListener('click', empezarSimulacion);
-document.getElementById('btn-reiniciar').addEventListener('click', () => {
-  document.getElementById('final').style.display = 'none';
-  document.getElementById('intro').style.display = 'block';
-});
-
-function empezarSimulacion(){
-  ronda = 0;
-  resultados = [];
-  document.getElementById('intro').style.display = 'none';
-  document.getElementById('final').style.display = 'none';
-  document.getElementById('juego').style.display = 'block';
-  lanzarRondaCifras();
-}
-
-/* ---------- CIFRAS ---------- */
-function lanzarRondaCifras(){
-  document.getElementById('veredicto-ronda').style.display = 'none';
-  document.getElementById('panel-letras').style.display = 'none';
-  document.getElementById('panel-cifras').style.display = 'block';
-
-  estadoCifra = generarPartidaCifras();
-  cifraPool = estadoCifra.fichasIniciales.slice();
-  cifraSeleccion = [];
-  cifraPasos = [];
-
-  pintarFichasSimulacion(true);
-  document.getElementById('objetivo-simulacion').textContent = estadoCifra.objetivoFinal;
-  document.getElementById('operadores-simulacion').style.display = 'none';
-  document.getElementById('pasos-simulacion').innerHTML = '';
-  document.getElementById('error-cifras-simulacion').innerHTML = '';
-  document.getElementById('aviso-fase-cifras').textContent = 'Memoriza los números y el objetivo. ¡Piensa tu operación!';
-
-  document.getElementById('btn-calc-toggle').classList.remove('oculto');
-  actualizarBarra('Cifras · Fase de cálculo');
-  finAnticipado = iniciarCuentaAtras(30, 'seg. para pensar', empezarFaseRespuestaCifras);
-}
-
-function empezarFaseRespuestaCifras(){
-  document.getElementById('aviso-fase-cifras').textContent = '¡Ahora! Pulsa dos fichas y un operador para combinarlas.';
-  pintarFichasSimulacion(false);
-  document.getElementById('error-cifras-simulacion').innerHTML = '';
-  actualizarBarra('Cifras · Fase de respuesta');
-  document.getElementById('btn-calc-toggle').classList.remove('oculto');
-  finAnticipado = iniciarCuentaAtras(20, 'seg. para responder', finalizarCifras);
-}
-
-function pintarFichasSimulacion(bloqueado){
-  const cont = document.getElementById('fichas-simulacion');
-  cont.innerHTML = '';
-  cifraPool.forEach((num, i) => {
-    const f = document.createElement('div');
-    f.className = 'ficha' + (bloqueado ? ' bloqueada' : ' clicable') + (cifraSeleccion.includes(i) ? ' seleccionada' : '');
-    f.textContent = num;
-    if(!bloqueado) f.addEventListener('click', () => alternarSeleccionCifra(i));
-    cont.appendChild(f);
-  });
-}
-
-function alternarSeleccionCifra(i){
-  document.getElementById('error-cifras-simulacion').innerHTML = '';
-  if(cifraSeleccion.includes(i)){
-    cifraSeleccion = cifraSeleccion.filter(x => x !== i);
-  } else if(cifraSeleccion.length < 2){
-    cifraSeleccion.push(i);
-  } else {
-    cifraSeleccion = [i];
-  }
-  pintarFichasSimulacion(false);
-  document.getElementById('operadores-simulacion').style.display = cifraSeleccion.length === 2 ? 'flex' : 'none';
-}
-
-document.querySelectorAll('#operadores-simulacion button').forEach(btn => {
-  btn.addEventListener('click', () => aplicarOperacionCifraSim(btn.dataset.op));
-});
-
-function aplicarOperacionCifraSim(op){
-  if(cifraSeleccion.length !== 2) return;
-  const [i1, i2] = cifraSeleccion;
-  const n1 = cifraPool[i1], n2 = cifraPool[i2];
-  const mayor = Math.max(n1, n2), menor = Math.min(n1, n2);
-  const errorCont = document.getElementById('error-cifras-simulacion');
-  errorCont.innerHTML = '';
-  let resultado, paso;
-
-  if(op === '+'){
-    resultado = mayor + menor; paso = `${mayor} + ${menor} = ${resultado}`;
-  } else if(op === '-'){
-    if(mayor === menor){
-      errorCont.innerHTML = '<div class="mensaje-error">⚠️ No puedes restar dos números iguales: el resultado sería 0.</div>';
-      return;
-    }
-    resultado = mayor - menor; paso = `${mayor} - ${menor} = ${resultado}`;
-  } else if(op === '*'){
-    if(menor <= 1){
-      errorCont.innerHTML = '<div class="mensaje-error">⚠️ Multiplicar por 1 no cuenta como paso válido. Elige otra combinación.</div>';
-      return;
-    }
-    resultado = mayor * menor; paso = `${mayor} * ${menor} = ${resultado}`;
-  } else if(op === '/'){
-    if(menor <= 1 || mayor % menor !== 0){
-      errorCont.innerHTML = '<div class="mensaje-error">⚠️ Estos dos números no son divisibles de forma exacta entre sí.</div>';
-      return;
-    }
-    resultado = mayor / menor; paso = `${mayor} / ${menor} = ${resultado}`;
+  function relojEnPausa(segundos) {
+    detenerCrono();
+    $('#reloj').classList.remove('es-urgente');
+    $('#reloj').classList.add('es-pausa');
+    $('#reloj-num').textContent = segundos;
+    $('#reloj-arco').style.strokeDashoffset = '0';
   }
 
-  cifraPool = cifraPool.filter((_, idx) => idx !== i1 && idx !== i2);
-  cifraPool.push(resultado);
-  cifraPasos.push(paso);
-  cifraSeleccion = [];
-  document.getElementById('operadores-simulacion').style.display = 'none';
-  pintarFichasSimulacion(false);
-  document.getElementById('pasos-simulacion').innerHTML = cifraPasos.map((p,i) => `<div>Paso ${i+1}: ${p}</div>`).join('');
-
-  if(!finAnticipado) return;
-  if(cifraPool.includes(estadoCifra.objetivoFinal)){
-    finAnticipado(); // ¡objetivo conseguido! no hace falta seguir ni esperar al tiempo
-    return;
+  function mostrarVeredicto(titulo, siguiente, textoBoton) {
+    fase = 'veredicto';
+    mostrarPanel('veredicto');
+    ponerFase(titulo, '');
+    alContinuar = siguiente;
+    $('#btn-continuar').textContent = textoBoton;
+    pintarMarcador();
+    $('#btn-continuar').focus({ preventScroll: true });
   }
-  if(cifraPool.length === 1){
-    finAnticipado();
+
+  /* =========================================================
+     3. PRUEBA DE CIFRAS
+     ========================================================= */
+  function faseCifrasPensar() {
+    fase = 'pensar';
+    tipoActual = 'cifras';
+    partida = Cifras.generarPartida();
+
+    mostrarPanel('cifras');
+    $('#objetivo').textContent = partida.objetivoFinal;
+    $('#cerca').textContent = 'Las fichas se desbloquean cuando acabe el tiempo de pensar.';
+    tablero.iniciar(partida.fichasIniciales, partida.objetivoFinal);
+    tablero.bloquear(true);
+    $('#acciones-pensar').hidden = false;
+    $('#acciones-responder').hidden = true;
+    ponerFase('Tiempo para pensar', 'Estudia los números y el objetivo y prepara tu operación.');
+    calc.disponible(true);
+    pintarMarcador();
+    cuentaAtras(T_PENSAR, faseCifrasResponder);
   }
-}
 
-function finalizarCifras(){
-  const objetivo = estadoCifra.objetivoFinal;
-  const exacto = cifraPool.includes(objetivo);
+  function faseCifrasResponder() {
+    if (fase !== 'pensar') return;
+    fase = 'responder';
+    tablero.bloquear(false);
+    $('#acciones-pensar').hidden = true;
+    $('#acciones-responder').hidden = false;
+    actualizarAccionesCifras();
+    ponerFase('¡A responder!', 'Pulsa dos fichas y una operación para combinarlas. Entrega cuando tengas tu mejor resultado.');
+    cuentaAtras(T_RESPONDER, finCifras);
+  }
 
-  let masCercano = null, diferencia = null;
-  if(exacto){
-    masCercano = objetivo;
-    diferencia = 0;
-  } else {
-    for(const n of cifraPool){
-      const d = Math.abs(n - objetivo);
-      if(diferencia === null || d < diferencia){ diferencia = d; masCercano = n; }
+  function actualizarAccionesCifras() {
+    $('#btn-deshacer').disabled = !tablero.puedeDeshacer;
+    $('#btn-reiniciar').disabled = !tablero.puedeDeshacer;
+    const { valor, diferencia } = tablero.masCercana;
+    $('#cerca').replaceChildren('Tu ficha más cercana es ', crear('strong', { text: valor }), ', a ', crear('strong', { text: diferencia }), ' del objetivo.');
+  }
+
+  function alCambiarTablero(t) {
+    if (fase !== 'responder') return;
+    actualizarAccionesCifras();
+    if (t.exacto) {
+      // ¡Objetivo conseguido! Se para el reloj y se deja ver la ficha un instante
+      fase = 'cerrando';
+      detenerCrono();
+      t.bloquear(true);
+      $('#cerca').replaceChildren(crear('strong', { text: '¡Objetivo conseguido!' }));
+      CyL.confeti();
+      setTimeout(finCifras, 900);
     }
   }
 
-  const buenaAprox = !exacto && diferencia !== null && diferencia <= 20;
-  const puntos = exacto ? 10 : (buenaAprox ? 7 : 0);
+  function finCifras() {
+    if (fase !== 'responder' && fase !== 'cerrando') return;
+    detenerCrono();
+    tablero.bloquear(true);
+    calc.disponible(false);
 
-  resultados.push({
-    tipo:'cifras', ronda: ronda+1, objetivo,
-    numeros: estadoCifra.fichasIniciales, pasos: cifraPasos.slice(),
-    correcto: exacto, aproximado: buenaAprox, masCercano, diferencia, puntos
-  });
+    const objetivo = partida.objetivoFinal;
+    const { valor, diferencia } = tablero.masCercana;
+    const exacto = diferencia === 0;
+    const aprox = !exacto && diferencia <= MARGEN_APROX;
+    const puntos = exacto ? PTS_EXACTO : (aprox ? PTS_APROX : 0);
+    resultados.push({ tipo: 'cifras', asalto, objetivo, valor, exacto, aprox, puntos });
 
-  const motor = resolverCifrasMotor(estadoCifra.fichasIniciales, objetivo);
-  mostrarVeredictoCifras(exacto, buenaAprox, masCercano, diferencia, motor, puntos);
-}
-
-function mostrarVeredictoCifras(exacto, buenaAprox, masCercano, diferencia, motor, puntos){
-  const cont = document.getElementById('veredicto-contenido');
-  let html = '';
-
-  if(exacto){
-    html += `<div class="aviso exito">🎯 ¡Correcto! Llegaste exactamente a ${estadoCifra.objetivoFinal}.</div>`;
-  } else if(buenaAprox){
-    html += `<div class="aviso exito">👍 Buena aproximación: tu ficha más cercana fue ${masCercano}, a solo ${diferencia} del objetivo (${estadoCifra.objetivoFinal}).</div>`;
-  } else {
-    html += `<div class="aviso alerta">Tu ficha más cercana fue ${masCercano}, a ${diferencia} del objetivo (${estadoCifra.objetivoFinal}). Demasiado lejos para puntuar.</div>`;
-  }
-
-  if(!exacto){
-    if(motor.mejorDiferencia === 0){
-      html += `<p>Una solución posible era:</p>` + listaPasosHtml(motor.soluciones[0] || motor.mejorCamino);
+    const cont = $('#veredicto-contenido');
+    cont.replaceChildren();
+    if (exacto) {
+      cont.append(aviso('ok', '¡Exacto!', `Has llegado a ${objetivo} en ${plural(tablero.pasos.length, 'paso', 'pasos')}.`));
+    } else if (aprox) {
+      cont.append(aviso('ok', 'Buena aproximación', `Tu ficha más cercana es ${valor}, a solo ${diferencia} del objetivo (${objetivo}).`));
     } else {
-      html += `<p>La mejor aproximación posible era ${motor.mejorAproximacion} (diferencia de ${motor.mejorDiferencia}):</p>` + listaPasosHtml(motor.mejorCamino);
+      cont.append(aviso('mal', 'Demasiado lejos para puntuar', `Tu ficha más cercana es ${valor}, a ${diferencia} del objetivo (${objetivo}).`));
     }
+
+    if (!exacto) {
+      const motor = Cifras.resolver(partida.fichasIniciales, objetivo);
+      if (motor.soluciones.length) {
+        cont.append(crear('p', { text: 'Una solución posible era:' }), listaPasos(motor.soluciones[0]));
+      } else if (motor.mejorCamino.length) {
+        cont.append(
+          crear('p', { text: `No había solución exacta. Lo más cerca que se podía llegar era ${motor.mejorAproximacion} (a ${motor.mejorDiferencia}):` }),
+          listaPasos(motor.mejorCamino));
+      } else {
+        cont.append(crear('p', { text: `No había solución exacta: lo mejor era quedarse con la ficha ${motor.mejorAproximacion}.` }));
+      }
+    }
+    cont.append(crear('p', { class: 'puntos-asalto', text: `+${puntos}` }));
+
+    mostrarVeredicto('Resultado de Cifras', faseLetras, 'Pasar a Letras');
   }
 
-  html += `<p class="puntos-ronda">Puntos obtenidos: ${puntos}</p>`;
-  cont.innerHTML = html;
+  $('#btn-lo-tengo').addEventListener('click', faseCifrasResponder);
+  $('#btn-deshacer').addEventListener('click', () => { if (fase === 'responder') tablero.deshacer(); });
+  $('#btn-reiniciar').addEventListener('click', () => { if (fase === 'responder') tablero.reiniciar(); });
+  $('#btn-entregar').addEventListener('click', finCifras);
 
-  document.getElementById('panel-cifras').style.display = 'none';
-  document.getElementById('veredicto-ronda').style.display = 'block';
-  cerrarCalculadora();
-  document.getElementById('btn-calc-toggle').classList.add('oculto');
-  actualizarBarra('Cifras · Resultado');
-  document.getElementById('btn-continuar').onclick = lanzarRondaLetras;
-}
-
-/* ---------- LETRAS ---------- */
-function lanzarRondaLetras(){
-  document.getElementById('veredicto-ronda').style.display = 'none';
-  document.getElementById('panel-cifras').style.display = 'none';
-  document.getElementById('panel-letras').style.display = 'block';
-
-  const numVocales = randInt(3, 6);
-  const vocales = pesoAleatorioSim(VOCALES_SIM, PESOS_VOCALES_SIM, numVocales);
-  const consonantes = pesoAleatorioSim(CONSONANTES_SIM, PESOS_CONSONANTES_SIM, 10 - numVocales);
-  letrasPool = vocales.concat(consonantes);
-  for(let i = letrasPool.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i+1));
-    [letrasPool[i], letrasPool[j]] = [letrasPool[j], letrasPool[i]];
+  /* =========================================================
+     4. PRUEBA DE LETRAS
+     ========================================================= */
+  function faseLetras() {
+    tipoActual = 'letras';
+    bolsa = Letras.generarBolsa(Cifras.randInt(3, 6));
+    mostrarPanel('letras');
+    calc.disponible(false);
+    pintarMarcador();
+    if (Letras.listo) arrancarLetras();
+    else esperarDiccionario();
   }
 
-  pintarTilesSimulacion();
-  const input = document.getElementById('input-palabra-simulacion');
-  input.value = '';
-  actualizarEstadoDiccionario();
-  input.focus();
+  // Si el diccionario aún no ha llegado, el reloj no corre hasta que esté listo
+  function esperarDiccionario() {
+    fase = 'letras-espera';
+    $('#zona-letras').hidden = true;
+    $('#espera-dic').hidden = false;
+    ponerFase('Preparando el diccionario', 'La prueba empieza en cuanto termine de cargar.');
+    relojEnPausa(T_LETRAS);
+    pintarEspera();
+    if (Letras.estado !== 'cargando') Letras.cargar();
+  }
 
-  cerrarCalculadora();
-  document.getElementById('btn-calc-toggle').classList.add('oculto');
-  actualizarBarra('Letras');
-  finAnticipado = iniciarCuentaAtras(30, 'seg. para tu palabra', finalizarLetras);
-}
-
-function pintarTilesSimulacion(){
-  const cont = document.getElementById('tiles-simulacion');
-  cont.innerHTML = '';
-  letrasPool.forEach(letra => {
-    const d = document.createElement('div');
-    d.className = 'tile-sim' + (VOCALES_SIM.includes(letra) ? ' vocal' : '');
-    d.textContent = letra;
-    cont.appendChild(d);
-  });
-}
-
-document.getElementById('btn-enviar-palabra').addEventListener('click', () => { if(finAnticipado) finAnticipado(); });
-document.getElementById('input-palabra-simulacion').addEventListener('keydown', (e) => {
-  if(e.key === 'Enter' && finAnticipado) finAnticipado();
-});
-
-function finalizarLetras(){
-  const bruta = document.getElementById('input-palabra-simulacion').value.trim();
-  let valida = false, motivo = '', normPalabra = '';
-
-  if(!bruta){
-    motivo = 'No escribiste ninguna palabra.';
-  } else {
-    normPalabra = normalizarSim(bruta);
-    if(!sePuedeFormarSim(normPalabra, letrasPool)){
-      motivo = 'Esa palabra usa letras que no están en tu bolsa, o repite alguna de más.';
-    } else if(!dictLoaded){
-      motivo = 'El diccionario no llegó a cargar a tiempo; no se pudo validar.';
-    } else if(!dictNormalizedSet.has(normPalabra)){
-      motivo = 'No la hemos encontrado en el diccionario de español.';
+  function pintarEspera() {
+    const el = $('#espera-dic');
+    if (Letras.estado === 'error') {
+      el.replaceChildren(
+        aviso('mal', 'No se ha podido cargar el diccionario', 'Sin él no se pueden validar las palabras. Comprueba tu conexión.'),
+        crear('div', { class: 'acciones-sim' },
+          crear('button', { class: 'btn btn-primario', type: 'button', text: 'Reintentar', onclick: () => Letras.cargar() }),
+          crear('button', { class: 'btn btn-fantasma', type: 'button', text: 'Saltar esta prueba', onclick: saltarLetras })));
     } else {
-      valida = true;
+      el.replaceChildren(crear('div', { class: 'estado-dic', style: 'justify-content:center; padding:30px 0;' },
+        crear('span', { class: 'punto es-cargando' }), 'Cargando diccionario de español…'));
     }
   }
 
-  const puntos = valida ? normPalabra.length : 0;
-  const mejor = dictLoaded ? (dictEntriesOrdenadas.find(e => sePuedeFormarSim(e.norm, letrasPool)) || null) : null;
-
-  resultados.push({ tipo:'letras', ronda: ronda+1, letras: letrasPool.slice(), palabra: bruta, valida, puntos, mejor: mejor ? mejor.display : null });
-  mostrarVeredictoLetras(valida, bruta, motivo, puntos, mejor);
-}
-
-function mostrarVeredictoLetras(valida, bruta, motivo, puntos, mejor){
-  const cont = document.getElementById('veredicto-contenido');
-  let html = '';
-
-  if(valida){
-    html += `<div class="aviso exito">✅ "${bruta.toUpperCase()}" es válida (${normalizarSim(bruta).length} letras).</div>`;
-  } else {
-    html += `<div class="aviso alerta">${motivo}</div>`;
+  function arrancarLetras() {
+    fase = 'letras';
+    $('#espera-dic').hidden = true;
+    $('#zona-letras').hidden = false;
+    atril.bloquear(false);
+    atril.repartir(bolsa);
+    $('#btn-enviar').disabled = false;
+    ponerFase('Forma tu palabra', 'Escribe o pulsa las fichas para formar la palabra más larga que puedas. Solo tienes un intento.');
+    cuentaAtras(T_LETRAS, finLetras);
+    if (conPuntero()) $('#entrada').focus({ preventScroll: true });
   }
-  if(mejor){
-    html += `<p>Una palabra posible con esas letras: <strong>${mejor.display}</strong> (${mejor.norm.length} letras).</p>`;
+
+  function finLetras() {
+    if (fase !== 'letras') return;
+    detenerCrono();
+    atril.bloquear(true);
+    $('#btn-enviar').disabled = true;
+
+    const palabra = atril.palabra;
+    const norm = atril.norm;
+    let valida = false, motivo = '';
+    if (!norm) motivo = 'No has escrito ninguna palabra.';
+    else if (atril.sobrantes.length) motivo = `«${palabra}» usa letras que no están en tu bolsa (${atril.sobrantes.join(', ')}).`;
+    else if (norm.length < 2) motivo = 'Una sola letra no cuenta como palabra.';
+    else if (!Letras.existe(norm)) motivo = `«${palabra}» no está en el diccionario de español.`;
+    else valida = true;
+
+    const puntos = valida ? norm.length : 0;
+    const mejor = Letras.mejorPalabra(bolsa);
+    resultados.push({ tipo: 'letras', asalto, palabra, valida, puntos });
+
+    const cont = $('#veredicto-contenido');
+    cont.replaceChildren(valida
+      ? aviso('ok', '¡Palabra válida!', `«${palabra}» tiene ${plural(norm.length, 'letra', 'letras')}.`)
+      : aviso('mal', 'Sin puntos en esta prueba', motivo));
+    if (mejor) {
+      cont.append(crear('p', {
+        text: valida && norm.length === mejor.length
+          ? '¡Has igualado la palabra más larga posible!'
+          : `La palabra más larga posible era ${mejor} (${mejor.length} letras).`,
+      }));
+    }
+    cont.append(crear('p', { class: 'nota', text: `Tus letras: ${bolsa.join(' · ')}` }));
+    cont.append(crear('p', { class: 'puntos-asalto', text: `+${puntos}` }));
+    if (valida) CyL.confeti({ cantidad: 50 + norm.length * 10 });
+
+    cerrarAsalto();
   }
-  html += `<p class="puntos-ronda">Puntos obtenidos: ${puntos}</p>`;
-  cont.innerHTML = html;
 
-  document.getElementById('panel-letras').style.display = 'none';
-  document.getElementById('veredicto-ronda').style.display = 'block';
-  actualizarBarra('Letras · Resultado');
+  function saltarLetras() {
+    if (fase !== 'letras-espera') return;
+    resultados.push({ tipo: 'letras', asalto, palabra: '', valida: false, puntos: 0, saltada: true });
+    $('#veredicto-contenido').replaceChildren(
+      aviso('info', 'Prueba saltada', 'Sin diccionario no se puede jugar a Letras: esta prueba no suma puntos.'),
+      crear('p', { class: 'puntos-asalto', text: '+0' }));
+    cerrarAsalto();
+  }
 
-  ronda++;
-  document.getElementById('btn-continuar').onclick = (ronda < TOTAL_RONDAS) ? lanzarRondaCifras : mostrarFinal;
-}
+  function cerrarAsalto() {
+    const esElUltimo = asalto + 1 >= TOTAL_ASALTOS;
+    mostrarVeredicto('Resultado de Letras', () => {
+      asalto++;
+      if (esElUltimo) mostrarFinal();
+      else faseCifrasPensar();
+    }, esElUltimo ? 'Ver el resultado final' : 'Siguiente asalto');
+  }
 
-/* ---------- FINAL ---------- */
-function mostrarFinal(){
-  document.getElementById('juego').style.display = 'none';
-  document.getElementById('final').style.display = 'block';
-  cerrarCalculadora();
-  document.getElementById('btn-calc-toggle').classList.add('oculto');
+  $('#btn-enviar').addEventListener('click', finLetras);
+  $('#entrada').addEventListener('keydown', (e) => { if (e.key === 'Enter') finLetras(); });
 
-  const cont = document.getElementById('resumen-rondas');
-  cont.innerHTML = resultados.map(r => {
-    if(r.tipo === 'cifras'){
+  /* =========================================================
+     5. INICIO, FINAL Y ABANDONO
+     ========================================================= */
+  function empezarSimulacion() {
+    asalto = 0;
+    resultados = [];
+    mostrar('juego');
+    faseCifrasPensar();
+  }
+
+  function mostrarFinal() {
+    fase = 'final';
+    detenerCrono();
+    calc.disponible(false);
+    mostrar('final');
+
+    const total = sumaPuntos();
+    const record = Number(CyL.leer(CLAVE_RECORD, '0')) || 0;
+    CyL.contarHasta($('#total'), total);
+    let texto;
+    if (total > record) {
+      CyL.guardar(CLAVE_RECORD, String(total));
+      texto = record ? `¡Nuevo récord! El anterior era de ${plural(record, 'punto', 'puntos')}.` : '¡Primera marca registrada! A ver si la superas.';
+      CyL.confeti({ cantidad: 220, y: 0.3 });
+    } else if (total === 0) {
+      texto = 'Esta vez no ha habido suerte. ¡Prueba otra vez!';
+    } else {
+      texto = total === record ? `Has igualado tu récord de ${plural(record, 'punto', 'puntos')}.` : `Tu récord sigue en ${plural(record, 'punto', 'puntos')}.`;
+    }
+    $('#total-texto').textContent = texto;
+
+    $('#resumen').replaceChildren(...resultados.map(r => {
       let estado;
-      if(r.correcto) estado = '✅ Acertado';
-      else if(r.aproximado) estado = `🟡 Buena aproximación (${r.masCercano})`;
-      else estado = `❌ Te quedaste en ${r.masCercano}`;
-      return `<div class="fila-resumen"><span>Ronda ${r.ronda} · Cifras</span><span>${estado}</span><span>${r.puntos} pts</span></div>`;
-    } else {
-      const estado = r.valida ? `✅ ${r.palabra.toUpperCase()}` : `❌ ${r.palabra ? r.palabra.toUpperCase() : 'Sin palabra'}`;
-      return `<div class="fila-resumen"><span>Ronda ${r.ronda} · Letras</span><span>${estado}</span><span>${r.puntos} pts</span></div>`;
-    }
-  }).join('');
+      if (r.tipo === 'cifras') {
+        if (r.exacto) estado = `Exacto: ${r.objetivo}`;
+        else if (r.aprox) estado = `Aproximación: ${r.valor} (objetivo ${r.objetivo})`;
+        else estado = `Te quedaste en ${r.valor} (objetivo ${r.objetivo})`;
+      } else if (r.saltada) estado = 'Prueba saltada';
+      else if (r.valida) estado = r.palabra;
+      else estado = r.palabra ? `${r.palabra} (no válida)` : 'Sin palabra';
+      return crear('div', { class: 'fila-resumen' + (r.puntos > 0 ? ' es-ok' : '') },
+        crear('span', { text: `Asalto ${r.asalto + 1} · ${r.tipo === 'cifras' ? 'Cifras' : 'Letras'}` }),
+        crear('span', { text: estado }),
+        crear('span', { text: `+${r.puntos}` }));
+    }));
+  }
 
-  document.getElementById('puntuacion-total').textContent = `Puntuación total: ${sumaPuntos()} puntos`;
-}
+  function volverAlInicio() {
+    fase = 'intro';
+    detenerCrono();
+    calc.disponible(false);
+    pintarRecord();
+    mostrar('intro');
+  }
+
+  // Abandonar pide confirmación con una segunda pulsación
+  let salirArmado = null;
+  function desarmarSalir() {
+    clearTimeout(salirArmado);
+    salirArmado = null;
+    $('#btn-salir').textContent = 'Abandonar la partida';
+  }
+  $('#btn-salir').addEventListener('click', () => {
+    if (!salirArmado) {
+      $('#btn-salir').textContent = '¿Seguro? Pulsa otra vez para abandonar';
+      salirArmado = setTimeout(desarmarSalir, 3500);
+      return;
+    }
+    desarmarSalir();
+    volverAlInicio();
+  });
+
+  $('#btn-empezar').addEventListener('click', empezarSimulacion);
+  $('#btn-continuar').addEventListener('click', () => { if (fase === 'veredicto' && alContinuar) alContinuar(); });
+  $('#btn-jugar-de-nuevo').addEventListener('click', volverAlInicio);
+
+  // El diccionario se descarga desde el principio para que esté listo al llegar a Letras
+  Letras.alCambiarEstado(({ estado }) => {
+    if (fase !== 'letras-espera') return;
+    if (estado === 'listo') arrancarLetras();
+    else pintarEspera();
+  });
+  Letras.cargar();
+  pintarRecord();
+})();
 </script>
 </body>
 </html>

@@ -1,263 +1,128 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-tema="clasico">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cifras y Letras</title>
+<meta name="description" content="Practica el concurso Cifras y Letras: la prueba de cifras, la de letras y una simulación completa con cronómetro y puntuación.">
+<meta name="theme-color" content="#04051A">
+<script>try{var t=localStorage.getItem('cifrasYLetrasTema');if(t)document.documentElement.dataset.tema=t;}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B1150'/%3E%3Crect x='11' y='7' width='42' height='46' rx='9' fill='%23FFC61A'/%3E%3Crect x='11' y='7' width='42' height='42' rx='9' fill='%23FFF0A0'/%3E%3Ctext x='32' y='41' font-family='Arial Black,Arial,sans-serif' font-size='30' font-weight='900' text-anchor='middle' fill='%233A1E00'%3E%C3%91%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --fondo:#0A0B10;
-    --panel:#121319;
-    --panel-borde:#23252F;
-    --teal:#2FBFA1;
-    --teal-rgb:47,191,161;
-    --teal-tenue:#1D8A73;
-    --texto:#EDEDF0;
-    --texto-tenue:#8B8D98;
-    --activo-bg:#1B2622;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;height:100%;}
-  body{
-    background:var(--fondo);
-    color:var(--texto);
-    font-family:'Work Sans', sans-serif;
-    display:flex;
-    flex-direction:column;
-    min-height:100vh;
-    overflow:hidden;
-  }
-
-  header.topbar{
-    flex:0 0 auto;
-    display:flex;
-    align-items:center;
-    gap:20px;
-    padding:0 24px;
-    height:72px;
-    background:var(--panel);
-    border-bottom:1px solid var(--panel-borde);
-    box-shadow:0 6px 20px rgba(0,0,0,0.35);
-    z-index:10;
-  }
-
-  .marca{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-shrink:0;
-  }
-  .marca .icono-marca{
-    width:34px;height:34px;
-    border-radius:8px;
-    background:linear-gradient(160deg, var(--teal), var(--teal-tenue));
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Bebas Neue', sans-serif;
-    font-size:1.1rem;
-    color:#04211B;
-    flex-shrink:0;
-  }
-  .marca .texto-marca{
-    font-family:'Bebas Neue', sans-serif;
-    font-size:1.3rem;
-    letter-spacing:0.04em;
-    color:var(--texto);
-    white-space:nowrap;
-  }
-
-  nav.pestanas{
-    display:flex;
-    gap:6px;
-    margin-left:auto;
-    overflow-x:auto;
-  }
-  .pestana{
-    font-family:'Work Sans', sans-serif;
-    font-weight:600;
-    font-size:0.92rem;
-    letter-spacing:0.01em;
-    color:var(--texto-tenue);
-    background:transparent;
-    border:1px solid transparent;
-    padding:10px 18px;
-    border-radius:8px;
-    cursor:pointer;
-    white-space:nowrap;
-    transition:background .18s ease, color .18s ease, border-color .18s ease;
-  }
-  .pestana:hover{color:var(--texto); background:rgba(var(--teal-rgb),0.08);}
-  .pestana.activa{
-    color:var(--teal);
-    background:var(--activo-bg);
-    border-color:var(--teal-tenue);
-  }
-
-  main.contenido{
-    flex:1 1 auto;
-    position:relative;
-    min-height:0;
-  }
-  .panel-vista{
-    position:absolute;
-    inset:0;
-    display:none;
-  }
-  .panel-vista.activo{display:block;}
-  .panel-vista iframe{
-    width:100%;
-    height:100%;
-    border:none;
-    display:block;
-    background:var(--fondo);
-  }
-
-  .proximamente{
-    height:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    gap:14px;
-    padding:0 24px;
-  }
-  .proximamente .marca-grande{
-    width:64px;height:64px;
-    border-radius:16px;
-    background:linear-gradient(160deg, var(--teal), var(--teal-tenue));
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Bebas Neue', sans-serif;
-    font-size:1.8rem;
-    color:#04211B;
-    margin-bottom:6px;
-  }
-  .proximamente h2{
-    font-family:'Bebas Neue', sans-serif;
-    font-size:2.2rem;
-    letter-spacing:0.04em;
-    margin:0;
-    color:var(--texto);
-  }
-  .proximamente p{
-    margin:0;
-    max-width:420px;
-    color:var(--texto-tenue);
-    font-size:1rem;
-    line-height:1.5;
-  }
-
-  @media (max-width:640px){
-    header.topbar{gap:12px; padding:0 14px; height:64px;}
-    .marca .texto-marca{display:none;}
-    .pestana{padding:9px 12px; font-size:0.84rem;}
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Doto:ROND,wght@100,900&family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
-<header class="topbar">
-  <div class="marca">
-    <div class="icono-marca">CyL</div>
-    <span class="texto-marca">Cifras y Letras</span>
-  </div>
-  <nav class="pestanas" role="tablist" aria-label="Secciones">
-    <button class="pestana activa" data-vista="cifras" role="tab" aria-selected="true">Cifras</button>
-    <button class="pestana" data-vista="letras" role="tab" aria-selected="false">Letras</button>
-    <button class="pestana" data-vista="simulacion" role="tab" aria-selected="false">Simulación</button>
+<header class="cabecera">
+  <a class="marca" href="index.html" aria-label="Cifras y Letras, inicio">
+    <span class="marca-fichas" aria-hidden="true"><i>7</i><i>Ñ</i></span>
+    <span class="marca-texto">Cifras <span>y</span> Letras</span>
+  </a>
+  <nav class="nav" aria-label="Secciones">
+    <a href="cifras.html">Cifras</a>
+    <a href="letras.html">Letras</a>
+    <a href="simulacion.html">Simulación</a>
   </nav>
+  <div class="tema">
+    <button class="btn-icono" id="btn-tema" type="button" aria-label="Cambiar tema" aria-haspopup="menu" aria-expanded="false">
+      <svg class="icono" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+    </button>
+    <div class="flotante abajo menu-tema" id="menu-tema" role="menu" aria-label="Tema" hidden></div>
+  </div>
 </header>
 
-<main class="contenido">
-  <div class="panel-vista activo" id="vista-cifras">
-    <iframe data-src="cifras.html" title="Sección Cifras"></iframe>
+<main>
+  <section class="hero">
+    <div>
+      <span class="sobretitulo">El concurso, en tu navegador</span>
+      <h1><span>Seis números.</span><span>Diez letras.</span><span><em>Un reloj.</em></span></h1>
+      <p>Practica Cifras y Letras a tu ritmo o juégate una partida completa contra el crono, con marcador y récord personal.</p>
+      <div class="fila-botones">
+        <a class="btn btn-primario btn-grande" href="simulacion.html">Jugar una partida</a>
+        <a class="btn btn-fantasma btn-grande" href="cifras.html">Practicar por libre</a>
+      </div>
+    </div>
+
+    <div class="hero-arte" aria-hidden="true">
+      <div class="plato">
+        <div class="plato-pantalla">
+          <div class="fichas">
+            <span class="ficha es-letra es-resultado entra" style="--i:0">C</span>
+            <span class="ficha es-letra es-resultado entra" style="--i:1">I</span>
+            <span class="ficha es-letra es-resultado entra" style="--i:2">F</span>
+            <span class="ficha es-letra es-resultado entra" style="--i:3">R</span>
+            <span class="ficha es-letra es-resultado entra" style="--i:4">A</span>
+            <span class="ficha es-letra es-resultado entra" style="--i:5">S</span>
+          </div>
+          <span class="hero-y">y</span>
+          <div class="fichas">
+            <span class="ficha es-letra entra" style="--i:7">L</span>
+            <span class="ficha es-letra es-vocal entra" style="--i:8">E</span>
+            <span class="ficha es-letra entra" style="--i:9">T</span>
+            <span class="ficha es-letra entra" style="--i:10">R</span>
+            <span class="ficha es-letra es-vocal entra" style="--i:11">A</span>
+            <span class="ficha es-letra entra" style="--i:12">S</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-flota es-led"><span class="led">952</span></div>
+      <div class="hero-flota es-crono">
+        <div class="reloj">
+          <svg viewBox="0 0 120 120"><circle class="reloj-pista" cx="60" cy="60" r="52"></circle><circle class="reloj-arco" cx="60" cy="60" r="52" pathLength="100"></circle></svg>
+          <div class="reloj-centro"><span class="reloj-num">30</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="teletipo" aria-hidden="true">
+    <div class="teletipo-cinta">
+      <span><b>6</b> fichas de números</span><span><b>4</b> operaciones</span><span><b>10</b> letras por bolsa</span><span><b>365.954</b> palabras en el diccionario</span><span><b>5</b> asaltos por partida</span><span><b>30</b> segundos de reloj</span>
+      <span><b>6</b> fichas de números</span><span><b>4</b> operaciones</span><span><b>10</b> letras por bolsa</span><span><b>365.954</b> palabras en el diccionario</span><span><b>5</b> asaltos por partida</span><span><b>30</b> segundos de reloj</span>
+    </div>
   </div>
-  <div class="panel-vista" id="vista-letras">
-    <iframe data-src="letras.html" title="Sección Letras"></iframe>
-  </div>
-  <div class="panel-vista" id="vista-simulacion">
-    <iframe data-src="simulacion.html" title="Sección Simulación"></iframe>
-  </div>
+
+  <section class="accesos" aria-label="Secciones del juego">
+    <a class="acceso es-cifras" href="cifras.html">
+      <div class="acceso-arte" aria-hidden="true">
+        <span class="ficha">75</span><span class="ficha">8</span><span class="ficha es-resultado">3</span>
+        <span class="led">603</span>
+      </div>
+      <span class="etiqueta">Sección de cifras</span>
+      <h2>La cifra exacta</h2>
+      <p>Seis números, cuatro operaciones y un objetivo. Construye tu solución ficha a ficha o deja que el resolutor encuentre todas.</p>
+      <span class="ir">Jugar a cifras <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+
+    <a class="acceso es-letras" href="letras.html">
+      <div class="acceso-arte" aria-hidden="true">
+        <span class="ficha es-letra">L</span><span class="ficha es-letra es-vocal">E</span><span class="ficha es-letra">T</span><span class="ficha es-letra">R</span><span class="ficha es-letra es-vocal">A</span>
+      </div>
+      <span class="etiqueta">Sección de letras</span>
+      <h2>La palabra más grande</h2>
+      <p>Diez letras y un diccionario de más de 360.000 palabras. Forma la más larga que puedas o pásale tus letras al resolutor.</p>
+      <span class="ir">Jugar a letras <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+
+    <a class="acceso es-sim" href="simulacion.html">
+      <div class="acceso-arte" aria-hidden="true">
+        <div class="reloj">
+          <svg viewBox="0 0 120 120"><circle class="reloj-pista" cx="60" cy="60" r="52"></circle><circle class="reloj-arco" cx="60" cy="60" r="52" pathLength="100"></circle></svg>
+          <div class="reloj-centro"><span class="reloj-num">30</span></div>
+        </div>
+      </div>
+      <span class="etiqueta">Partida completa</span>
+      <h2>Simulación de concurso</h2>
+      <p>Cinco asaltos alternando cifras y letras, con el cronómetro del plató, puntuación y tu récord personal.</p>
+      <span class="ir">Empezar la simulación <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
+  </section>
 </main>
 
-<script>
-  const botones = document.querySelectorAll('.pestana');
-  const paneles = {
-    cifras: document.getElementById('vista-cifras'),
-    letras: document.getElementById('vista-letras'),
-    simulacion: document.getElementById('vista-simulacion'),
-  };
+<footer class="pie">Cifras y Letras — un proyecto para practicar el clásico concurso de números y palabras.</footer>
 
-  function cargarIframeSiHaceFalta(panel){
-    const iframe = panel.querySelector('iframe[data-src]');
-    if (iframe){
-      iframe.src = iframe.getAttribute('data-src');
-      iframe.removeAttribute('data-src');
-    }
-  }
-
-  cargarIframeSiHaceFaltaConTema(paneles.cifras);
-
-  botones.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const destino = btn.dataset.vista;
-
-      botones.forEach(b => {
-        b.classList.toggle('activa', b === btn);
-        b.setAttribute('aria-selected', String(b === btn));
-      });
-
-      Object.entries(paneles).forEach(([nombre, panel]) => {
-        panel.classList.toggle('activo', nombre === destino);
-      });
-
-      cargarIframeSiHaceFaltaConTema(paneles[destino]);
-    });
-  });
-
-  /* =========================================================
-     SINCRONIZACIÓN DE TEMA ENTRE LAS TRES SECCIONES
-     Cada iframe (Cifras, Letras, Simulación) guarda el tema elegido
-     en localStorage bajo la clave 'cifrasYLetrasTema' y, además,
-     avisa a esta página (su padre) mediante postMessage en cuanto
-     el usuario cambia de tema. Esta página reenvía ese aviso al
-     resto de iframes ya cargados, para que el cambio se refleje
-     al instante sin esperar a que se abran esas pestañas.
-     ========================================================= */
-  const CLAVE_TEMA_COMPARTIDA = 'cifrasYLetrasTema';
-
-  function iframesCargados(){
-    return Object.values(paneles)
-      .map(panel => panel.querySelector('iframe'))
-      .filter(iframe => iframe && iframe.src);
-  }
-
-  window.addEventListener('message', (e) => {
-    if (!e.data || e.data.tipo !== 'cifrasYLetrasTema' || !e.data.tema) return;
-    try { localStorage.setItem(CLAVE_TEMA_COMPARTIDA, e.data.tema); } catch(err){}
-    iframesCargados().forEach(iframe => {
-      if (iframe.contentWindow !== e.source){
-        iframe.contentWindow.postMessage({ tipo:'cifrasYLetrasTema', tema: e.data.tema }, '*');
-      }
-    });
-  });
-
-  // Refuerzo: cuando se carga por primera vez un iframe (al abrir su pestaña),
-  // le enviamos el tema actual por si acaso su lectura de localStorage no coincidiera.
-  function cargarIframeSiHaceFaltaConTema(panel){
-    const iframe = panel.querySelector('iframe[data-src]');
-    if (iframe){
-      iframe.addEventListener('load', () => {
-        let temaActual = 'clasico';
-        try { temaActual = localStorage.getItem(CLAVE_TEMA_COMPARTIDA) || 'clasico'; } catch(err){}
-        iframe.contentWindow.postMessage({ tipo:'cifrasYLetrasTema', tema: temaActual }, '*');
-      }, { once:true });
-    }
-    cargarIframeSiHaceFalta(panel);
-  }
-</script>
-
+<script src="comun.js"></script>
 </body>
 </html>
